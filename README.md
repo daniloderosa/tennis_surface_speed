@@ -4,7 +4,7 @@
 
 Scrollytelling interattivo sui dati di velocità delle superfici nel tennis ATP (1991–2025).
 
-**Live:** [daniloderosadanilo.github.io/tennis_surface_speed](https://daniloderosa.github.io/tennis_surface_speed)
+**Live:** [daniloderosa.github.io/tennis_surface_speed](https://daniloderosa.github.io/tennis_surface_speed)
 
 L'articolo è in una prima versione, non pensata per la condivisione.
 
