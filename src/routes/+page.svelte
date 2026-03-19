@@ -70,53 +70,65 @@
 
 <Hero />
 
-<div class="section-label">
-  <span>01</span> Tre superfici, tre mondi diversi?
+<div class="section-wrapper">
+  <div class="section-label">
+    <span>01</span> Tre superfici, tre mondi diversi?
+  </div>
+  <ScrollySection
+    chartComponent={StripPlot}
+    steps={steps1}
+    bind:activeStep={activeStep1}
+  />
 </div>
 
-<ScrollySection
-  chartComponent={StripPlot}
-  steps={steps1}
-  bind:activeStep={activeStep1}
-/>
-
-<div class="section-label">
-  <span>02</span> Cosa cambia davvero in campo?
+<div class="section-wrapper">
+  <div class="section-label">
+    <span>02</span> Cosa cambia davvero in campo?
+  </div>
+  <ScrollySection
+    chartComponent={ScatterRallySpeed}
+    steps={steps2}
+    bind:activeStep={activeStep2}
+  />
 </div>
 
-<ScrollySection
-  chartComponent={ScatterRallySpeed}
-  steps={steps2}
-  bind:activeStep={activeStep2}
-/>
-
-<div class="section-label">
-  <span>03</span> Com'è cambiato nel tempo?
+<div class="section-wrapper">
+  <div class="section-label">
+    <span>03</span> Com'è cambiato nel tempo?
+  </div>
+  <ScrollySection
+    chartComponent={LineHistorical}
+    steps={steps3}
+    bind:activeStep={activeStep3}
+  />
 </div>
 
-<ScrollySection
-  chartComponent={LineHistorical}
-  steps={steps3}
-  bind:activeStep={activeStep3}
-/>
-
-<div class="section-label">
-  <span>04</span> Oggi: la mappa reale dei tornei
+<div class="section-wrapper">
+  <div class="section-label">
+    <span>04</span> Oggi: la mappa reale dei tornei
+  </div>
+  <ScrollySection
+    chartComponent={StripPlot}
+    steps={steps4}
+    bind:activeStep={activeStep4}
+  />
 </div>
-
-<ScrollySection
-  chartComponent={StripPlot}
-  steps={steps4}
-  bind:activeStep={activeStep4}
-/>
 
 <Outro />
 
 <style>
+  .section-wrapper {
+    margin-top: var(--section-gap);
+  }
+
   .section-label {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    background: var(--color-bg);
     max-width: var(--chart-max-width);
-    margin: var(--section-gap) auto 0;
-    padding: 0 2rem 1.5rem;
+    margin: 0 auto;
+    padding: 0.75rem 2rem;
     font-family: var(--font-mono);
     font-size: var(--text-label);
     color: var(--color-primary);

@@ -40,7 +40,7 @@
     position: relative;
     max-width: $chart-max-width;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 2rem 2rem 0;
   }
 
   // Grafico: sticky, occupa tutto lo spazio della sezione
