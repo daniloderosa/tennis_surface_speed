@@ -37,9 +37,7 @@
     font-size: $text-hero;
     font-weight: 700;
     color: $color-text;
-    line-height: 1.05;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
+    line-height: 1.1;
     margin-bottom: 1rem;
   }
 
@@ -64,7 +62,7 @@
   .pub-date {
     font-family: $font-mono;
     font-size: $text-label;
-    color: $color-border;
+    color: $color-text-faint;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }

@@ -1,32 +1,32 @@
 // ── Colori sfondo e superfici ───────────────────────────
-$color-bg:           #2E3440;
-$color-surface:      #3B4252;
-$color-surface-2:    #434C5E;
-$color-border:       #4C566A;
+$color-bg:           #ffffff;
+$color-surface:      #f5f5f5;
+$color-surface-2:    #eeeeee;
+$color-border:       #e0e0e0;
 
 // ── Testo ───────────────────────────────────────────────
-$color-text:         #ECEFF4;
-$color-text-muted:   #D8DEE9;
-$color-text-faint:   #E5E9F0;
+$color-text:         #1a1a1a;
+$color-text-muted:   #666666;
+$color-text-faint:   #888888;
 
 // ── Superfici tennis ────────────────────────────────────
-$color-hard:         #5E81AC;   // nord10 — blu
-$color-clay:         #BF616A;   // nord11 — rosso/arancio
-$color-grass:        #A3BE8C;   // nord14 — verde
+$color-hard:         #5E81AC;   // blu
+$color-clay:         #BF616A;   // rosso/arancio
+$color-grass:        #6B9E5A;   // verde (leggermente scurito per leggibilità su bianco)
 
 // ── Accenti e highlight ─────────────────────────────────
-$color-highlight:    #EBCB8B;   // nord13 — ambra
-$color-primary:      #88C0D0;   // nord8  — azzurro chiaro
-$color-secondary:    #81A1C1;   // nord9  — blu medio
+$color-highlight:    #0066cc;
+$color-primary:      #0033a1;   // CUNY blue
+$color-secondary:    #002880;
 
 // ── Scala sequenziale ───────────────────────────────────
 $color-seq-min:      #C8DAF0;
 $color-seq-max:      #044F74;
 
 // ── Font ────────────────────────────────────────────────
-$font-display: 'Barlow Condensed', sans-serif;
-$font-sans:    'Roboto', 'Arial', sans-serif;
-$font-serif:   'Georgia', serif;
+$font-display: 'PT Serif', Georgia, serif;
+$font-sans:    'Droid Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+$font-serif:   'PT Serif', Georgia, serif;
 $font-mono:    'Roboto Mono', monospace;
 
 // ── Tipografia ──────────────────────────────────────────
