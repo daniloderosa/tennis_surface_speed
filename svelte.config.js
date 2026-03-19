@@ -1,14 +1,21 @@
 import adapterStatic from '@sveltejs/adapter-static';
 import { sveltePreprocess } from 'svelte-preprocess';
-import autoprefixer from 'autoprefixer';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export default {
   compilerOptions: { runes: true },
-  preprocess: sveltePreprocess({ postcss: { plugins: [autoprefixer] } }),
+  preprocess: sveltePreprocess({
+    scss: {
+      includePaths: [resolve(__dirname, 'src/lib/styles')]
+    }
+  }),
   kit: {
     adapter: adapterStatic({ strict: false }),
     paths: {
-      base: '/tennis_surface_speed'
+      base: process.env.BASE_PATH ?? ''
     },
     alias: {
       '$components': './src/components',
