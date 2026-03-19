@@ -1,0 +1,53 @@
+// ── Colori sfondo e superfici ───────────────────────────
+$color-bg:           #2E3440;
+$color-surface:      #3B4252;
+$color-surface-2:    #434C5E;
+$color-border:       #4C566A;
+
+// ── Testo ───────────────────────────────────────────────
+$color-text:         #ECEFF4;
+$color-text-muted:   #D8DEE9;
+$color-text-faint:   #E5E9F0;
+
+// ── Superfici tennis ────────────────────────────────────
+$color-hard:         #5E81AC;   // nord10 — blu
+$color-clay:         #BF616A;   // nord11 — rosso/arancio
+$color-grass:        #A3BE8C;   // nord14 — verde
+
+// ── Accenti e highlight ─────────────────────────────────
+$color-highlight:    #EBCB8B;   // nord13 — ambra
+$color-primary:      #88C0D0;   // nord8  — azzurro chiaro
+$color-secondary:    #81A1C1;   // nord9  — blu medio
+
+// ── Scala sequenziale ───────────────────────────────────
+$color-seq-min:      #C8DAF0;
+$color-seq-max:      #044F74;
+
+// ── Font ────────────────────────────────────────────────
+$font-display: 'Barlow Condensed', sans-serif;
+$font-sans:    'Roboto', 'Arial', sans-serif;
+$font-serif:   'Georgia', serif;
+$font-mono:    'Roboto Mono', monospace;
+
+// ── Tipografia ──────────────────────────────────────────
+$text-hero:          clamp(2.8rem, 6vw, 5rem);
+$text-section-title: clamp(1.6rem, 3vw, 2.4rem);
+$text-step:          1rem;
+$text-label:         0.8rem;
+$text-axis:          0.75rem;
+$line-height-body:   1.65;
+
+// ── Layout ──────────────────────────────────────────────
+$step-width:      360px;
+$chart-max-width: 960px;
+$section-gap:     6rem;
+$step-height:     85vh;
+
+// ── Z-index ─────────────────────────────────────────────
+$z-sticky:  10;
+$z-overlay: 20;
+$z-tooltip: 30;
+
+// ── Breakpoints ─────────────────────────────────────────
+$breakpoint-sm: 768px;
+$breakpoint-lg: 1200px;
