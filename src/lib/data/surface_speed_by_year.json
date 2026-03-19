@@ -1,0 +1,626 @@
+[
+  {
+    "year": 1991,
+    "surface": "Clay",
+    "speed_avg": 0.72,
+    "note": "estimated"
+  },
+  {
+    "year": 1991,
+    "surface": "Grass",
+    "speed_avg": 1.18,
+    "note": "estimated"
+  },
+  {
+    "year": 1991,
+    "surface": "Hard",
+    "speed_avg": 1.08,
+    "note": "estimated"
+  },
+  {
+    "year": 1992,
+    "surface": "Clay",
+    "speed_avg": 0.71,
+    "note": "estimated"
+  },
+  {
+    "year": 1992,
+    "surface": "Grass",
+    "speed_avg": 1.16,
+    "note": "estimated"
+  },
+  {
+    "year": 1992,
+    "surface": "Hard",
+    "speed_avg": 1.09,
+    "note": "estimated"
+  },
+  {
+    "year": 1993,
+    "surface": "Clay",
+    "speed_avg": 0.71,
+    "note": "estimated"
+  },
+  {
+    "year": 1993,
+    "surface": "Grass",
+    "speed_avg": 1.17,
+    "note": "estimated"
+  },
+  {
+    "year": 1993,
+    "surface": "Hard",
+    "speed_avg": 1.1,
+    "note": "estimated"
+  },
+  {
+    "year": 1994,
+    "surface": "Clay",
+    "speed_avg": 0.7,
+    "note": "estimated"
+  },
+  {
+    "year": 1994,
+    "surface": "Grass",
+    "speed_avg": 1.16,
+    "note": "estimated"
+  },
+  {
+    "year": 1994,
+    "surface": "Hard",
+    "speed_avg": 1.1,
+    "note": "estimated"
+  },
+  {
+    "year": 1995,
+    "surface": "Clay",
+    "speed_avg": 0.7,
+    "note": "estimated"
+  },
+  {
+    "year": 1995,
+    "surface": "Grass",
+    "speed_avg": 1.18,
+    "note": "estimated"
+  },
+  {
+    "year": 1995,
+    "surface": "Hard",
+    "speed_avg": 1.11,
+    "note": "estimated"
+  },
+  {
+    "year": 1996,
+    "surface": "Clay",
+    "speed_avg": 0.7,
+    "note": "estimated"
+  },
+  {
+    "year": 1996,
+    "surface": "Grass",
+    "speed_avg": 1.17,
+    "note": "estimated"
+  },
+  {
+    "year": 1996,
+    "surface": "Hard",
+    "speed_avg": 1.12,
+    "note": "estimated"
+  },
+  {
+    "year": 1997,
+    "surface": "Clay",
+    "speed_avg": 0.69,
+    "note": "estimated"
+  },
+  {
+    "year": 1997,
+    "surface": "Grass",
+    "speed_avg": 1.16,
+    "note": "estimated"
+  },
+  {
+    "year": 1997,
+    "surface": "Hard",
+    "speed_avg": 1.12,
+    "note": "estimated"
+  },
+  {
+    "year": 1998,
+    "surface": "Clay",
+    "speed_avg": 0.69,
+    "note": "estimated"
+  },
+  {
+    "year": 1998,
+    "surface": "Grass",
+    "speed_avg": 1.15,
+    "note": "estimated"
+  },
+  {
+    "year": 1998,
+    "surface": "Hard",
+    "speed_avg": 1.11,
+    "note": "estimated"
+  },
+  {
+    "year": 1999,
+    "surface": "Clay",
+    "speed_avg": 0.69,
+    "note": "estimated"
+  },
+  {
+    "year": 1999,
+    "surface": "Grass",
+    "speed_avg": 1.14,
+    "note": "estimated"
+  },
+  {
+    "year": 1999,
+    "surface": "Hard",
+    "speed_avg": 1.1,
+    "note": "estimated"
+  },
+  {
+    "year": 2000,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2000,
+    "surface": "Grass",
+    "speed_avg": 1.14,
+    "note": "estimated"
+  },
+  {
+    "year": 2000,
+    "surface": "Hard",
+    "speed_avg": 1.1,
+    "note": "estimated"
+  },
+  {
+    "year": 2001,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2001,
+    "surface": "Grass",
+    "speed_avg": 1.13,
+    "note": "estimated"
+  },
+  {
+    "year": 2001,
+    "surface": "Hard",
+    "speed_avg": 1.09,
+    "note": "estimated"
+  },
+  {
+    "year": 2002,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2002,
+    "surface": "Grass",
+    "speed_avg": 1.13,
+    "note": "estimated"
+  },
+  {
+    "year": 2002,
+    "surface": "Hard",
+    "speed_avg": 1.09,
+    "note": "estimated"
+  },
+  {
+    "year": 2003,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2003,
+    "surface": "Grass",
+    "speed_avg": 1.12,
+    "note": "estimated"
+  },
+  {
+    "year": 2003,
+    "surface": "Hard",
+    "speed_avg": 1.08,
+    "note": "estimated"
+  },
+  {
+    "year": 2004,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2004,
+    "surface": "Grass",
+    "speed_avg": 1.12,
+    "note": "estimated"
+  },
+  {
+    "year": 2004,
+    "surface": "Hard",
+    "speed_avg": 1.08,
+    "note": "estimated"
+  },
+  {
+    "year": 2005,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2005,
+    "surface": "Grass",
+    "speed_avg": 1.11,
+    "note": "estimated"
+  },
+  {
+    "year": 2005,
+    "surface": "Hard",
+    "speed_avg": 1.08,
+    "note": "estimated"
+  },
+  {
+    "year": 2006,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2006,
+    "surface": "Grass",
+    "speed_avg": 1.11,
+    "note": "estimated"
+  },
+  {
+    "year": 2006,
+    "surface": "Hard",
+    "speed_avg": 1.07,
+    "note": "estimated"
+  },
+  {
+    "year": 2007,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "note": "estimated"
+  },
+  {
+    "year": 2007,
+    "surface": "Grass",
+    "speed_avg": 1.11,
+    "note": "estimated"
+  },
+  {
+    "year": 2007,
+    "surface": "Hard",
+    "speed_avg": 1.07,
+    "note": "estimated"
+  },
+  {
+    "year": 2008,
+    "surface": "Clay",
+    "speed_avg": 0.69,
+    "note": "estimated"
+  },
+  {
+    "year": 2008,
+    "surface": "Grass",
+    "speed_avg": 1.11,
+    "note": "estimated"
+  },
+  {
+    "year": 2008,
+    "surface": "Hard",
+    "speed_avg": 1.07,
+    "note": "estimated"
+  },
+  {
+    "year": 2009,
+    "surface": "Clay",
+    "speed_avg": 0.69,
+    "note": "estimated"
+  },
+  {
+    "year": 2009,
+    "surface": "Grass",
+    "speed_avg": 1.1,
+    "note": "estimated"
+  },
+  {
+    "year": 2009,
+    "surface": "Hard",
+    "speed_avg": 1.07,
+    "note": "estimated"
+  },
+  {
+    "year": 2010,
+    "surface": "Clay",
+    "speed_avg": 0.793,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2010,
+    "surface": "Grass",
+    "speed_avg": 1.21,
+    "n_tournaments": 3
+  },
+  {
+    "year": 2010,
+    "surface": "Hard",
+    "speed_avg": 1.08,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2011,
+    "surface": "Clay",
+    "speed_avg": 0.748,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2011,
+    "surface": "Grass",
+    "speed_avg": 1.233,
+    "n_tournaments": 3
+  },
+  {
+    "year": 2011,
+    "surface": "Hard",
+    "speed_avg": 1.03,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2012,
+    "surface": "Clay",
+    "speed_avg": 0.835,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2012,
+    "surface": "Grass",
+    "speed_avg": 1.197,
+    "n_tournaments": 3
+  },
+  {
+    "year": 2012,
+    "surface": "Hard",
+    "speed_avg": 1.081,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2013,
+    "surface": "Clay",
+    "speed_avg": 0.808,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2013,
+    "surface": "Grass",
+    "speed_avg": 1.19,
+    "n_tournaments": 3
+  },
+  {
+    "year": 2013,
+    "surface": "Hard",
+    "speed_avg": 1.11,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2014,
+    "surface": "Clay",
+    "speed_avg": 0.757,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2014,
+    "surface": "Grass",
+    "speed_avg": 1.203,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2014,
+    "surface": "Hard",
+    "speed_avg": 1.051,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2015,
+    "surface": "Clay",
+    "speed_avg": 0.743,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2015,
+    "surface": "Grass",
+    "speed_avg": 1.228,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2015,
+    "surface": "Hard",
+    "speed_avg": 1.041,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2016,
+    "surface": "Clay",
+    "speed_avg": 0.723,
+    "n_tournaments": 6
+  },
+  {
+    "year": 2016,
+    "surface": "Grass",
+    "speed_avg": 1.212,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2016,
+    "surface": "Hard",
+    "speed_avg": 1.073,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2017,
+    "surface": "Clay",
+    "speed_avg": 0.784,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2017,
+    "surface": "Grass",
+    "speed_avg": 1.185,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2017,
+    "surface": "Hard",
+    "speed_avg": 1.118,
+    "n_tournaments": 9
+  },
+  {
+    "year": 2018,
+    "surface": "Clay",
+    "speed_avg": 0.747,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2018,
+    "surface": "Grass",
+    "speed_avg": 1.248,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2018,
+    "surface": "Hard",
+    "speed_avg": 1.039,
+    "n_tournaments": 9
+  },
+  {
+    "year": 2019,
+    "surface": "Clay",
+    "speed_avg": 0.691,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2019,
+    "surface": "Grass",
+    "speed_avg": 1.172,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2019,
+    "surface": "Hard",
+    "speed_avg": 1.072,
+    "n_tournaments": 9
+  },
+  {
+    "year": 2020,
+    "surface": "Clay",
+    "speed_avg": 0.64,
+    "n_tournaments": 3
+  },
+  {
+    "year": 2020,
+    "surface": "Hard",
+    "speed_avg": 1.058,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2021,
+    "surface": "Clay",
+    "speed_avg": 0.68,
+    "n_tournaments": 4
+  },
+  {
+    "year": 2021,
+    "surface": "Grass",
+    "speed_avg": 1.115,
+    "n_tournaments": 2
+  },
+  {
+    "year": 2021,
+    "surface": "Hard",
+    "speed_avg": 1.024,
+    "n_tournaments": 5
+  },
+  {
+    "year": 2022,
+    "surface": "Clay",
+    "speed_avg": 0.783,
+    "n_tournaments": 21
+  },
+  {
+    "year": 2022,
+    "surface": "Grass",
+    "speed_avg": 1.083,
+    "n_tournaments": 8
+  },
+  {
+    "year": 2022,
+    "surface": "Hard",
+    "speed_avg": 1.091,
+    "n_tournaments": 44
+  },
+  {
+    "year": 2023,
+    "surface": "Clay",
+    "speed_avg": 0.762,
+    "n_tournaments": 20
+  },
+  {
+    "year": 2023,
+    "surface": "Grass",
+    "speed_avg": 1.124,
+    "n_tournaments": 8
+  },
+  {
+    "year": 2023,
+    "surface": "Hard",
+    "speed_avg": 1.101,
+    "n_tournaments": 38
+  },
+  {
+    "year": 2024,
+    "surface": "Clay",
+    "speed_avg": 0.731,
+    "n_tournaments": 22
+  },
+  {
+    "year": 2024,
+    "surface": "Grass",
+    "speed_avg": 1.175,
+    "n_tournaments": 8
+  },
+  {
+    "year": 2024,
+    "surface": "Hard",
+    "speed_avg": 1.112,
+    "n_tournaments": 39
+  },
+  {
+    "year": 2025,
+    "surface": "Clay",
+    "speed_avg": 0.728,
+    "n_tournaments": 18
+  },
+  {
+    "year": 2025,
+    "surface": "Grass",
+    "speed_avg": 1.124,
+    "n_tournaments": 7
+  },
+  {
+    "year": 2025,
+    "surface": "Hard",
+    "speed_avg": 1.099,
+    "n_tournaments": 38
+  }
+]

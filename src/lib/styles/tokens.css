@@ -1,0 +1,42 @@
+:root {
+  --color-bg:           #2E3440;
+  --color-surface:      #3B4252;
+  --color-surface-2:    #434C5E;
+  --color-border:       #4C566A;
+
+  --color-text:         #ECEFF4;
+  --color-text-muted:   #D8DEE9;
+  --color-text-faint:   #E5E9F0;
+
+  --color-hard:         #5E81AC;
+  --color-clay:         #BF616A;
+  --color-grass:        #A3BE8C;
+
+  --color-highlight:    #EBCB8B;
+  --color-primary:      #88C0D0;
+  --color-secondary:    #81A1C1;
+
+  --color-seq-min:      #C8DAF0;
+  --color-seq-max:      #044F74;
+
+  --font-display:  'Barlow Condensed', sans-serif;
+  --font-sans:     'Roboto', 'Arial', sans-serif;
+  --font-serif:    'Georgia', serif;
+  --font-mono:     'Roboto Mono', monospace;
+
+  --text-hero:          clamp(2.8rem, 6vw, 5rem);
+  --text-section-title: clamp(1.6rem, 3vw, 2.4rem);
+  --text-step:          1rem;
+  --text-label:         0.8rem;
+  --text-axis:          0.75rem;
+  --line-height-body:   1.65;
+
+  --step-width:         360px;
+  --chart-max-width:    960px;
+  --section-gap:        6rem;
+  --step-height:        85vh;
+
+  --z-sticky:   10;
+  --z-overlay:  20;
+  --z-tooltip:  30;
+}

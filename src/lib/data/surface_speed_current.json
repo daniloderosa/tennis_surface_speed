@@ -1,0 +1,317 @@
+[
+  {
+    "tournament": "Dallas",
+    "surface": "Hard",
+    "speed": 1.46
+  },
+  {
+    "tournament": "Montpellier",
+    "surface": "Hard",
+    "speed": 1.43
+  },
+  {
+    "tournament": "Athens",
+    "surface": "Hard",
+    "speed": 1.42
+  },
+  {
+    "tournament": "Hangzhou",
+    "surface": "Hard",
+    "speed": 1.4
+  },
+  {
+    "tournament": "Stuttgart",
+    "surface": "Grass",
+    "speed": 1.36
+  },
+  {
+    "tournament": "Metz",
+    "surface": "Hard",
+    "speed": 1.35
+  },
+  {
+    "tournament": "Basel",
+    "surface": "Hard",
+    "speed": 1.35
+  },
+  {
+    "tournament": "Delray Beach",
+    "surface": "Hard",
+    "speed": 1.34
+  },
+  {
+    "tournament": "Queen's Club",
+    "surface": "Grass",
+    "speed": 1.34
+  },
+  {
+    "tournament": "Brussels",
+    "surface": "Hard",
+    "speed": 1.33
+  },
+  {
+    "tournament": "Tour Finals",
+    "surface": "Hard",
+    "speed": 1.32
+  },
+  {
+    "tournament": "Dubai",
+    "surface": "Hard",
+    "speed": 1.27
+  },
+  {
+    "tournament": "Halle",
+    "surface": "Grass",
+    "speed": 1.24
+  },
+  {
+    "tournament": "Vienna",
+    "surface": "Hard",
+    "speed": 1.21
+  },
+  {
+    "tournament": "Cincinnati Masters",
+    "surface": "Hard",
+    "speed": 1.18
+  },
+  {
+    "tournament": "Brisbane",
+    "surface": "Hard",
+    "speed": 1.18
+  },
+  {
+    "tournament": "Miami Masters",
+    "surface": "Hard",
+    "speed": 1.17
+  },
+  {
+    "tournament": "Almaty",
+    "surface": "Hard",
+    "speed": 1.17
+  },
+  {
+    "tournament": "Chengdu",
+    "surface": "Hard",
+    "speed": 1.15
+  },
+  {
+    "tournament": "Tokyo",
+    "surface": "Hard",
+    "speed": 1.15
+  },
+  {
+    "tournament": "Washington",
+    "surface": "Hard",
+    "speed": 1.13
+  },
+  {
+    "tournament": "Acapulco",
+    "surface": "Hard",
+    "speed": 1.13
+  },
+  {
+    "tournament": "Adelaide",
+    "surface": "Hard",
+    "speed": 1.13
+  },
+  {
+    "tournament": "United Cup",
+    "surface": "Hard",
+    "speed": 1.12
+  },
+  {
+    "tournament": "Australian Open",
+    "surface": "Hard",
+    "speed": 1.11
+  },
+  {
+    "tournament": "Wimbledon",
+    "surface": "Grass",
+    "speed": 1.09
+  },
+  {
+    "tournament": "Indian Wells Masters 2026",
+    "surface": "Hard",
+    "speed": 1.09
+  },
+  {
+    "tournament": "Winston-Salem",
+    "surface": "Hard",
+    "speed": 1.08
+  },
+  {
+    "tournament": "Shanghai Masters",
+    "surface": "Hard",
+    "speed": 1.07
+  },
+  {
+    "tournament": "Auckland",
+    "surface": "Hard",
+    "speed": 1.06
+  },
+  {
+    "tournament": "Beijing",
+    "surface": "Hard",
+    "speed": 1.04
+  },
+  {
+    "tournament": "Gstaad",
+    "surface": "Clay",
+    "speed": 1.03
+  },
+  {
+    "tournament": "Rio de Janeiro",
+    "surface": "Clay",
+    "speed": 1.03
+  },
+  {
+    "tournament": "Mallorca",
+    "surface": "Grass",
+    "speed": 1.02
+  },
+  {
+    "tournament": "Hong Kong",
+    "surface": "Hard",
+    "speed": 1.01
+  },
+  {
+    "tournament": "Canada Masters",
+    "surface": "Hard",
+    "speed": 0.99
+  },
+  {
+    "tournament": "s-Hertogenbosch",
+    "surface": "Grass",
+    "speed": 0.98
+  },
+  {
+    "tournament": "US Open",
+    "surface": "Hard",
+    "speed": 0.97
+  },
+  {
+    "tournament": "Paris Masters",
+    "surface": "Hard",
+    "speed": 0.95
+  },
+  {
+    "tournament": "Los Cabos",
+    "surface": "Hard",
+    "speed": 0.93
+  },
+  {
+    "tournament": "Stockholm",
+    "surface": "Hard",
+    "speed": 0.91
+  },
+  {
+    "tournament": "Rotterdam",
+    "surface": "Hard",
+    "speed": 0.9
+  },
+  {
+    "tournament": "Doha",
+    "surface": "Hard",
+    "speed": 0.89
+  },
+  {
+    "tournament": "Bastad",
+    "surface": "Clay",
+    "speed": 0.85
+  },
+  {
+    "tournament": "Kitzbuhel",
+    "surface": "Clay",
+    "speed": 0.84
+  },
+  {
+    "tournament": "Next Gen Finals",
+    "surface": "Hard",
+    "speed": 0.8
+  },
+  {
+    "tournament": "Marrakech",
+    "surface": "Clay",
+    "speed": 0.8
+  },
+  {
+    "tournament": "Madrid Masters",
+    "surface": "Clay",
+    "speed": 0.79
+  },
+  {
+    "tournament": "Eastbourne",
+    "surface": "Grass",
+    "speed": 0.76
+  },
+  {
+    "tournament": "Umag",
+    "surface": "Clay",
+    "speed": 0.74
+  },
+  {
+    "tournament": "Indian Wells Masters 2025",
+    "surface": "Hard",
+    "speed": 0.72
+  },
+  {
+    "tournament": "Geneva",
+    "surface": "Clay",
+    "speed": 0.71
+  },
+  {
+    "tournament": "Houston",
+    "surface": "Clay",
+    "speed": 0.71
+  },
+  {
+    "tournament": "Santiago",
+    "surface": "Clay",
+    "speed": 0.69
+  },
+  {
+    "tournament": "Roland Garros",
+    "surface": "Clay",
+    "speed": 0.68
+  },
+  {
+    "tournament": "Munich",
+    "surface": "Clay",
+    "speed": 0.65
+  },
+  {
+    "tournament": "Rome Masters",
+    "surface": "Clay",
+    "speed": 0.61
+  },
+  {
+    "tournament": "Hamburg",
+    "surface": "Clay",
+    "speed": 0.56
+  },
+  {
+    "tournament": "Monte Carlo Masters",
+    "surface": "Clay",
+    "speed": 0.56
+  },
+  {
+    "tournament": "Barcelona",
+    "surface": "Clay",
+    "speed": 0.55
+  },
+  {
+    "tournament": "Buenos Aires",
+    "surface": "Clay",
+    "speed": 0.55
+  },
+  {
+    "tournament": "Laver Cup",
+    "surface": "Hard",
+    "speed": 0.54
+  },
+  {
+    "tournament": "Bucharest",
+    "surface": "Clay",
+    "speed": 0.43
+  }
+]
