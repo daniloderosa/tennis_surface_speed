@@ -36,7 +36,8 @@
   const ENTER      = 0.36;  // entrata lineare: 72vh di scroll = 1:1 con SVG che parte da 100vh
   const EXIT_START = 0.70;  // uscita: 60vh
   const SCENE_OFF  = 125; // anticipo overlap: prossima scena entra a metà fase di riposo della corrente
-  const TOTAL_VH   = 650;
+  const CLAY_DELAY = 10;    // ► vh di scroll vuoto prima che clay entri (tutte le scene shiftate, gap invariati)
+  const TOTAL_VH   = 650 + CLAY_DELAY;
 
   const SVG_OFF    = 72;    // translateY iniziale SVG  (100vh - CSS top 28vh)
   const CMP_OFF    = 90;    // translateY iniziale compare (100vh - CSS top 10vh)
@@ -127,9 +128,10 @@
 
   function sceneP(i) {
     if (!outerEl) return -2;
-    const offPx = SCENE_OFF * innerH / 100;
-    const lenPx = SCENE_LEN * innerH / 100;
-    return (scrollY - containerTop - i * offPx) / lenPx;
+    const offPx   = SCENE_OFF * innerH / 100;
+    const lenPx   = SCENE_LEN * innerH / 100;
+    const delayPx = CLAY_DELAY * innerH / 100;
+    return (scrollY - containerTop - i * offPx - delayPx) / lenPx;
   }
 
   /*
