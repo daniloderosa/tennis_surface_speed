@@ -174,6 +174,9 @@
       };
     })
   );
+
+  // CTA compare: appare quando il compare SVG è arrivato in posizione
+  let compareSettled = $derived(sceneP(3) >= ENTER);
 </script>
 
 <div class="anim-outer" bind:this={outerEl} style="height: {TOTAL_VH}vh">
@@ -197,6 +200,11 @@
           <p>{step.text}</p>
         </div>
       {/each}
+
+      <!-- CTA compare: appare quando lo slider è pronto -->
+      <div class="cta-hint" class:visible={compareSettled}>
+        ↔ Trascina per confrontare le superfici
+      </div>
 
     </div>
   </div>
@@ -280,6 +288,39 @@
     font-size: 1.1rem;
     line-height: 1.7;
     color: $color-text;
+  }
+
+  /* CTA compare: pill sopra il compare SVG, all'altezza dove si fermano i text box */
+  .cta-hint {
+    position: absolute;
+    top: 16vh;   // = text-panel(78vh) - TEXT_RISE(62vh): altezza di riposo dei text box
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    background: $color-surface-2;
+    border: 1px solid $color-border;
+    border-radius: 50em;
+    padding: 0.55rem 1.5rem;
+    font-size: 0.9rem;
+    font-family: $font-sans;
+    color: $color-text-muted;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .cta-hint.visible {
+    animation: cta-blink 3s ease-in-out 0.6s infinite;
+  }
+
+  @keyframes cta-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.2; }
+  }
+
+  @include mobile {
+    .cta-hint { top: 12vh; font-size: 0.82rem; padding: 0.45rem 1.25rem; }
   }
 
   @include mobile {
