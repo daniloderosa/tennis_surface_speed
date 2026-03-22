@@ -37,7 +37,8 @@
   const EXIT_START = 0.70;  // uscita: 60vh
   const SCENE_OFF  = 125; // anticipo overlap: prossima scena entra a metà fase di riposo della corrente
   const CLAY_DELAY = 10;    // ► vh di scroll vuoto prima che clay entri (tutte le scene shiftate, gap invariati)
-  const TOTAL_VH   = 650 + CLAY_DELAY;
+  // TOTAL_VH: finisce appena il compare è arrivato in posizione (sceneP(3)=ENTER) + 5vh buffer
+  const TOTAL_VH   = CLAY_DELAY + 3 * SCENE_OFF + Math.ceil(ENTER * SCENE_LEN) + 125;
 
   const SVG_OFF    = 72;    // translateY iniziale SVG  (100vh - CSS top 28vh)
   const CMP_OFF    = 90;    // translateY iniziale compare (100vh - CSS top 10vh)
