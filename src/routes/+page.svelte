@@ -5,6 +5,7 @@
   import StripPlot        from '$components/charts/StripPlot.svelte';
   import ScatterRallySpeed from '$components/charts/ScatterRallySpeed.svelte';
   import LineHistorical   from '$components/charts/LineHistorical.svelte';
+  import AnimationSection from '$components/animations/AnimationSection.svelte';
 
   let activeStep1 = $state(undefined);
   let activeStep2 = $state(undefined);
@@ -69,6 +70,8 @@
 </svelte:head>
 
 <Hero />
+
+<AnimationSection />
 
 <div class="section-wrapper">
   <div class="section-label">

@@ -1,5 +1,17 @@
 <script>
-  // nessuno stato — componente statico
+  let scrolled = $state(false);
+
+  $effect(() => {
+    if (typeof window === 'undefined') return;
+    function onScroll() {
+      if (window.scrollY > 40) {
+        scrolled = true;
+        window.removeEventListener('scroll', onScroll);
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  });
 </script>
 
 <section class="hero">
@@ -10,7 +22,14 @@
       Nel tennis professionistico, il nome della superficie
       conta meno di quanto pensi.
     </p>
-    <p class="pub-date">19 marzo 2026</p>
+    <p class="pub-date">Marzo 2026</p>
+  </div>
+
+  <div class="scroll-hint" class:hidden={scrolled} aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <span>Scorri</span>
   </div>
 </section>
 
@@ -19,6 +38,7 @@
   @use 'mixins' as *;
 
   .hero {
+    position: relative;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -65,5 +85,39 @@
     color: $color-text-faint;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    color: $color-text-muted;
+    font-family: $font-mono;
+    font-size: $text-label;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+    transition: opacity 400ms ease;
+    pointer-events: none;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    &.hidden {
+      opacity: 0;
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    50%       { transform: translateX(-50%) translateY(8px); opacity: 0.5; }
   }
 </style>
