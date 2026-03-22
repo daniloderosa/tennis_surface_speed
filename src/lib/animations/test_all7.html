@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Tennis Surfaces</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f5f2ee;
+    font-family: Georgia, serif;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    padding: 12px;
+  }
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 0;
+  }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    flex-shrink: 0;
+  }
+  svg { display: block; width: 100%; flex: 1; min-height: 0; }
+  .slider-wrap {
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .slider-wrap label {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: #777; white-space: nowrap;
+  }
+  input[type=range] { flex: 1; height: 3px; accent-color: #555; cursor: pointer; }
+  .legend {
+    display: flex; gap: 16px; font-size: 11px; letter-spacing: 0.07em;
+    text-transform: uppercase; color: #555; flex-shrink: 0;
+  }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<!-- TERRA -->
+<div class="section">
+  <div class="section-label" style="color:#c1622e">Terra</div>
+  <svg viewBox="0 0 1000 500">
+    <rect width="1000" height="500" fill="#f5f2ee"/>
+    <rect x="50" y="360" width="900" height="55" rx="2" fill="#c1622e"/>
+    <line x1="180" y1="355" x2="180" y2="420" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+    <line x1="820" y1="355" x2="820" y2="420" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+    <line x1="180" y1="415" x2="820" y2="415" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+    <line x1="340" y1="360" x2="340" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="660" y1="360" x2="660" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="500" y1="322" x2="500" y2="362" stroke="#ccc" stroke-width="3"/>
+    <rect x="491" y="318" width="18" height="7" rx="2" fill="#ddd"/>
+    <line x1="491" y1="327" x2="509" y2="327" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="334" x2="509" y2="334" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="341" x2="509" y2="341" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="348" x2="509" y2="348" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="355" x2="509" y2="355" stroke="#bbb" stroke-width="1"/>
+    <ellipse id="sh-clay-single" cx="130" cy="362" rx="10" ry="3.5" fill="rgba(0,0,0,0.2)"/>
+    <circle id="ball-clay-single" cx="130" cy="360" r="10" fill="#c8e04a" stroke="#9aad28" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<!-- ERBA -->
+<div class="section">
+  <div class="section-label" style="color:#4a7c3f">Erba</div>
+  <svg viewBox="0 0 1000 500">
+    <rect width="1000" height="500" fill="#f5f2ee"/>
+    <rect x="50" y="360" width="900" height="55" rx="2" fill="#4a7c3f"/>
+    <line x1="180" y1="355" x2="180" y2="420" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+    <line x1="820" y1="355" x2="820" y2="420" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+    <line x1="180" y1="415" x2="820" y2="415" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+    <line x1="340" y1="360" x2="340" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="660" y1="360" x2="660" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="500" y1="322" x2="500" y2="362" stroke="#ccc" stroke-width="3"/>
+    <rect x="491" y="318" width="18" height="7" rx="2" fill="#ddd"/>
+    <line x1="491" y1="327" x2="509" y2="327" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="334" x2="509" y2="334" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="341" x2="509" y2="341" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="348" x2="509" y2="348" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="355" x2="509" y2="355" stroke="#bbb" stroke-width="1"/>
+    <ellipse id="sh-grass-single" cx="130" cy="362" rx="10" ry="3.5" fill="rgba(0,0,0,0.2)"/>
+    <circle id="ball-grass-single" cx="130" cy="360" r="10" fill="#c8e04a" stroke="#9aad28" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<!-- CEMENTO -->
+<div class="section">
+  <div class="section-label" style="color:#3a6080">Cemento</div>
+  <svg viewBox="0 0 1000 500">
+    <rect width="1000" height="500" fill="#f5f2ee"/>
+    <rect x="50" y="360" width="900" height="55" rx="2" fill="#3a6080"/>
+    <line x1="180" y1="355" x2="180" y2="420" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+    <line x1="820" y1="355" x2="820" y2="420" stroke="rgba(255,255,255,0.75)" stroke-width="2.5"/>
+    <line x1="180" y1="415" x2="820" y2="415" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+    <line x1="340" y1="360" x2="340" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="660" y1="360" x2="660" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="500" y1="322" x2="500" y2="362" stroke="#ccc" stroke-width="3"/>
+    <rect x="491" y="318" width="18" height="7" rx="2" fill="#ddd"/>
+    <line x1="491" y1="327" x2="509" y2="327" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="334" x2="509" y2="334" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="341" x2="509" y2="341" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="348" x2="509" y2="348" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="355" x2="509" y2="355" stroke="#bbb" stroke-width="1"/>
+    <ellipse id="sh-hard-single" cx="130" cy="362" rx="10" ry="3.5" fill="rgba(0,0,0,0.2)"/>
+    <circle id="ball-hard-single" cx="130" cy="360" r="10" fill="#c8e04a" stroke="#9aad28" stroke-width="1.5"/>
+  </svg>
+</div>
+
+<!-- COMPARAZIONE -->
+<div class="section">
+  <div class="section-label">Comparazione</div>
+  <div class="legend">
+    <span><span class="dot" style="background:#4a7c3f"></span>Erba</span>
+    <span><span class="dot" style="background:#3a6080"></span>Cemento</span>
+    <span><span class="dot" style="background:#c1622e"></span>Terra</span>
+  </div>
+  <svg viewBox="0 0 1000 500">
+    <rect width="1000" height="500" fill="#f5f2ee"/>
+    <rect x="50" y="360" width="900" height="55" rx="2" fill="#8a8a7a" opacity="0.4"/>
+    <line x1="180" y1="355" x2="180" y2="420" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+    <line x1="820" y1="355" x2="820" y2="420" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+    <line x1="180" y1="415" x2="820" y2="415" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+    <line x1="340" y1="360" x2="340" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="660" y1="360" x2="660" y2="415" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+    <line x1="500" y1="322" x2="500" y2="362" stroke="#ccc" stroke-width="3"/>
+    <rect x="491" y="318" width="18" height="7" rx="2" fill="#ddd"/>
+    <line x1="491" y1="327" x2="509" y2="327" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="334" x2="509" y2="334" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="341" x2="509" y2="341" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="348" x2="509" y2="348" stroke="#bbb" stroke-width="1"/>
+    <line x1="491" y1="355" x2="509" y2="355" stroke="#bbb" stroke-width="1"/>
+    <!-- ombre -->
+    <ellipse id="sh-cmp-grass" cx="130" cy="362" rx="9" ry="3" fill="rgba(0,0,0,0.15)"/>
+    <ellipse id="sh-cmp-hard"  cx="130" cy="362" rx="9" ry="3" fill="rgba(0,0,0,0.15)"/>
+    <ellipse id="sh-cmp-clay"  cx="130" cy="362" rx="9" ry="3" fill="rgba(0,0,0,0.15)"/>
+    <!-- palline colorate per superficie -->
+    <circle id="ball-cmp-grass" cx="130" cy="360" r="9" fill="#4a7c3f" stroke="#2d5a28" stroke-width="1.5"/>
+    <circle id="ball-cmp-hard"  cx="130" cy="360" r="9" fill="#3a6080" stroke="#1e3d55" stroke-width="1.5"/>
+    <circle id="ball-cmp-clay"  cx="130" cy="360" r="9" fill="#c1622e" stroke="#8a3d18" stroke-width="1.5"/>
+  </svg>
+  <div class="slider-wrap">
+    <label>← A</label>
+    <input type="range" id="the-slider" min="0" max="1000" value="0">
+    <label>B →</label>
+  </div>
+</div>
+
+<script>
+// ─── UTILITY ────────────────────────────────────────────────────────────────
+function cb(p0,p1,p2,p3,t){ const m=1-t; return m*m*m*p0+3*m*m*t*p1+3*m*t*t*p2+t*t*t*p3; }
+
+function updateBall(ballId, shadowId, segments, t) {
+  let cum = 0, active = segments[segments.length-1], tSeg = 1;
+  for (const sg of segments) {
+    if (t <= cum + sg.w) { tSeg = (t - cum) / sg.w; active = sg; break; }
+    cum += sg.w;
+  }
+  const bx = cb(active.x0,active.cx1,active.cx2,active.x1,tSeg);
+  const by = cb(active.y0,active.cy1,active.cy2,active.y1,tSeg);
+  const ball   = document.getElementById(ballId);
+  const shadow = document.getElementById(shadowId);
+  ball.setAttribute('cx', bx); ball.setAttribute('cy', by);
+  const height = Math.max(0, 360 - by);
+  const scale  = Math.max(0.08, 1 - (height/340)*0.92);
+  shadow.setAttribute('cx', bx);
+  shadow.setAttribute('rx', parseFloat(ball.getAttribute('r')) * scale);
+  shadow.setAttribute('opacity', Math.max(0.05, scale*0.75));
+}
+
+// ─── TRAIETTORIE ─────────────────────────────────────────────────────────────
+// Normalizza pesi
+function norm(segs) {
+  const tot = segs.reduce((s,sg)=>s+sg.w,0);
+  return segs.map(sg=>({...sg,w:sg.w/tot}));
+}
+
+const G = 360; // GROUND
+
+const segs_clay = norm([
+  {x0:130,y0:G,  cx1:200,cy1:55,  cx2:680,cy2:55,  x1:780,y1:G,   w:0.72},
+  {x0:780,y0:G,  cx1:780,cy1:150, cx2:865,cy2:220, x1:880,y1:220, w:0.28},
+]);
+
+const segs_grass = norm([
+  {x0:130,y0:G,  cx1:280,cy1:230, cx2:620,cy2:230, x1:708,y1:G,   w:0.72},
+  {x0:708,y0:G,  cx1:708,cy1:284, cx2:865,cy2:298, x1:880,y1:298, w:0.28},
+]);
+
+const segs_hard = norm([
+  {x0:130,y0:G,  cx1:200,cy1:208, cx2:680,cy2:208, x1:780,y1:G,   w:0.72},
+  {x0:780,y0:G,  cx1:780,cy1:225, cx2:865,cy2:262, x1:880,y1:263, w:0.28},
+]);
+
+// ─── ANIMAZIONI SINGOLE (loop) ────────────────────────────────────────────────
+const CYCLE_CLAY  = 4700;
+const CYCLE_GRASS = 4700;
+const CYCLE_HARD  = 4700;
+
+// Pausa: la palla si ferma all'arrivo per 40% del ciclo
+function startLoop(ballId, shadowId, segs, cycleMs) {
+  // Usa le stesse segs del comparativo (senza pausa aggiuntiva)
+  // Aggiunge solo una pausa finale del 35% per far "respirare" il loop
+  const last = segs[segs.length-1];
+  const withPause = norm([
+    ...segs,
+    {x0:last.x1,y0:last.y1,cx1:last.x1,cy1:last.y1,cx2:last.x1,cy2:last.y1,x1:last.x1,y1:last.y1,w:0.35}
+  ]);
+  // Ma per la posizione usiamo t mappato solo sulla parte attiva (0..0.65 del ciclo)
+  // così la traiettoria è identica a quella del comparativo con t in 0..1
+  let t0 = null;
+  function frame(ts) {
+    if (!t0) t0 = ts;
+    const raw = ((ts - t0) % cycleMs) / cycleMs; // 0..1
+    // Mappa 0..0.65 → 0..1 (parte attiva), 0.65..1 → palla ferma alla fine
+    const t = raw < 0.65 ? raw / 0.65 : 1.0;
+    updateBall(ballId, shadowId, segs, t);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+startLoop('ball-clay-single',  'sh-clay-single',  segs_clay,  CYCLE_CLAY);
+startLoop('ball-grass-single', 'sh-grass-single', segs_grass, CYCLE_GRASS);
+startLoop('ball-hard-single',  'sh-hard-single',  segs_hard,  CYCLE_HARD);
+
+// ─── COMPARAZIONE (slider) ───────────────────────────────────────────────────
+const slider = document.getElementById('the-slider');
+
+function updateCompare(val) {
+  const t = val / 1000;
+  updateBall('ball-cmp-clay',  'sh-cmp-clay',  segs_clay,  t);
+  updateBall('ball-cmp-grass', 'sh-cmp-grass', segs_grass, t);
+  updateBall('ball-cmp-hard',  'sh-cmp-hard',  segs_hard,  t);
+}
+
+slider.addEventListener('input', () => updateCompare(parseInt(slider.value)));
+updateCompare(0);
+</script>
+
+</body>
+</html>
