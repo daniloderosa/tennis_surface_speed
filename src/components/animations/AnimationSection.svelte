@@ -283,15 +283,15 @@
     .svg-panel {
       left: 1rem;
       right: 1rem;
-      top: 15vh;
-      height: 38vh;
+      top: 35vh;   // 20% più in basso (era 15vh)
+      height: 38vh; // bottom a 73vh
     }
     .svg-panel--compare {
       top: 5vh;
       height: 60vh;
     }
     .text-panel {
-      top: 57vh;
+      top: 78vh;   // = desktop → TEXT_OFF=22 → visual 100vh (fuori viewport) ✓
       width: calc(100% - 2rem);
       padding: 1.25rem;
       font-size: 1rem;
