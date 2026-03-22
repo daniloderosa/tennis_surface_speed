@@ -5,39 +5,46 @@
    * Costanti di layout e timing
    * ─────────────────────────────────────────────────────────────────────────
    * SCENE_LEN    : vh di scroll dedicati a ogni scena
-   * ENTER        : frazione di entrata  (= EXIT fraction, simmetrico)
-   * MID          : punto in cui il testo inizia a salire sopra l'SVG
-   * EXIT_START   : = 1 - ENTER  → entrata e uscita durano uguale
+   * ENTER        : frazione di entrata — entrata LINEARE (no easing), 1:1 con scroll
+   *                SVG parte da translateY=72 (visual=100vh) → 0 in ENTER*200=72vh di scroll
+   *                → velocità uguale al normale scroll della pagina ("scroll naturale")
+   * EXIT_START   : inizio uscita
    * SCENE_OFF    : = EXIT_START × SCENE_LEN
    *                quando scena[i] inizia a uscire, scena[i+1] inizia a entrare
    *
    * Fasi di ogni scena:
-   *   0          → ENTER      : SVG + testo entrano insieme da sotto  (60vh)
-   *   ENTER      → MID        : entrambi fermi (pallina gira)         (40vh)
-   *   MID        → EXIT_START : testo sale sopra l'SVG, SVG fermo    (40vh)
-   *   EXIT_START → 1.0        : entrambi escono verso l'alto          (60vh)
+   *   0          → ENTER      : SVG entra LINEAR da sotto (72vh, 1:1 scroll); testo fermo sotto
+   *   ENTER      → EXIT_START : SVG fermo, testo sale da 100vh → top≈16vh  (56vh)
+   *   EXIT_START → 1.0        : SVG + testo escono verso l'alto (easing)   (60vh)
    *
-   * ► Per rallentare/velocizzare entrata E uscita: modifica ENTER
-   *   (più alto = più lento; EXIT_START si aggiorna di conseguenza).
-   *   Esempi: 0.25 → veloce (50vh), 0.35 → lento (70vh).
+   * ► Per rallentare/velocizzare l'USCITA: modifica EXIT_START
+   *   verso valori più bassi (es. 0.60) = uscita più lenta.
+   * ► Per cambiare durata entrata: modifica ENTER (ma perdendo la sincronia 1:1 scroll).
    *
    * Compare (i=3): nessuna exit transform → scorre via naturalmente.
    *
    * Layout (in vh, dentro lo sticky-stage 100vh):
    *   SVG panel:  top=28vh, height=46vh → bottom=74vh
+   *   SVG_OFF=72  (= 100 - 28): parte da visual=100vh (fondo viewport)
    *   Compare:    top=10vh, height=68vh
-   *   Text panel: top=78vh (4vh gap)    → sale a top≈16vh (sopra SVG)
+   *   Text panel: top=78vh
+   *   TEXT_OFF=22 (= 100 - 78): parte da visual=100vh con SVG
+   *   Testo sale a top≈16vh tramite TEXT_RISE=62
    */
 
   const SCENE_LEN  = 200;
-  const ENTER      = 0.30;  // entrata e uscita simmetriche: 60vh ciascuna
-  const MID        = 0.50;  // testo inizia a salire
-  const EXIT_START = 1 - ENTER; // 0.70
-  const SCENE_OFF  = Math.round(EXIT_START * SCENE_LEN); // 140
+  const ENTER      = 0.36;  // entrata lineare: 72vh di scroll = 1:1 con SVG che parte da 100vh
+  const EXIT_START = 0.70;  // uscita: 60vh
+  const SCENE_OFF  = 125; // anticipo overlap: prossima scena entra a metà fase di riposo della corrente
   const TOTAL_VH   = 650;
 
+  const SVG_OFF    = 72;    // translateY iniziale SVG  (100vh - CSS top 28vh)
+  const CMP_OFF    = 90;    // translateY iniziale compare (100vh - CSS top 10vh)
+  const TEXT_OFF   = 22;    // translateY iniziale testo (100vh - CSS top 78vh)
   const TEXT_RISE  = 62;    // vh: testo sale da 78vh → 16vh (sopra l'SVG a 28vh)
-  const EXIT_DELTA = 112;   // vh uscita SVG (stessa per SVG e testo → escono insieme)
+  const TEXT_START = 0.20;  // p a cui il testo inizia a muoversi (< ENTER=0.36 → anticipo)
+  const TEXT_ENTER = ENTER; // p a cui il testo finisce di entrare e inizia a salire
+  const EXIT_DELTA = 112;   // vh uscita (stessa per SVG e testo → escono insieme)
 
   // La pallina parte quasi subito durante l'entrata (SVG appena entrato nella view)
   const BALL_P = 0.06;
@@ -115,7 +122,8 @@
     t = Math.max(0, Math.min(1, t));
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
-  function lerp(a, b, t) { return a + (b - a) * eio(t); }
+  function lerp(a, b, t)  { return a + (b - a) * eio(t); }   // eased
+  function lerpL(a, b, t) { return a + (b - a) * Math.max(0, Math.min(1, t)); } // lineare
 
   function sceneP(i) {
     if (!outerEl) return -2;
@@ -126,12 +134,13 @@
 
   /*
    * SVG transform Y (in vh, riferito a CSS top:28vh):
-   *   off-screen sotto → entra → fermo → esce
+   *   parte da visual=100vh (SVG_OFF=72) → entra LINEAR 1:1 con scroll → fermo → esce eased
    *   compare: non esce mai con transform
    */
   function svgTY(p, isCompare = false) {
-    if (p <= 0)           return 92;
-    if (p < ENTER)        return lerp(92, 0, p / ENTER);
+    const off = isCompare ? CMP_OFF : SVG_OFF; // offset diverso per compare (top:10vh)
+    if (p <= 0)           return off;
+    if (p < ENTER)        return lerpL(off, 0, p / ENTER);   // LINEARE — scroll naturale
     if (isCompare)        return 0;
     if (p < EXIT_START)   return 0;
     if (p < 1.0)          return lerp(0, -EXIT_DELTA, (p - EXIT_START) / (1 - EXIT_START));
@@ -140,15 +149,15 @@
 
   /*
    * Text transform Y (in vh, riferito a CSS top:78vh):
-   *   entra insieme a SVG → si FERMA sotto l'SVG → sale sopra → esce con SVG
+   *   aspetta SVG fermo → sale da sotto (100vh) fino a -TEXT_RISE → esce con SVG
+   *   Tutto in un unico moto continuo, parte solo quando SVG è completamente entrato.
    */
   function textTY(p) {
-    if (p <= 0)           return 92;
-    if (p < ENTER)        return lerp(92, 0, p / ENTER);          // entra con SVG
-    if (p < MID)          return 0;                                // fermo sotto SVG
-    if (p < EXIT_START)   return lerp(0, -TEXT_RISE, (p - MID) / (EXIT_START - MID)); // sale
+    if (p < TEXT_START)   return TEXT_OFF;  // aspetta
+    if (p < TEXT_ENTER)   return lerpL(TEXT_OFF, 0, (p - TEXT_START) / (TEXT_ENTER - TEXT_START)); // lineare — entra con SVG
+    if (p < EXIT_START)   return lerp(0, -TEXT_RISE, (p - TEXT_ENTER) / (EXIT_START - TEXT_ENTER)); // eased — sale
     if (p < 1.0)          return lerp(-TEXT_RISE, -TEXT_RISE - EXIT_DELTA,
-                                       (p - EXIT_START) / (1 - EXIT_START));           // esce
+                                       (p - EXIT_START) / (1 - EXIT_START));
     return -TEXT_RISE - EXIT_DELTA;
   }
 
@@ -204,6 +213,7 @@
 
   .anim-outer {
     position: relative;
+    margin-top: -100vh; // si sovrappone all'hero: SVG entra da sotto mentre hero scorre via
   }
 
   .sticky-stage {
