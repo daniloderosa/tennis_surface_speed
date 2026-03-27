@@ -17,17 +17,17 @@
 
   const segs_clay = norm([
     { x0:130, y0:G,   cx1:200, cy1:55,  cx2:680, cy2:55,  x1:780, y1:G,   w:0.72 },
-    { x0:780, y0:G,   cx1:780, cy1:150, cx2:865, cy2:220, x1:880, y1:220, w:0.28 },
+    { x0:780, y0:G,   cx1:820, cy1:218, cx2:865, cy2:257, x1:880, y1:258, w:0.28 },
   ]);
 
   const segs_grass = norm([
     { x0:130, y0:G,   cx1:280, cy1:230, cx2:620, cy2:230, x1:708, y1:G,   w:0.72 },
-    { x0:708, y0:G,   cx1:708, cy1:262, cx2:865, cy2:279, x1:880, y1:279, w:0.28 },
+    { x0:708, y0:G,   cx1:708, cy1:311, cx2:865, cy2:320, x1:880, y1:320, w:0.28 },
   ]);
 
   const segs_hard = norm([
     { x0:130, y0:G,   cx1:200, cy1:208, cx2:680, cy2:208, x1:780, y1:G,   w:0.72 },
-    { x0:780, y0:G,   cx1:780, cy1:225, cx2:865, cy2:262, x1:880, y1:263, w:0.28 },
+    { x0:780, y0:G,   cx1:780, cy1:265, cx2:865, cy2:291, x1:880, y1:292, w:0.28 },
   ]);
 
   function getBallPos(segs, t) {
@@ -61,6 +61,7 @@
   let ball_clay  = $state({ x: 130, y: G });
   let ball_grass = $state({ x: 130, y: G });
   let ball_hard  = $state({ x: 130, y: G });
+  let t_current  = $state(0); // parametro animazione corrente (0-1), per il trail
 
   let sliderVal = $state(0);
 
@@ -83,6 +84,7 @@
       const raw = ((ts - t0) % CYCLE_MS) / CYCLE_MS;
       const t = raw < 0.65 ? raw / 0.65 : 1.0;
       const pos = getBallPos(segs, t);
+      t_current = t;
 
       if (surface === 'clay')  ball_clay  = pos;
       if (surface === 'grass') ball_grass = pos;
@@ -139,6 +141,25 @@
     <line x1="491" y1="341" x2="509" y2="341" stroke="#bbb" stroke-width="1"/>
     <line x1="491" y1="348" x2="509" y2="348" stroke="#bbb" stroke-width="1"/>
     <line x1="491" y1="355" x2="509" y2="355" stroke="#bbb" stroke-width="1"/>
+
+    <!-- Trail tratteggiato che segue la pallina -->
+    {#if surface === 'compare'}
+      {@const tCmp = sliderVal / 1000}
+      {#if tCmp > 0}
+        {@const N = 50}
+        {@const trailGrass = Array.from({length: N}, (_, i) => getBallPos(segs_grass, (i / (N-1)) * tCmp))}
+        {@const trailHard  = Array.from({length: N}, (_, i) => getBallPos(segs_hard,  (i / (N-1)) * tCmp))}
+        {@const trailClay  = Array.from({length: N}, (_, i) => getBallPos(segs_clay,  (i / (N-1)) * tCmp))}
+        <polyline points={trailGrass.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailHard.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailClay.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+      {/if}
+    {:else if t_current > 0}
+      {@const segsActive = surface === 'clay' ? segs_clay : surface === 'grass' ? segs_grass : segs_hard}
+      {@const N = 50}
+      {@const trail = Array.from({length: N}, (_, i) => getBallPos(segsActive, (i / (N-1)) * t_current))}
+      <polyline points={trail.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+    {/if}
 
     {#if surface === 'compare'}
       {@const shGrass = getShadow(ball_grass.x, ball_grass.y, 9)}
