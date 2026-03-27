@@ -34,8 +34,8 @@
 
   const SCENE_LEN  = 200;
   const ENTER      = 0.36;  // entrata lineare: 72vh di scroll = 1:1 con SVG che parte da 100vh
-  const EXIT_START = 0.70;  // uscita: 60vh
-  const SCENE_OFF  = 125; // anticipo overlap: prossima scena entra a metà fase di riposo della corrente
+  const EXIT_START = 0.45;  // uscita: inizia prima per avere abbastanza vh (110vh > 74 necessari per uscire completamente)
+  const SCENE_OFF  = 100;   // ► gap tra scene: aumentato per evitare sovrapposizioni visive
   const CLAY_DELAY = 10;    // ► vh di scroll vuoto prima che clay entri (tutte le scene shiftate, gap invariati)
   // TOTAL_VH: finisce appena il compare è arrivato in posizione (sceneP(3)=ENTER) + 5vh buffer
   const TOTAL_VH   = CLAY_DELAY + 3 * SCENE_OFF + Math.ceil(ENTER * SCENE_LEN) + 125;
@@ -140,14 +140,22 @@
    *   parte da visual=100vh (SVG_OFF=72) → entra LINEAR 1:1 con scroll → fermo → esce eased
    *   compare: non esce mai con transform
    */
+  /*
+   * SVG translateY (vh): comportamento come elemento normale di pagina.
+   * Entry: dal basso 1:1 con scroll (lerpL, SVG_OFF vh → 0).
+   * Rest:  fermo in posizione.
+   * Exit:  verso l'alto 1:1 con scroll (lerpL, 0 → -exitDist).
+   * Compare: non esce mai, rimane in posizione fino alla fine dello sticky.
+   */
   function svgTY(p, isCompare = false) {
-    const off = isCompare ? CMP_OFF : SVG_OFF; // offset diverso per compare (top:10vh)
+    const off      = isCompare ? CMP_OFF : SVG_OFF;
+    const exitDist = (1 - EXIT_START) * SCENE_LEN; // stessa distanza vh dello scroll → 1:1
     if (p <= 0)           return off;
-    if (p < ENTER)        return lerpL(off, 0, p / ENTER);   // LINEARE — scroll naturale
+    if (p < ENTER)        return lerpL(off, 0, p / ENTER);                              // entra 1:1
     if (isCompare)        return 0;
-    if (p < EXIT_START)   return 0;
-    if (p < 1.0)          return lerp(0, -EXIT_DELTA, (p - EXIT_START) / (1 - EXIT_START));
-    return -EXIT_DELTA;
+    if (p < EXIT_START)   return 0;                                                      // fermo
+    if (p < 1.0)          return lerpL(0, -exitDist, (p - EXIT_START) / (1 - EXIT_START)); // esce 1:1
+    return -exitDist;
   }
 
   /*
@@ -175,8 +183,10 @@
     })
   );
 
-  // CTA compare: appare quando il compare SVG è arrivato in posizione
-  let compareSettled = $derived(sceneP(3) >= ENTER);
+  // CTA compare: appare quando il fondo del compare panel (10vh + 68vh = 78vh) tocca il fondo della viewport
+  // svgTY ≤ 22 (= 100 - 78) → p = ENTER * (1 - 22/CMP_OFF) ≈ 0.272
+  const CMP_CTRL_P = ENTER * (1 - (100 - 10 - 68) / CMP_OFF);
+  let compareSettled = $derived(sceneP(3) > CMP_CTRL_P);
 </script>
 
 <div class="anim-outer" bind:this={outerEl} style="height: {TOTAL_VH}vh">
