@@ -6,26 +6,13 @@
   import ScatterRallySpeed from '$components/charts/ScatterRallySpeed.svelte';
   import LineHistorical   from '$components/charts/LineHistorical.svelte';
   import AnimationSection from '$components/animations/AnimationSection.svelte';
+  import SurfaceSpeedDotPlot from '$components/charts/SurfaceSpeedDotPlot.svelte';
+  import SurfaceSpeedTrend   from '$components/charts/SurfaceSpeedTrend.svelte';
 
-  let activeStep1 = $state(undefined);
+  let activeStepDot = $state(undefined);
   let activeStep2 = $state(undefined);
   let activeStep3 = $state(undefined);
   let activeStep4 = $state(undefined);
-
-  const steps1 = [
-    {
-      text: 'Il luogo comune vuole il tennis su tre mondi separati: hard veloce, erba velocissima, terra lenta. Ogni punto qui è un torneo.',
-      subtext: 'Tutti grigi. Per ora.'
-    },
-    {
-      text: 'Diamo i colori: blu per l\'hard, rosso per la terra, verde per l\'erba.',
-      subtext: 'Ti aspetti tre cluster distinti. Guarda meglio.'
-    },
-    {
-      text: 'Gstaad (terra, 1.03) è più veloce di Indian Wells 2025 (hard, 0.72). Roland Garros e Paris Masters si sovrappongono.',
-      subtext: 'La fascia 0.65–1.10 contiene tutte e tre le superfici.'
-    }
-  ];
 
   const steps2 = [
     {
@@ -63,6 +50,17 @@
       subtext: 'La categoria di superficie è un punto di partenza, non una destinazione.'
     }
   ];
+
+  const stepsDot = [
+    {
+      text: 'Ogni punto è un torneo. Sull\'asse orizzontale, la velocità della superficie: più a destra, più ace vengono prodotti rispetto alla media.',
+      subtext: 'Tutti insieme, per ora.'
+    },
+    {
+      text: 'Separando i tornei per tipo di superficie, emerge subito qualcosa di inatteso: le tre categorie si sovrappongono. Alcuni tornei su terra sono più veloci di molti tornei su cemento.',
+      subtext: 'La categoria di superficie è un punto di partenza, non una destinazione.'
+    }
+  ];
 </script>
 
 <svelte:head>
@@ -75,13 +73,26 @@
 
 <div class="section-wrapper">
   <div class="section-label">
-    <span>01</span> Tre superfici, tre mondi diversi?
+    <span>A</span> La velocità reale dei tornei
   </div>
   <ScrollySection
-    chartComponent={StripPlot}
-    steps={steps1}
-    bind:activeStep={activeStep1}
+    chartComponent={SurfaceSpeedDotPlot}
+    steps={stepsDot}
+    bind:activeStep={activeStepDot}
   />
+</div>
+
+<div class="bridge-text">
+  <p>Ma questa è solo una fotografia del 2025. Per capire se le superfici si sono davvero avvicinate nel tempo, bisogna guardare indietro di trent'anni.</p>
+</div>
+
+<div class="section-wrapper">
+  <div class="section-label">
+    <span>B</span> Trent'anni di velocità
+  </div>
+  <div class="trend-wrapper">
+    <SurfaceSpeedTrend />
+  </div>
 </div>
 
 <div class="section-wrapper">
@@ -148,5 +159,22 @@
     font-family: var(--font-display);
     color: var(--color-border);
     line-height: 1;
+  }
+
+  .bridge-text {
+    max-width: 640px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+    font-size: 1.1rem;
+    line-height: var(--line-height-body);
+    color: var(--color-text-muted);
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+
+  .trend-wrapper {
+    max-width: var(--chart-max-width);
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
   }
 </style>
