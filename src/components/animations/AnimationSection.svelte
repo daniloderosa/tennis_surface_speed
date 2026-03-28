@@ -2,53 +2,28 @@
   import CourtAnimation from '$components/animations/CourtAnimation.svelte';
 
   /*
-   * Costanti di layout e timing
-   * ─────────────────────────────────────────────────────────────────────────
-   * SCENE_LEN    : vh di scroll dedicati a ogni scena
-   * ENTER        : frazione di entrata — entrata LINEARE (no easing), 1:1 con scroll
-   *                SVG parte da translateY=72 (visual=100vh) → 0 in ENTER*200=72vh di scroll
-   *                → velocità uguale al normale scroll della pagina ("scroll naturale")
-   * EXIT_START   : inizio uscita
-   * SCENE_OFF    : = EXIT_START × SCENE_LEN
-   *                quando scena[i] inizia a uscire, scena[i+1] inizia a entrare
+   * ENTER      : fine entrata SVG → il testo compare immediatamente in posizione sopra l'SVG
+   * EXIT_START : inizio uscita SVG + testo insieme
    *
-   * Fasi di ogni scena:
-   *   0          → ENTER      : SVG entra LINEAR da sotto (72vh, 1:1 scroll); testo fermo sotto
-   *   ENTER      → EXIT_START : SVG fermo, testo sale da 100vh → top≈16vh  (56vh)
-   *   EXIT_START → 1.0        : SVG + testo escono verso l'alto (easing)   (60vh)
-   *
-   * ► Per rallentare/velocizzare l'USCITA: modifica EXIT_START
-   *   verso valori più bassi (es. 0.60) = uscita più lenta.
-   * ► Per cambiare durata entrata: modifica ENTER (ma perdendo la sincronia 1:1 scroll).
-   *
-   * Compare (i=3): nessuna exit transform → scorre via naturalmente.
-   *
-   * Layout (in vh, dentro lo sticky-stage 100vh):
-   *   SVG panel:  top=28vh, height=46vh → bottom=74vh
-   *   SVG_OFF=72  (= 100 - 28): parte da visual=100vh (fondo viewport)
-   *   Compare:    top=10vh, height=68vh
-   *   Text panel: top=78vh
-   *   TEXT_OFF=22 (= 100 - 78): parte da visual=100vh con SVG
-   *   Testo sale a top≈16vh tramite TEXT_RISE=62
+   * Il testo NON ha più la fase di risalita animata: appare direttamente a top≈16vh
+   * non appena l'SVG è completamente entrato (p = ENTER).
    */
 
   const SCENE_LEN  = 200;
-  const ENTER      = 0.36;  // entrata lineare: 72vh di scroll = 1:1 con SVG che parte da 100vh
-  const EXIT_START = 0.45;  // uscita: inizia prima per avere abbastanza vh (110vh > 74 necessari per uscire completamente)
-  const SCENE_OFF  = 100;   // ► gap tra scene: aumentato per evitare sovrapposizioni visive
-  const CLAY_DELAY = 10;    // ► vh di scroll vuoto prima che clay entri (tutte le scene shiftate, gap invariati)
-  // TOTAL_VH: finisce appena il compare è arrivato in posizione (sceneP(3)=ENTER) + 5vh buffer
+  const ENTER      = 0.36;
+  const EXIT_START = 0.60;
+  const SCENE_OFF  = 120;
+  const CLAY_DELAY = 25;
   const TOTAL_VH   = CLAY_DELAY + 3 * SCENE_OFF + Math.ceil(ENTER * SCENE_LEN) + 125;
 
-  const SVG_OFF    = 72;    // translateY iniziale SVG  (100vh - CSS top 28vh)
-  const CMP_OFF    = 90;    // translateY iniziale compare (100vh - CSS top 10vh)
-  const TEXT_OFF   = 22;    // translateY iniziale testo (100vh - CSS top 78vh)
-  const TEXT_RISE  = 62;    // vh: testo sale da 78vh → 16vh (sopra l'SVG a 28vh)
-  const TEXT_START = 0.20;  // p a cui il testo inizia a muoversi (< ENTER=0.36 → anticipo)
-  const TEXT_ENTER = ENTER; // p a cui il testo finisce di entrare e inizia a salire
-  const EXIT_DELTA = 112;   // vh uscita (stessa per SVG e testo → escono insieme)
+  const SVG_OFF    = 72;
+  const CMP_OFF    = 90;
+  const TEXT_OFF   = 22;
+  const TEXT_RISE  = 62;
+  const TEXT_START = 0.35;
+  const TEXT_ENTER = 0.40;
+  const EXIT_DELTA = (1 - EXIT_START) * SCENE_LEN; // = svgTY exitDist → stessa velocità
 
-  // La pallina parte quasi subito durante l'entrata (SVG appena entrato nella view)
   const BALL_P = 0.06;
 
   const surfaces = ['clay', 'hard', 'grass', 'compare'];
@@ -74,13 +49,7 @@
   let innerH       = $state(typeof window !== 'undefined' ? window.innerHeight : 800);
   let containerTop = $state(1e6);
 
-  /*
-   * Latch anti-bounce: rafLatched è un array NON reattivo.
-   * Una volta che la pallina parte per la scena i, non viene mai riavviata
-   * (il prop `playing[i]` passa da false a true una volta sola).
-   * Questo impedisce che ogni evento scroll riavvii il RAF loop.
-   */
-  let rafLatched = [false, false, false]; // non $state: Svelte non lo traccia
+  let rafLatched = [false, false, false];
   let playing    = $state([false, false, false, false]);
 
   // ─── Listener scroll / resize ──────────────────────────────────────────────
@@ -106,10 +75,7 @@
     containerTop = outerEl.getBoundingClientRect().top + window.scrollY;
   });
 
-  // ─── Latch effect ──────────────────────────────────────────────────────────
-  // Dipende da scrollY/containerTop/innerH (via sceneP).
-  // NON legge rafLatched (non reattivo) né playing (scrive solo).
-  // → nessun loop infinito, nessun riavvio del RAF per fluttuazioni di p.
+  // ─── Latch pallina ─────────────────────────────────────────────────────────
   $effect(() => {
     for (let i = 0; i < 3; i++) {
       if (!rafLatched[i] && sceneP(i) >= BALL_P) {
@@ -124,8 +90,8 @@
     t = Math.max(0, Math.min(1, t));
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
-  function lerp(a, b, t)  { return a + (b - a) * eio(t); }   // eased
-  function lerpL(a, b, t) { return a + (b - a) * Math.max(0, Math.min(1, t)); } // lineare
+  function lerp(a, b, t)  { return a + (b - a) * eio(t); }
+  function lerpL(a, b, t) { return a + (b - a) * Math.max(0, Math.min(1, t)); }
 
   function sceneP(i) {
     if (!outerEl) return -2;
@@ -135,44 +101,32 @@
     return (scrollY - containerTop - i * offPx - delayPx) / lenPx;
   }
 
-  /*
-   * SVG transform Y (in vh, riferito a CSS top:28vh):
-   *   parte da visual=100vh (SVG_OFF=72) → entra LINEAR 1:1 con scroll → fermo → esce eased
-   *   compare: non esce mai con transform
-   */
-  /*
-   * SVG translateY (vh): comportamento come elemento normale di pagina.
-   * Entry: dal basso 1:1 con scroll (lerpL, SVG_OFF vh → 0).
-   * Rest:  fermo in posizione.
-   * Exit:  verso l'alto 1:1 con scroll (lerpL, 0 → -exitDist).
-   * Compare: non esce mai, rimane in posizione fino alla fine dello sticky.
-   */
   function svgTY(p, isCompare = false) {
     const off      = isCompare ? CMP_OFF : SVG_OFF;
-    const exitDist = (1 - EXIT_START) * SCENE_LEN; // stessa distanza vh dello scroll → 1:1
+    const exitDist = (1 - EXIT_START) * SCENE_LEN;
     if (p <= 0)           return off;
-    if (p < ENTER)        return lerpL(off, 0, p / ENTER);                              // entra 1:1
+    if (p < ENTER)        return lerpL(off, 0, p / ENTER);
     if (isCompare)        return 0;
-    if (p < EXIT_START)   return 0;                                                      // fermo
-    if (p < 1.0)          return lerpL(0, -exitDist, (p - EXIT_START) / (1 - EXIT_START)); // esce 1:1
+    if (p < EXIT_START)   return 0;
+    if (p < 1.0)          return lerpL(0, -exitDist, (p - EXIT_START) / (1 - EXIT_START));
     return -exitDist;
   }
 
   /*
-   * Text transform Y (in vh, riferito a CSS top:78vh):
-   *   aspetta SVG fermo → sale da sotto (100vh) fino a -TEXT_RISE → esce con SVG
-   *   Tutto in un unico moto continuo, parte solo quando SVG è completamente entrato.
+   * textTY: il testo compare direttamente in posizione sopra l'SVG (top≈16vh)
+   * non appena l'SVG ha finito di entrare (p = ENTER). Nessuna transizione di salita.
+   * Poi esce insieme all'SVG.
    */
   function textTY(p) {
-    if (p < TEXT_START)   return TEXT_OFF;  // aspetta
-    if (p < TEXT_ENTER)   return lerpL(TEXT_OFF, 0, (p - TEXT_START) / (TEXT_ENTER - TEXT_START)); // lineare — entra con SVG
-    if (p < EXIT_START)   return lerp(0, -TEXT_RISE, (p - TEXT_ENTER) / (EXIT_START - TEXT_ENTER)); // eased — sale
-    if (p < 1.0)          return lerp(-TEXT_RISE, -TEXT_RISE - EXIT_DELTA,
-                                       (p - EXIT_START) / (1 - EXIT_START));
+    if (p < TEXT_START)   return TEXT_OFF;
+    if (p < TEXT_ENTER)   return lerpL(TEXT_OFF, 0, (p - TEXT_START) / (TEXT_ENTER - TEXT_START));
+    if (p < EXIT_START)   return lerpL(0, -TEXT_RISE, (p - TEXT_ENTER) / (EXIT_START - TEXT_ENTER));
+    if (p < 1.0)          return lerpL(-TEXT_RISE, -TEXT_RISE - EXIT_DELTA,
+                                        (p - EXIT_START) / (1 - EXIT_START));
     return -TEXT_RISE - EXIT_DELTA;
   }
 
-  // ─── Derived: trasformate per ogni scena ──────────────────────────────────
+  // ─── Derived ───────────────────────────────────────────────────────────────
   let scenes = $derived(
     surfaces.map((_, i) => {
       const p = sceneP(i);
@@ -183,8 +137,6 @@
     })
   );
 
-  // CTA compare: appare quando il fondo del compare panel (10vh + 68vh = 78vh) tocca il fondo della viewport
-  // svgTY ≤ 22 (= 100 - 78) → p = ENTER * (1 - 22/CMP_OFF) ≈ 0.272
   const CMP_CTRL_P = ENTER * (1 - (100 - 10 - 68) / CMP_OFF);
   let compareSettled = $derived(sceneP(3) > CMP_CTRL_P);
 </script>
@@ -194,14 +146,12 @@
   <div class="sticky-stage">
     <div class="stage-inner">
 
-      <!-- SVG panels: uno per superficie, animati con transform -->
       {#each surfaces as surf, i}
         <div class="svg-panel {i === 3 ? 'svg-panel--compare' : ''}" style="transform: {scenes[i].svgT}">
           <CourtAnimation surface={surf} playing={playing[i]} />
         </div>
       {/each}
 
-      <!-- Text panels: solo step 0-2 -->
       {#each stepTexts as step, i}
         <div
           class="text-panel"
@@ -211,7 +161,6 @@
         </div>
       {/each}
 
-      <!-- CTA compare: appare quando lo slider è pronto -->
       <div class="cta-hint" class:visible={compareSettled}>
         ↔ Trascina per confrontare le superfici
       </div>
@@ -220,7 +169,6 @@
   </div>
 </div>
 
-<!-- Bridge text: segue naturalmente dopo la fine dell'anim-outer -->
 <div class="bridge-text">
   <p>
     Ma le superfici sono davvero così diverse? Negli ultimi trent'anni qualcosa
@@ -234,7 +182,7 @@
 
   .anim-outer {
     position: relative;
-    margin-top: -100vh; // si sovrappone all'hero: SVG entra da sotto mentre hero scorre via
+    margin-top: -100vh;
   }
 
   .sticky-stage {
@@ -253,10 +201,6 @@
     margin: 0 auto;
   }
 
-  /*
-   * SVG panel: top=28vh, height=46vh → bottom=74vh (posizione di riposo).
-   * Compare override: top=10vh, height=68vh per ospitare lo slider.
-   */
   .svg-panel {
     position: absolute;
     left: 2rem;
@@ -271,10 +215,6 @@
     height: 68vh;
   }
 
-  /*
-   * Text panel: base a top=78vh (4vh sotto il bottom SVG a 74vh).
-   * Sale a top≈16vh tramite translateY(-62vh) durante la fase di risalita.
-   */
   .text-panel {
     position: absolute;
     top: 78vh;
@@ -290,7 +230,6 @@
     color: $color-text;
   }
 
-  /* Bridge text: nessun margin, segue anim-outer senza spazio vuoto */
   .bridge-text {
     max-width: 640px;
     margin: 0 auto;
@@ -300,10 +239,9 @@
     color: $color-text;
   }
 
-  /* CTA compare: pill sopra il compare SVG, all'altezza dove si fermano i text box */
   .cta-hint {
     position: absolute;
-    top: 16vh;   // = text-panel(78vh) - TEXT_RISE(62vh): altezza di riposo dei text box
+    top: 16vh;
     left: 50%;
     transform: translateX(-50%);
     opacity: 0;
@@ -331,21 +269,18 @@
 
   @include mobile {
     .cta-hint { top: 12vh; font-size: 0.82rem; padding: 0.45rem 1.25rem; }
-  }
-
-  @include mobile {
     .svg-panel {
       left: 1rem;
       right: 1rem;
-      top: 35vh;   // 20% più in basso (era 15vh)
-      height: 38vh; // bottom a 73vh
+      top: 35vh;
+      height: 38vh;
     }
     .svg-panel--compare {
       top: 5vh;
       height: 60vh;
     }
     .text-panel {
-      top: 78vh;   // = desktop → TEXT_OFF=22 → visual 100vh (fuori viewport) ✓
+      top: 78vh;
       width: calc(100% - 2rem);
       padding: 1.25rem;
       font-size: 1rem;
