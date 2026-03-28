@@ -27,7 +27,7 @@
 
   const segs_hard = norm([
     { x0:130, y0:G,   cx1:200, cy1:208, cx2:680, cy2:208, x1:780, y1:G,   w:0.72 },
-    { x0:780, y0:G,   cx1:780, cy1:265, cx2:865, cy2:291, x1:880, y1:292, w:0.28 },
+    { x0:780, y0:G,   cx1:815, cy1:255, cx2:865, cy2:285, x1:880, y1:292, w:0.28 },
   ]);
 
   function getBallPos(segs, t) {
