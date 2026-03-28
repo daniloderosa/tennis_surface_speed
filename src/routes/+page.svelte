@@ -71,7 +71,7 @@
 
 <AnimationSection />
 
-<div class="section-wrapper">
+<div class="section-wrapper dot-section">
   <div class="section-label">
     <span>A</span> La velocità reale dei tornei
   </div>
@@ -79,6 +79,7 @@
     chartComponent={SurfaceSpeedDotPlot}
     steps={stepsDot}
     bind:activeStep={activeStepDot}
+    scrollyBottom={typeof window !== 'undefined' ? window.innerHeight * 0.85 : 0}
   />
 </div>
 
@@ -171,6 +172,12 @@
     font-family: var(--font-serif);
     font-style: italic;
   }
+
+  /* Override spaziature solo per la sezione dot plot */
+  .dot-section :global(.scrolly-section) { padding-top: 13vh; padding-bottom: 10vh; }
+  .dot-section :global(.sticky-chart)    { top: 20vh; height: 60vh; }
+  .dot-section :global(.steps-overlay)   { margin-top: -55vh; padding-top: 0; padding-bottom: 85vh; }
+  .dot-section :global(.step)            { align-items: flex-end; padding-bottom: 0; min-height: 100vh; }
 
   .trend-wrapper {
     max-width: var(--chart-max-width);

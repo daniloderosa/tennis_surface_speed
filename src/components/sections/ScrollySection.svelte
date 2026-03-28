@@ -4,7 +4,8 @@
   let {
     chartComponent,
     steps = [],
-    activeStep = $bindable(undefined)
+    activeStep = $bindable(undefined),
+    scrollyBottom = 0
   } = $props();
 </script>
 
@@ -19,7 +20,7 @@
 
   <!-- Step: scorrono sopra il grafico, centrati, più stretti del grafico -->
   <div class="steps-overlay">
-    <Scrolly bind:value={activeStep}>
+    <Scrolly bind:value={activeStep} bottom={scrollyBottom}>
       {#each steps as step, i}
         <div class="step" class:active={activeStep === i}>
           <div class="step-card">
@@ -43,13 +44,15 @@
     padding: 2rem 2rem 0;
   }
 
-  // Grafico: sticky, occupa tutto lo spazio della sezione
+  // Grafico: sticky, centrato verticalmente nel viewport
   .sticky-chart {
     position: sticky;
-    top: 10vh;
-    height: 80vh;
+    top: 0;
+    height: 100vh;
     width: 100%;
     z-index: 0;
+    display: flex;
+    align-items: center;
   }
 
   // Step: si sovrappongono al grafico con margin-top negativo
@@ -58,14 +61,14 @@
     margin-top: -75vh;
     z-index: $z-overlay;
     padding: 10vh 0 20vh;
-    pointer-events: none; // i click passano al grafico sottostante
+    pointer-events: none;
   }
 
   .step {
     min-height: $step-height;
     display: flex;
     align-items: center;
-    justify-content: center; // centrato orizzontalmente
+    justify-content: center;
     padding: 1rem;
     opacity: 0.15;
     transition: opacity 0.3s ease;
@@ -77,7 +80,7 @@
   }
 
   .step-card {
-    max-width: 420px; // più stretto del grafico (960px)
+    max-width: 520px;
     width: 100%;
     background: rgba($color-surface, 0.92);
     border-left: 3px solid $color-primary;
@@ -96,20 +99,21 @@
 
   @include mobile {
     .sticky-chart {
-      position: relative;
+      position: sticky;
       top: 0;
-      height: 50vh;
+      height: 45vh;
+      align-items: center;
     }
 
     .steps-overlay {
-      margin-top: 0;
-      padding: 2rem 0;
+      margin-top: -40vh;
+      padding: 0 0 20vh;
     }
 
     .step {
-      opacity: 1;
-      min-height: auto;
-      padding: 1rem 0;
+      min-height: 80vh;
+      align-items: flex-end;
+      padding-bottom: 2rem;
     }
   }
 </style>
