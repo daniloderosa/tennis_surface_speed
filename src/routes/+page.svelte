@@ -3,24 +3,13 @@
   import Outro            from '$components/sections/Outro.svelte';
   import ScrollySection   from '$components/sections/ScrollySection.svelte';
   import StripPlot        from '$components/charts/StripPlot.svelte';
-  import ScatterRallySpeed from '$components/charts/ScatterRallySpeed.svelte';
+  import RallyTrend from '$components/charts/RallyTrend.svelte';
   import AnimationSection from '$components/animations/AnimationSection.svelte';
   import SurfaceSpeedDotPlot from '$components/charts/SurfaceSpeedDotPlot.svelte';
   import SurfaceSpeedTrend   from '$components/charts/SurfaceSpeedTrend.svelte';
 
   let activeStepDot = $state(undefined);
-  let activeStep2 = $state(undefined);
 
-  const steps2 = [
-    {
-      text: 'Se la velocità conta, dovrebbe determinare la lunghezza dei rally: più lento = più colpi. Ogni punto è un torneo.',
-      subtext: 'La correlazione c\'è — ma non è tutta la storia.'
-    },
-    {
-      text: 'Gstaad è terra veloce con rally corti come se fosse erba. Paris Masters è hard lento con rally lunghi come Roland Garros.',
-      subtext: 'La superficie dice dove sei. La velocità dice come giochi.'
-    }
-  ];
 
   const stepsDot = [
     {
@@ -107,11 +96,9 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
   <div class="section-label">
     <span>02</span> Cosa cambia davvero in campo?
   </div>
-  <ScrollySection
-    chartComponent={ScatterRallySpeed}
-    steps={steps2}
-    bind:activeStep={activeStep2}
-  />
+  <div class="trend-wrapper">
+    <RallyTrend />
+  </div>
 </div>
 
 <div class="bridge-text">

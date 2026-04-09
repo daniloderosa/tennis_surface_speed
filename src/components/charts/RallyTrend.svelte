@@ -1,39 +1,34 @@
 <script>
   import * as d3 from 'd3';
   import { untrack } from 'svelte';
-  import rawData from '$data/surface_speed_by_year.json';
+  import rawData from '$data/rally_length_by_year_surface.json';
 
-  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#4a7c3f' };
+  const COLORS   = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#4a7c3f' };
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const M = { top: 40, right: 30, bottom: 50, left: 55 };
   const H = 380;
 
-  const grouped = d3.group(rawData, d => d.surface);
-  const byYear  = d3.group(rawData, d => d.year);
+  const MIN_YEAR = 1990;
+  const MAX_YEAR = d3.max(rawData, d => d.year);
 
-  const MODES = {
-    speed: {
-      field: 'speed_avg',
-      domain: [0.5, 1.45],
-      fmt:   d3.format('.2f'),
-      desc:  'Ace rate aggiustato per la qualità dei giocatori, indicizzato alla media del tour (1 = media annuale). Misura la velocità fisica della superficie.',
-    },
-    ace: {
-      field: 'ace_rate_avg',
-      domain: [0.02, 0.18],
-      fmt:   d => d3.format('.1%')(d),
-      desc:  'Percentuale di ace su tutti i punti giocati. Sale su tutte le superfici nel tempo: i giocatori servono meglio, non i campi cambiano.',
-    },
-  };
+  const filtered = rawData.filter(d => d.year >= MIN_YEAR);
+  const grouped  = d3.group(filtered, d => d.surface);
+  const byYear   = d3.group(filtered, d => d.year);
+  const MAX_N    = d3.max(filtered, d => d.n_matches);
+
+  const yDomain = [
+    Math.floor(d3.min(filtered, d => d.rally_avg) * 10) / 10 - 0.2,
+    Math.ceil( d3.max(filtered, d => d.rally_avg) * 10) / 10 + 0.2,
+  ];
+
+  // Scala raggio: area proporzionale a n_matches
+  const rScale = d3.scaleSqrt().domain([1, MAX_N]).range([2, 10]).clamp(true);
 
   let containerEl;
   let svgEl;
   let width = $state(700);
-  let mode  = $state('speed');
-
-  // Tooltip state
-  let tooltip = $state(null); // { x, year, rows: [{surf, value}] }
+  let tooltip = $state(null);
 
   $effect(() => {
     if (!containerEl) return;
@@ -50,60 +45,47 @@
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
-  function makeYScale(m, innerH) {
-    return d3.scaleLinear().domain(MODES[m].domain).range([innerH, 0]).nice();
+  function makeXScale(w) {
+    return d3.scaleLinear()
+      .domain([MIN_YEAR, MAX_YEAR])
+      .range([0, w - M.left - M.right]);
   }
 
-  // Inserisce un punto nullo per anni mancanti (es. erba 2020 — Wimbledon cancellato)
-  function withGaps(data, field) {
+  function makeYScale(innerH) {
+    return d3.scaleLinear().domain(yDomain).range([innerH, 0]).nice();
+  }
+
+  function withGaps(data) {
     const result = [];
     for (let i = 0; i < data.length; i++) {
       result.push(data[i]);
       const next = data[i + 1];
       if (next && next.year - data[i].year > 1) {
-        result.push({ year: data[i].year + 1 }); // campo valore assente → undefined → gap
+        result.push({ year: data[i].year + 1 });
       }
     }
     return result;
   }
 
-  function makeLineGen(xS, yS, field) {
+  function makeLineGen(xS, yS) {
     return d3.line()
       .x(d => xS(d.year))
-      .y(d => yS(d[field]))
+      .y(d => yS(d.rally_avg))
       .curve(d3.curveMonotoneX)
-      .defined(d => d[field] != null);
+      .defined(d => d.rally_avg != null);
   }
 
-  function makeXScale(w) {
-    return d3.scaleLinear().domain([1991, 2025]).range([0, w - M.left - M.right]);
-  }
-
-  // Rebuild da zero su cambio width
   $effect(() => {
     if (!svgEl || width === 0) return;
-    const w = width;
-    const m = untrack(() => mode);
-    buildChart(w, m);
+    buildChart(width);
   });
 
-  // Transizione su cambio mode
-  $effect(() => {
-    const m = mode;
-    if (!svgEl) return;
-    const root = d3.select(svgEl);
-    if (root.select('g.inner').empty()) return;
-    const w = untrack(() => width);
-    updateMode(w, m);
-  });
-
-  function buildChart(w, m) {
+  function buildChart(w) {
     const innerW = w - M.left - M.right;
     const innerH = H - M.top - M.bottom;
     const xS  = makeXScale(w);
-    const yS  = makeYScale(m, innerH);
-    const cfg = MODES[m];
-    const lg  = makeLineGen(xS, yS, cfg.field);
+    const yS  = makeYScale(innerH);
+    const lg  = makeLineGen(xS, yS);
 
     const root = d3.select(svgEl);
     root.selectAll('*').remove();
@@ -128,12 +110,23 @@
 
     // Y axis
     g.append('g').attr('class', 'y-axis')
-      .call(d3.axisLeft(yS).ticks(5).tickFormat(cfg.fmt))
+      .call(d3.axisLeft(yS).ticks(5).tickFormat(d3.format('.1f')))
       .call(styleAxis);
 
-    // Linee per superficie
+    // Y axis label
+    g.append('text')
+      .attr('transform', 'rotate(-90)')
+      .attr('x', -innerH / 2).attr('y', -42)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#8a9ab5').attr('font-size', '11px')
+      .attr('font-family', 'Roboto Mono, monospace')
+      .text('scambi medi');
+
+    // Linee e dot per superficie
     SURFACES.forEach(surf => {
       const sd = withGaps((grouped.get(surf) ?? []).sort((a, b) => a.year - b.year));
+
+      // Linea
       g.append('path')
         .datum(sd)
         .attr('class', `line-${surf}`)
@@ -141,20 +134,33 @@
         .attr('stroke', COLORS[surf])
         .attr('stroke-width', 2)
         .attr('d', lg);
+
+      // Dot su ogni punto, raggio proporzionale a n_matches
+      g.append('g').attr('class', `dots-${surf}`)
+        .selectAll('circle')
+        .data(sd.filter(d => d.rally_avg != null))
+        .join('circle')
+        .attr('cx', d => xS(d.year))
+        .attr('cy', d => yS(d.rally_avg))
+        .attr('r',  d => rScale(d.n_matches))
+        .attr('fill', COLORS[surf])
+        .attr('fill-opacity', 0.85)
+        .attr('stroke', '#2E3440')
+        .attr('stroke-width', 1);
     });
 
-    // Crosshair (inizialmente nascosto)
+    // Crosshair
     const ch = g.append('g').attr('class', 'crosshair').attr('display', 'none');
     ch.append('line').attr('class', 'ch-line')
       .attr('y1', 0).attr('y2', innerH)
       .attr('stroke', '#D8DEE9').attr('stroke-width', 1).attr('stroke-dasharray', '4,3');
     SURFACES.forEach(surf => {
       ch.append('circle').attr('class', `ch-dot-${surf}`)
-        .attr('r', 4).attr('fill', COLORS[surf])
+        .attr('r', 5).attr('fill', COLORS[surf])
         .attr('stroke', '#2E3440').attr('stroke-width', 1.5);
     });
 
-    // Overlay invisibile per catturare eventi mouse/touch
+    // Overlay eventi
     g.append('rect')
       .attr('class', 'overlay')
       .attr('width', innerW).attr('height', innerH)
@@ -164,7 +170,7 @@
         const [px] = event.touches
           ? [event.touches[0].clientX - svgEl.getBoundingClientRect().left - M.left]
           : [d3.pointer(event, this)[0]];
-        updateCrosshair(px, w, mode);
+        updateCrosshair(px, w);
       })
       .on('mouseleave touchend', () => {
         d3.select(svgEl).select('.crosshair').attr('display', 'none');
@@ -183,48 +189,13 @@
     });
   }
 
-  function updateMode(w, m) {
-    const innerW = w - M.left - M.right;
+  function updateCrosshair(px, w) {
     const innerH = H - M.top - M.bottom;
-    const xS  = makeXScale(w);
-    const yS  = makeYScale(m, innerH);
-    const cfg = MODES[m];
-    const lg  = makeLineGen(xS, yS, cfg.field);
-    const root = d3.select(svgEl);
-    const t    = root.transition().duration(400);
-
-    root.select('.y-axis').transition(t)
-      .call(d3.axisLeft(yS).ticks(5).tickFormat(cfg.fmt))
-      .call(styleAxis);
-
-    root.select('.grid').transition(t)
-      .call(d3.axisLeft(yS).ticks(5).tickSize(-innerW).tickFormat(''))
-      .call(ax => {
-        ax.select('.domain').remove();
-        ax.selectAll('.tick line').attr('stroke', '#3B4252').attr('stroke-dasharray', '3,3');
-      });
-
-    SURFACES.forEach(surf => {
-      const sd = withGaps((grouped.get(surf) ?? []).sort((a, b) => a.year - b.year));
-      root.select(`.line-${surf}`).datum(sd).transition(t).attr('d', lg);
-    });
-
-    // Nascondi crosshair durante la transizione
-    root.select('.crosshair').attr('display', 'none');
-    tooltip = null;
-
-    // Aggiorna ch-line altezza se innerH fosse cambiato (non cambia qui ma per robustezza)
-    root.select('.ch-line').attr('y2', innerH);
-  }
-
-  function updateCrosshair(px, w, m) {
-    const innerH = H - M.top - M.bottom;
-    const xS  = makeXScale(w);
-    const yS  = makeYScale(m, innerH);
-    const cfg = MODES[m];
+    const xS = makeXScale(w);
+    const yS = makeYScale(innerH);
 
     const year = Math.round(xS.invert(px));
-    if (year < 1991 || year > 2025) { tooltip = null; return; }
+    if (year < MIN_YEAR || year > MAX_YEAR) { tooltip = null; return; }
 
     const yearData = byYear.get(year) ?? [];
     const xPos = xS(year);
@@ -235,16 +206,19 @@
 
     const rows = [];
     SURFACES.forEach(surf => {
-      const pt = yearData.find(d => d.surface === surf);
-      const val = pt?.[cfg.field];
+      const pt  = yearData.find(d => d.surface === surf);
+      const val = pt?.rally_avg;
       ch.select(`.ch-dot-${surf}`)
         .attr('cx', xPos)
         .attr('cy', val != null ? yS(val) : -999)
         .attr('display', val != null ? null : 'none');
-      rows.push({ surf, value: val != null ? cfg.fmt(val) : '—' });
+      rows.push({
+        surf,
+        value:    val != null ? d3.format('.2f')(val) : '—',
+        nMatches: pt?.n_matches ?? null,
+      });
     });
 
-    // Posizione tooltip in pixel assoluti nel container
     const svgRect = svgEl.getBoundingClientRect();
     const containerRect = containerEl.getBoundingClientRect();
     const absX = svgRect.left - containerRect.left + M.left + xPos;
@@ -253,16 +227,8 @@
   }
 </script>
 
-<div class="trend-outer">
-  <div class="toggle-row">
-    <div class="toggle-btns">
-      <button class:active={mode === 'speed'} onclick={() => mode = 'speed'}>Speed Rating</button>
-      <button class:active={mode === 'ace'}   onclick={() => mode = 'ace'}>Ace Rate %</button>
-    </div>
-    <p class="mode-desc">{MODES[mode].desc}</p>
-  </div>
-
-  <div class="chart-area" bind:this={containerEl} aria-label="Trend velocità superfici 1991–2025">
+<div class="rally-outer">
+  <div class="chart-area" bind:this={containerEl} aria-label="Andamento lunghezza media degli scambi per superficie">
     <svg bind:this={svgEl}></svg>
 
     {#if tooltip}
@@ -278,6 +244,9 @@
             <span class="tt-dot" style="background:{COLORS[row.surf]}"></span>
             <span class="tt-label">{LABELS[row.surf]}</span>
             <span class="tt-val">{row.value}</span>
+            {#if row.nMatches != null}
+              <span class="tt-n">({row.nMatches} match)</span>
+            {/if}
           </div>
         {/each}
       </div>
@@ -286,44 +255,10 @@
 </div>
 
 <style>
-  .trend-outer  { width: 100%; }
-  .chart-area   { position: relative; }
-  svg           { display: block; overflow: visible; }
+  .rally-outer { width: 100%; }
+  .chart-area  { position: relative; }
+  svg          { display: block; overflow: visible; }
 
-  .toggle-row   { margin-bottom: 1rem; }
-  .toggle-btns  { display: flex; gap: 0.5rem; margin-bottom: 0.6rem; }
-
-  button {
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.4rem 1rem;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-  }
-  button.active {
-    background: var(--color-surface-2);
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
-  button:hover:not(.active) {
-    border-color: var(--color-text-faint);
-    color: var(--color-text);
-  }
-
-  .mode-desc {
-    font-family: var(--font-sans);
-    font-size: 0.82rem;
-    color: var(--color-text-muted);
-    line-height: 1.5;
-    max-width: 580px;
-  }
-
-  /* Tooltip */
   .tooltip {
     position: absolute;
     transform: translateX(10px);
@@ -352,11 +287,8 @@
     color: var(--color-text-muted);
     line-height: 1.7;
   }
-  .tt-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .tt-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .tt-label { flex: 1; }
   .tt-val   { color: var(--color-text); font-weight: 500; }
+  .tt-n     { color: var(--color-text-faint); font-size: 0.72rem; }
 </style>

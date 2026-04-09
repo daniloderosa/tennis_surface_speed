@@ -13,9 +13,11 @@ from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
-RALLY_CSV  = ROOT / "static/data/charting-m-stats-Rally.csv"
-SPEED_JSON = ROOT / "src/lib/data/surface_speed_current.json"
-OUT_JSON   = ROOT / "src/lib/data/rally_length_by_tournament.json"
+RALLY_CSV    = ROOT / "static/data/charting-m-stats-Rally.csv"
+MATCHES_CSV  = ROOT / "static/data/charting-m-matches.csv"
+SPEED_JSON   = ROOT / "src/lib/data/surface_speed_current.json"
+OUT_JSON     = ROOT / "src/lib/data/rally_length_by_tournament.json"
+OUT_YEARLY   = ROOT / "src/lib/data/rally_length_by_year_surface.json"
 
 # Midpoint per range di rally
 MIDPOINTS = {"1-3": 2, "4-6": 5, "7-9": 8, "10": 12}
@@ -203,3 +205,85 @@ if match_pct >= 70:
     print(f"Salvato: {OUT_JSON}")
 else:
     print("ATTENZIONE: join < 70% — verifica NAME_MAP e usa solo speed data per la sezione 2.")
+
+# ===================================================================
+# SEZIONE 2 — Rally length per anno e superficie (tutti gli anni)
+# Metodo: media pesata — ogni punto conta ugualmente (più corretto
+# della media delle medie che tratta ogni match come uguale
+# indipendentemente da quanti punti contiene).
+# Formula: Σ(midpoint × n_punti) / Σ(n_punti) per anno+superficie
+# ===================================================================
+
+print("\n─── Sezione 2: rally length per anno e superficie ───")
+
+if not MATCHES_CSV.exists():
+    print(f"ATTENZIONE: {MATCHES_CSV} non trovato.")
+    print("Scarica il file da:")
+    print("  https://raw.githubusercontent.com/JeffSackmann/tennis_MatchChartingProject/master/charting-m-matches.csv")
+    print("e salvalo in static/data/charting-m-matches.csv")
+else:
+    SURFACES_KEEP = {"Hard", "Clay", "Grass"}
+
+    # -------------------------------------------------------------------
+    # 1. Carica metadata partite: match_id → {year, surface}
+    # -------------------------------------------------------------------
+    match_meta = {}
+    with open(MATCHES_CSV, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            mid = row.get("match_id", "").strip()
+            if not mid or len(mid) < 4 or not mid[:4].isdigit():
+                continue
+            year    = int(mid[:4])
+            surface = row.get("Surface", "").strip()
+            if surface not in SURFACES_KEEP:
+                continue
+            match_meta[mid] = {"year": year, "surface": surface}
+
+    print(f"Match con superficie valida (Hard/Clay/Grass): {len(match_meta)}")
+
+    # -------------------------------------------------------------------
+    # 2. Aggrega punti per (year, surface) — media pesata
+    # -------------------------------------------------------------------
+    # Struttura: (year, surface) → {numerator, total_pts, matches}
+    yearly = defaultdict(lambda: {"numerator": 0.0, "total_pts": 0, "matches": set()})
+
+    with open(RALLY_CSV, encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            mid = row["match_id"]
+            r   = row["row"]
+            if r not in MIDPOINTS or mid not in match_meta:
+                continue
+            pts = int(row["pts"]) if row["pts"].isdigit() else 0
+            if pts == 0:
+                continue
+            key = (match_meta[mid]["year"], match_meta[mid]["surface"])
+            yearly[key]["numerator"]  += MIDPOINTS[r] * pts
+            yearly[key]["total_pts"]  += pts
+            yearly[key]["matches"].add(mid)
+
+    # -------------------------------------------------------------------
+    # 3. Calcola media e salva
+    # -------------------------------------------------------------------
+    yearly_result = []
+    for (year, surface), agg in sorted(yearly.items()):
+        if agg["total_pts"] == 0:
+            continue
+        yearly_result.append({
+            "year":      year,
+            "surface":   surface,
+            "rally_avg": round(agg["numerator"] / agg["total_pts"], 2),
+            "n_matches": len(agg["matches"]),
+        })
+
+    with open(OUT_YEARLY, "w", encoding="utf-8") as f:
+        json.dump(yearly_result, f, ensure_ascii=False, indent=2)
+
+    if not yearly_result:
+        print("ATTENZIONE: nessun dato prodotto — verifica le colonne del CSV.")
+    else:
+        years = [r["year"] for r in yearly_result]
+        print(f"Anni coperti: {min(years)}–{max(years)}")
+        print(f"Record totali: {len(yearly_result)} (anno × superficie)")
+        print(f"Salvato: {OUT_YEARLY}")
