@@ -55,7 +55,7 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
 
 <div class="section-wrapper dot-section">
   <div class="section-label">
-    <span>A</span> La velocità dei tornei nel 2025
+    La velocità dei tornei nel 2025
   </div>
   <ScrollySection
     chartComponent={SurfaceSpeedDotPlot}
@@ -71,7 +71,7 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
 
 <div class="section-wrapper">
   <div class="section-label">
-    <span>B</span> Trent'anni di velocità
+    Trent'anni di velocità
   </div>
   <div class="trend-wrapper">
     <SurfaceSpeedTrend />
@@ -95,7 +95,7 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
 
 <div class="section-wrapper">
   <div class="section-label">
-    <span>02</span> Cosa cambia davvero in campo?
+    Cosa cambia davvero in campo?
   </div>
   <div class="trend-wrapper">
     <RallyTrend />
@@ -108,7 +108,7 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
 
 <div class="section-wrapper">
   <div class="section-label">
-    <span>C</span> Velocità e durata degli scambi nel 2025
+    Velocità e durata degli scambi nel 2025
   </div>
   <div class="trend-wrapper scatter-wrapper">
     <ScatterRallySpeed />
@@ -129,23 +129,13 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
     background: var(--color-bg);
     max-width: var(--chart-max-width);
     margin: 0 auto;
-    padding: 0.75rem 2rem;
+    padding: 0.9rem 2rem;
     font-family: var(--font-mono);
-    font-size: var(--text-label);
+    font-size: 1rem;
     color: var(--color-primary);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     border-bottom: 1px solid var(--color-border);
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-  }
-
-  .section-label span {
-    font-size: 2rem;
-    font-family: var(--font-display);
-    color: var(--color-border);
-    line-height: 1;
   }
 
   .bridge-text {
@@ -170,6 +160,6 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
   }
 
   .scatter-wrapper {
-    height: 460px;
+    height: 552px;
   }
 </style>

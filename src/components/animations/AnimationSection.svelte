@@ -283,12 +283,13 @@
     width: calc(100% - 4rem);
     max-width: 520px;
     will-change: transform;
-    background: $color-surface;
+    background: var(--color-surface);
     border-left: 3px solid;
     padding: 2rem;
     font-size: 1.1rem;
     line-height: 1.7;
-    color: $color-text;
+    color: var(--color-text);
+    transition: background 0.3s ease, color 0.3s ease;
   }
 
   .bridge-text {
@@ -297,7 +298,7 @@
     padding: 3rem 2rem 0;
     font-size: 1.1rem;
     line-height: 1.7;
-    color: $color-text;
+    color: var(--color-text);
   }
 
   .cta-hint {
@@ -307,13 +308,13 @@
     transform: translateX(-50%);
     opacity: 0;
     transition: opacity 0.6s ease;
-    background: $color-surface-2;
-    border: 1px solid $color-border;
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
     border-radius: 50em;
     padding: 0.55rem 1.5rem;
     font-size: 0.9rem;
     font-family: $font-sans;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     white-space: nowrap;
     pointer-events: none;
     z-index: 5;

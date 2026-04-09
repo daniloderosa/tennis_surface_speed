@@ -44,7 +44,8 @@
     align-items: center;
     justify-content: center;
     padding: 4rem 2rem;
-    background-color: $color-bg;
+    background-color: var(--color-bg);
+    transition: background-color 0.3s ease;
   }
 
   .hero-inner {
@@ -56,7 +57,7 @@
     font-family: $font-display;
     font-size: $text-hero;
     font-weight: 700;
-    color: $color-text;
+    color: var(--color-text);
     line-height: 1.1;
     margin-bottom: 1rem;
   }
@@ -64,7 +65,7 @@
   .rule {
     width: 3rem;
     height: 3px;
-    background-color: $color-primary;
+    background-color: var(--color-primary);
     margin-bottom: 1.25rem;
   }
 
@@ -72,7 +73,7 @@
     font-family: $font-sans;
     font-size: 1.15rem;
     font-weight: 400;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     line-height: 1.7;
     text-transform: none;
     letter-spacing: 0;
@@ -82,7 +83,7 @@
   .pub-date {
     font-family: $font-mono;
     font-size: $text-label;
-    color: $color-text-faint;
+    color: var(--color-text-faint);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -96,7 +97,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.35rem;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     font-family: $font-mono;
     font-size: $text-label;
     letter-spacing: 0.12em;

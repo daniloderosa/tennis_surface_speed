@@ -108,6 +108,13 @@
 
   const courtColors = { clay: '#c1622e', grass: '#4a7c3f', hard: '#3a6080' };
 
+  function isDark() {
+    return typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
+  }
+  function trailStroke()  { return isDark() ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.10)'; }
+  function shadowFill()   { return isDark() ? 'rgba(0,0,0,0.40)' : 'rgba(0,0,0,0.15)'; }
+  function shadowFill2()  { return isDark() ? 'rgba(0,0,0,0.50)' : 'rgba(0,0,0,0.20)'; }
+
   function courtColor() {
     if (surface === 'compare') return '#8a8a7a';
     return courtColors[surface] ?? '#8a8a7a';
@@ -117,8 +124,8 @@
 <div class="court-wrap" aria-label="Animazione pallina da tennis su {surface}">
   <svg viewBox="0 0 1000 {surface === 'compare' ? 650 : 500}" preserveAspectRatio="xMidYMid meet">
 
-    <!-- Sfondo bianco: pannello solido quando entra nella view -->
-    <rect width="1000" height="500" fill="white"/>
+    <!-- Sfondo: adattivo al tema -->
+    <rect width="1000" height="500" fill="var(--color-bg)"/>
 
     <!-- Campo -->
     <rect x="50" y="360" width="900" height="55" rx="2"
@@ -150,31 +157,31 @@
         {@const trailGrass = Array.from({length: N}, (_, i) => getBallPos(segs_grass, (i / (N-1)) * tCmp))}
         {@const trailHard  = Array.from({length: N}, (_, i) => getBallPos(segs_hard,  (i / (N-1)) * tCmp))}
         {@const trailClay  = Array.from({length: N}, (_, i) => getBallPos(segs_clay,  (i / (N-1)) * tCmp))}
-        <polyline points={trailGrass.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
-        <polyline points={trailHard.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
-        <polyline points={trailClay.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailGrass.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailHard.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailClay.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
       {/if}
     {:else if t_current > 0}
       {@const segsActive = surface === 'clay' ? segs_clay : surface === 'grass' ? segs_grass : segs_hard}
       {@const N = 50}
       {@const trail = Array.from({length: N}, (_, i) => getBallPos(segsActive, (i / (N-1)) * t_current))}
-      <polyline points={trail.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+      <polyline points={trail.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
     {/if}
 
     {#if surface === 'compare'}
       {@const shGrass = getShadow(ball_grass.x, ball_grass.y, 9)}
       {@const shHard  = getShadow(ball_hard.x,  ball_hard.y,  9)}
       {@const shClay  = getShadow(ball_clay.x,  ball_clay.y,  9)}
-      <ellipse cx={shGrass.cx} cy={G+2} rx={shGrass.rx} ry="3" fill="rgba(0,0,0,0.15)" opacity={shGrass.opacity}/>
-      <ellipse cx={shHard.cx}  cy={G+2} rx={shHard.rx}  ry="3" fill="rgba(0,0,0,0.15)" opacity={shHard.opacity}/>
-      <ellipse cx={shClay.cx}  cy={G+2} rx={shClay.rx}  ry="3" fill="rgba(0,0,0,0.15)" opacity={shClay.opacity}/>
+      <ellipse cx={shGrass.cx} cy={G+2} rx={shGrass.rx} ry="3" fill={shadowFill()} opacity={shGrass.opacity}/>
+      <ellipse cx={shHard.cx}  cy={G+2} rx={shHard.rx}  ry="3" fill={shadowFill()} opacity={shHard.opacity}/>
+      <ellipse cx={shClay.cx}  cy={G+2} rx={shClay.rx}  ry="3" fill={shadowFill()} opacity={shClay.opacity}/>
       <circle cx={ball_grass.x} cy={ball_grass.y} r="9" fill="#4a7c3f" stroke="#2d5a28" stroke-width="1.5"/>
       <circle cx={ball_hard.x}  cy={ball_hard.y}  r="9" fill="#3a6080" stroke="#1e3d55" stroke-width="1.5"/>
       <circle cx={ball_clay.x}  cy={ball_clay.y}  r="9" fill="#c1622e" stroke="#8a3d18" stroke-width="1.5"/>
     {:else}
       {@const pos = surface === 'clay' ? ball_clay : surface === 'grass' ? ball_grass : ball_hard}
       {@const sh  = getShadow(pos.x, pos.y, 10)}
-      <ellipse cx={sh.cx} cy={G+2} rx={sh.rx} ry="3.5" fill="rgba(0,0,0,0.2)" opacity={sh.opacity}/>
+      <ellipse cx={sh.cx} cy={G+2} rx={sh.rx} ry="3.5" fill={shadowFill2()} opacity={sh.opacity}/>
       <circle cx={pos.x} cy={pos.y} r="10" fill="#c8e04a" stroke="#9aad28" stroke-width="1.5"/>
     {/if}
   </svg>
@@ -238,14 +245,14 @@
   .slider-label {
     font-family: $font-mono;
     font-size: $text-label;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
     white-space: nowrap;
   }
 
   input[type=range] {
     flex: 1;
     height: 3px;
-    accent-color: $color-primary;
+    accent-color: var(--color-primary);
     cursor: pointer;
   }
 
@@ -256,7 +263,7 @@
     font-size: $text-label;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
 
     span {
       display: flex;

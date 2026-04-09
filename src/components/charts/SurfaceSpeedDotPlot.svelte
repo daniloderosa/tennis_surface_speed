@@ -6,11 +6,16 @@
   let { activeStep = 0 } = $props();
 
   const data = rawData.filter(d => ['Hard', 'Clay', 'Grass'].includes(d.surface));
-  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
+  const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
+  const COLORS_DARK  = { Hard: '#5E81AC', Clay: '#c1622e', Grass: '#5eaa42' };
+  function getColors() {
+    const dark = typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
+    return dark ? COLORS_DARK : COLORS_LIGHT;
+  }
   const SURFACES = ['Clay', 'Hard', 'Grass']; // ordine Y: terra, cemento, erba
   const LABELS  = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const M = { top: 20, right: 20, bottom: 55, left: 70 };
-  const H0 = 220, H1 = 320;
+  const H0 = 264, H1 = 384;
 
   let containerEl;
   let svgEl;
@@ -76,6 +81,7 @@
 
   $effect(() => {
     if (!svgEl || width === 0) return;
+    const C = getColors();
     const w    = width;
     const step = firstDraw ? 0 : untrack(() => latchedStep);
     firstDraw = false;
@@ -114,7 +120,7 @@
       .attr('r', r)
       .attr('cx', d => xS(d.speed))
       .attr('cy', d => getY(d.surface, step, innerH))
-      .attr('fill', d => COLORS[d.surface])
+      .attr('fill', d => C[d.surface])
       .attr('stroke', 'white')
       .attr('stroke-width', isMobile ? 0.5 : 1.5)
       .attr('opacity', 0.75)
@@ -156,7 +162,7 @@
         .attr('y', getY(surf, step, innerH))
         .attr('text-anchor', 'end')
         .attr('dominant-baseline', 'middle')
-        .attr('fill', COLORS[surf])
+        .attr('fill', C[surf])
         .attr('font-size', 14)
         .attr('font-family', 'Roboto Mono, monospace')
         .attr('opacity', step >= 1 ? 1 : 0)

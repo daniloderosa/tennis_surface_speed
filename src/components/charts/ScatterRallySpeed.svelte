@@ -2,7 +2,12 @@
   import * as d3 from 'd3';
   import data from '$data/rally_length_by_tournament_2025.json';
 
-  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
+  const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
+  const COLORS_DARK  = { Hard: '#5E81AC', Clay: '#c1622e', Grass: '#5eaa42' };
+  function getColors() {
+    const dark = typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
+    return dark ? COLORS_DARK : COLORS_LIGHT;
+  }
   const LABELS  = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const M = { top: 40, right: 30, bottom: 65, left: 65 };
@@ -37,6 +42,7 @@
   });
 
   function draw(w, h) {
+    const C = getColors();
     const W = w - M.left - M.right;
     const H = h - M.top  - M.bottom;
 
@@ -95,7 +101,7 @@
       .attr('cx', d => xScale(d.speed))
       .attr('cy', d => yScale(d.rally_avg))
       .attr('r', 5)
-      .attr('fill', d => COLORS[d.surface])
+      .attr('fill', d => C[d.surface])
       .attr('fill-opacity', 0.8)
       .attr('stroke', '#2E3440')
       .attr('stroke-width', 1)
@@ -116,11 +122,11 @@
     // Legenda
     const leg = root.append('g').attr('transform', `translate(${M.left}, 8)`);
     SURFACES.forEach((surf, i) => {
-      const lx = i * 110;
+      const lx = [0, 80, 175][i];
       leg.append('rect').attr('x', lx).attr('y', 0)
-        .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', COLORS[surf]);
+        .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', C[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
-        .attr('fill', '#666666').attr('font-size', '14px')
+        .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
         .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
     });
   }
@@ -139,7 +145,7 @@
       style="left: {tooltip.x}px; top: {tooltip.y}px"
     >
       <div class="tt-name">
-        <span class="tt-dot" style="background:{COLORS[tooltip.d.surface]}"></span>
+        <span class="tt-dot" style="background:{getColors()[tooltip.d.surface]}"></span>
         {tooltip.d.tournament}
       </div>
       <div class="tt-row">

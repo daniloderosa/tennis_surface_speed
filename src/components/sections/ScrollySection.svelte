@@ -82,19 +82,20 @@
   .step-card {
     max-width: 520px;
     width: 100%;
-    background: rgba($color-surface, 0.92);
-    border-left: 3px solid $color-primary;
+    background: var(--color-surface);
+    border-left: 3px solid var(--color-primary);
     padding: 1.25rem 1.5rem;
     font-size: $text-step;
     line-height: $line-height-body;
     pointer-events: all;
     backdrop-filter: blur(4px);
+    transition: background 0.3s ease;
   }
 
   .subtext {
     margin-top: 0.5rem;
     font-size: $text-label;
-    color: $color-text-muted;
+    color: var(--color-text-muted);
   }
 
   @include mobile {

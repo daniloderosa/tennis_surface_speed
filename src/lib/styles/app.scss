@@ -46,6 +46,20 @@
   --z-tooltip: #{$z-tooltip};
 }
 
+// ── Dark mode ───────────────────────────────────────────
+[data-theme="dark"] {
+  --color-bg:           #{$dark-color-bg};
+  --color-surface:      #{$dark-color-surface};
+  --color-surface-2:    #{$dark-color-surface-2};
+  --color-border:       #{$dark-color-border};
+  --color-text:         #{$dark-color-text};
+  --color-text-muted:   #{$dark-color-text-muted};
+  --color-text-faint:   #{$dark-color-text-faint};
+  --color-primary:      #88C0D0;
+  --color-highlight:    #EBCB8B;
+  --color-hard:         #5E81AC;
+}
+
 // ── Reset ───────────────────────────────────────────────
 *, *::before, *::after {
   box-sizing: border-box;
@@ -59,11 +73,12 @@ html {
 }
 
 body {
-  background-color: $color-bg;
-  color: $color-text;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: $font-sans;
   line-height: $line-height-body;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3 {

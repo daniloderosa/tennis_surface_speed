@@ -3,11 +3,16 @@
   import { untrack } from 'svelte';
   import rawData from '$data/surface_speed_by_year.json';
 
-  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
+  const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
+  const COLORS_DARK  = { Hard: '#5E81AC', Clay: '#c1622e', Grass: '#5eaa42' };
+  function getColors() {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    return dark ? COLORS_DARK : COLORS_LIGHT;
+  }
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const M = { top: 40, right: 30, bottom: 50, left: 55 };
-  const H = 380;
+  const H = 456;
 
   const grouped = d3.group(rawData, d => d.surface);
   const byYear  = d3.group(rawData, d => d.year);
@@ -98,6 +103,7 @@
   });
 
   function buildChart(w, m) {
+    const C = getColors();
     const innerW = w - M.left - M.right;
     const innerH = H - M.top - M.bottom;
     const xS  = makeXScale(w);
@@ -138,7 +144,7 @@
         .datum(sd)
         .attr('class', `line-${surf}`)
         .attr('fill', 'none')
-        .attr('stroke', COLORS[surf])
+        .attr('stroke', C[surf])
         .attr('stroke-width', 2)
         .attr('d', lg);
     });
@@ -150,7 +156,7 @@
       .attr('stroke', '#D8DEE9').attr('stroke-width', 1).attr('stroke-dasharray', '4,3');
     SURFACES.forEach(surf => {
       ch.append('circle').attr('class', `ch-dot-${surf}`)
-        .attr('r', 4).attr('fill', COLORS[surf])
+        .attr('r', 4).attr('fill', C[surf])
         .attr('stroke', '#2E3440').attr('stroke-width', 1.5);
     });
 
@@ -174,16 +180,17 @@
     // Legenda
     const leg = root.append('g').attr('transform', `translate(${M.left}, 8)`);
     SURFACES.forEach((surf, i) => {
-      const lx = i * 110;
+      const lx = [0, 80, 175][i];
       leg.append('rect').attr('x', lx).attr('y', 0)
-        .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', COLORS[surf]);
+        .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', C[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
-        .attr('fill', '#666666').attr('font-size', '14px')
+        .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
         .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
     });
   }
 
   function updateMode(w, m) {
+    const C = getColors();
     const innerW = w - M.left - M.right;
     const innerH = H - M.top - M.bottom;
     const xS  = makeXScale(w);
@@ -275,7 +282,7 @@
         <div class="tt-year">{tooltip.year}</div>
         {#each tooltip.rows as row}
           <div class="tt-row">
-            <span class="tt-dot" style="background:{COLORS[row.surf]}"></span>
+            <span class="tt-dot" style="background:{getColors()[row.surf]}"></span>
             <span class="tt-label">{LABELS[row.surf]}</span>
             <span class="tt-val">{row.value}</span>
           </div>
