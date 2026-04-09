@@ -46,7 +46,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -178,7 +178,7 @@
       leg.append('rect').attr('x', lx).attr('y', 0)
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', COLORS[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
-        .attr('fill', '#666666').attr('font-size', '12px')
+        .attr('fill', '#666666').attr('font-size', '14px')
         .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
     });
   }

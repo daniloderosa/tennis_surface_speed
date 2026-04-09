@@ -9,7 +9,7 @@
   const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const SURFACES = ['Clay', 'Hard', 'Grass']; // ordine Y: terra, cemento, erba
   const LABELS  = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
-  const M = { top: 20, right: 20, bottom: 40, left: 70 };
+  const M = { top: 20, right: 20, bottom: 55, left: 70 };
   const H0 = 220, H1 = 320;
 
   let containerEl;
@@ -58,7 +58,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -98,9 +98,9 @@
 
     g.append('text')
       .attr('class', 'x-label')
-      .attr('x', innerW / 2).attr('y', innerH + 35)
+      .attr('x', innerW / 2).attr('y', innerH + 46)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#D8DEE9').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
       .text('Surface Speed Rating');
 
@@ -157,7 +157,7 @@
         .attr('text-anchor', 'end')
         .attr('dominant-baseline', 'middle')
         .attr('fill', COLORS[surf])
-        .attr('font-size', 12)
+        .attr('font-size', 14)
         .attr('font-family', 'Roboto Mono, monospace')
         .attr('opacity', step >= 1 ? 1 : 0)
         .text(LABELS[surf]);
@@ -181,7 +181,7 @@
 
     root.select('.x-label')
       .transition().duration(400)
-      .attr('y', innerH + 35);
+      .attr('y', innerH + 46);
 
     root.select('.dots').selectAll('circle')
       .interrupt()

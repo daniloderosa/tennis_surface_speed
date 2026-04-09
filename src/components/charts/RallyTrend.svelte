@@ -6,7 +6,7 @@
   const COLORS   = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
-  const M = { top: 40, right: 30, bottom: 50, left: 55 };
+  const M = { top: 40, right: 30, bottom: 65, left: 65 };
   const H = 380;
 
   const MIN_YEAR = 1990;
@@ -38,7 +38,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -118,11 +118,11 @@
     // Y axis label
     g.append('text')
       .attr('transform', 'rotate(-90)')
-      .attr('x', -innerH / 2).attr('y', -42)
+      .attr('x', -innerH / 2).attr('y', -52)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#D8DEE9').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
-      .text('durata media degli scambi');
+      .text('Durata media degli scambi');
 
     // Linee e dot per superficie
     SURFACES.forEach(surf => {
@@ -186,7 +186,7 @@
       leg.append('rect').attr('x', lx).attr('y', 0)
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', COLORS[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
-        .attr('fill', '#666666').attr('font-size', '12px')
+        .attr('fill', '#666666').attr('font-size', '14px')
         .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
     });
   }

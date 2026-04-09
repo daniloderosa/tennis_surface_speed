@@ -5,7 +5,7 @@
   const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const LABELS  = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const SURFACES = ['Grass', 'Hard', 'Clay'];
-  const M = { top: 40, right: 30, bottom: 55, left: 55 };
+  const M = { top: 40, right: 30, bottom: 65, left: 65 };
 
   let containerEl;
   let svgEl;
@@ -27,7 +27,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -69,9 +69,9 @@
       .call(styleAxis);
 
     g.append('text')
-      .attr('x', W / 2).attr('y', H + 44)
+      .attr('x', W / 2).attr('y', H + 56)
       .attr('text-anchor', 'middle')
-      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
       .text('Surface Speed Rating');
 
@@ -82,11 +82,11 @@
 
     g.append('text')
       .attr('transform', 'rotate(-90)')
-      .attr('x', -H / 2).attr('y', -42)
+      .attr('x', -H / 2).attr('y', -52)
       .attr('text-anchor', 'middle')
-      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
-      .text('durata media degli scambi');
+      .text('Durata media degli scambi');
 
     // Punti
     g.append('g').selectAll('circle')
@@ -120,7 +120,7 @@
       leg.append('rect').attr('x', lx).attr('y', 0)
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', COLORS[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
-        .attr('fill', '#666666').attr('font-size', '12px')
+        .attr('fill', '#666666').attr('font-size', '14px')
         .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
     });
   }
@@ -147,7 +147,7 @@
         <span class="tt-val">{d3.format('.2f')(tooltip.d.speed)}</span>
       </div>
       <div class="tt-row">
-        <span class="tt-label">Durata media scambi</span>
+        <span class="tt-label">Durata media degli scambi</span>
         <span class="tt-val">{d3.format('.2f')(tooltip.d.rally_avg)}</span>
       </div>
     </div>
