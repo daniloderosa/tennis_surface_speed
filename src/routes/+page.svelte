@@ -4,15 +4,12 @@
   import ScrollySection   from '$components/sections/ScrollySection.svelte';
   import StripPlot        from '$components/charts/StripPlot.svelte';
   import ScatterRallySpeed from '$components/charts/ScatterRallySpeed.svelte';
-  import LineHistorical   from '$components/charts/LineHistorical.svelte';
   import AnimationSection from '$components/animations/AnimationSection.svelte';
   import SurfaceSpeedDotPlot from '$components/charts/SurfaceSpeedDotPlot.svelte';
   import SurfaceSpeedTrend   from '$components/charts/SurfaceSpeedTrend.svelte';
 
   let activeStepDot = $state(undefined);
   let activeStep2 = $state(undefined);
-  let activeStep3 = $state(undefined);
-  let activeStep4 = $state(undefined);
 
   const steps2 = [
     {
@@ -25,40 +22,14 @@
     }
   ];
 
-  const steps3 = [
-    {
-      text: 'Dal 1991 al 2025: le tre superfici mantengono distanze stabili. L\'erba rallenta leggermente, la terra accelera poco, l\'hard oscilla.',
-      subtext: 'Le linee non convergono.'
-    },
-    {
-      text: 'Il periodo 2005–2010 è spesso citato come momento di "convergenza". I dati mostrano variazioni, non rivoluzione.',
-      subtext: 'La percezione ha amplificato il cambiamento.'
-    },
-    {
-      text: 'I rally si allungano su tutte le superfici — in modo quasi identico. Non sono le superfici a cambiare: è il modo di giocare.',
-      subtext: 'Giocatori più forti, più resistenti, più tattici su qualsiasi manto.'
-    }
-  ];
-
-  const steps4 = [
-    {
-      text: 'La mappa reale dei tornei ATP: ogni torneo al suo posto, ordinato per velocità. Le eccezioni non sono errori — sono la regola.',
-      subtext: 'Scorri i label per esplorare.'
-    },
-    {
-      text: 'Perché tanta variazione? Altitudine (Gstaad a 1.000m), temperatura, marca delle palline, tipo di manto — ogni fattore contribuisce.',
-      subtext: 'La categoria di superficie è un punto di partenza, non una destinazione.'
-    }
-  ];
-
   const stepsDot = [
     {
-      text: 'Ogni punto è un torneo. Sull\'asse orizzontale, la velocità della superficie: più a destra, più ace vengono prodotti rispetto alla media.',
-      subtext: 'Tutti insieme, per ora.'
+      text: 'Ogni cerchio è un torneo. Più a destra si trova il cerchio, più ace sono stati registrati rispetto al previsto.',
+      subtext: 'Passa il mouse o clicca su un cerchio per conoscere il suo rating.'
     },
     {
-      text: 'Separando i tornei per tipo di superficie, emerge subito qualcosa di inatteso: le tre categorie si sovrappongono. Alcuni tornei su terra sono più veloci di molti tornei su cemento.',
-      subtext: 'La categoria di superficie è un punto di partenza, non una destinazione.'
+      text: 'In alcuni casi le tre superfici si sovrappongono: alcuni tornei su terra sono più veloci di tornei sul cemento (la superficie più diffusa), mentre l\'erba è mediamente la più veloce.',
+  
     }
   ];
 </script>
@@ -71,9 +42,30 @@
 
 <AnimationSection />
 
+<div class="bridge-text">
+    <p>
+    L'esistenza di superfici così diverse ha portato, nel corso dei decenni, allo sviluppo di giocatori specialisti
+    su alcune superfici: c'era chi sapeva giocare bene "da fondo" e prediligeva la terra, e chi invece amava sfruttare
+    la velocità dell'erba facendo serve&volley ad ogni punto. 
+    <br><br>
+    Negli ultimi 10-15 anni, però, nella comunità di appassionati si discute sempre più di una 'omologazione' delle superfici:
+    i giocatori giocano tutti da fondo con molto topspin e il serve&volley è scomparso dal circuito (almeno fino a qualche anno fa), perché tanto le superfici sono tutte simili
+    e quindi il modo di giocare può essere uno solo. È davvero così? 
+    <br><br>
+    Jeff Sackmann, creatore del sito TennisAbstract, ha ideato un modo per misurare la velocità dei diversi tornei: il Surface Speed Rating. Questo indice supera il problema 
+    che, se avessimo due giocatori molto forti al servizio, a prescindere dalla superficie ci ritroveremmo con un numero di ace o servizi vincenti molto più alto del normale. 
+        <br><br>
+    Il surface speed rating funziona così: per ogni partita, il modello stima quanti ace il servitore avrebbe fatto su una superficie teoricamente neutra - la media del tour in quell'anno - 
+    contro quel particolare avversario. Questo numero atteso tiene conto della qualità del servitore, della capacità di risposta del ricevitore, e di come entrambi si comportano storicamente.
+Poi confronta l'atteso con gli ace realmente prodotti. Se Wimbledon genera più ace del previsto, il suo rating sale sopra 1. Se il Roland Garros ne genera meno, il suo rating scende sotto 1.
+Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un rating di 1.25 significa che su quel campo vengono prodotti il 25% di ace in più del previsto; 0.75 significa il 25% in meno.
+
+  </p>
+</div>
+
 <div class="section-wrapper dot-section">
   <div class="section-label">
-    <span>A</span> La velocità reale dei tornei
+    <span>A</span> La velocità dei tornei nel 2025
   </div>
   <ScrollySection
     chartComponent={SurfaceSpeedDotPlot}
@@ -84,7 +76,7 @@
 </div>
 
 <div class="bridge-text">
-  <p>Ma questa è solo una fotografia del 2025. Per capire se le superfici si sono davvero avvicinate nel tempo, bisogna guardare indietro di trent'anni.</p>
+  <p>Proviamo ad allargare lo sguardo: per capire se le superfici si sono davvero avvicinate nel tempo, allarghiamo l'analisi agli ultimi trent'anni.</p>
 </div>
 
 <div class="section-wrapper">
@@ -94,6 +86,21 @@
   <div class="trend-wrapper">
     <SurfaceSpeedTrend />
   </div>
+</div>
+
+<div class="bridge-text">
+  <p>Nel corso degli anni, le tre linee non convergono: l'erba e il cemento sono in modo costante più veloci della terra. L'ace rate,
+    invece, mostra come si serve sempre meglio: se nei primi anni Novanta si faceva un ace circa ogni 20 punti, negli ultimi anni succede 
+    ogni 13 punti. 
+    <br><br>
+    Ma la terra non si è velocizzata (continua a essere la solita superficie: un mix di mattoni e terracotta), sono cambiati i giocatori: 
+    più forti fisicamente, più bravi tecnicamente e, soprattutto, con delle racchette che permettono di tirare più forte (e quindi di fare più ace). 
+    <br><br>
+    Quindi non è cambiato niente negli ultimi decenni, e il tennis è rimasto uguale? Ovviamente no, chiunque sia appassionato o apra YouTube 
+    per vedere un video degli anni Novanta si accorgerà di come il gioco è mutato profondamente: più topspin, più scambi da fondo, colpi potenti 
+    e movimenti degli atleti più rapidi. Una buona sintesi di tutto questo potrebbe essere la durata media degli scambi, che si è allungata 
+    in modo costante per tutti questi motivi.  
+  </p>
 </div>
 
 <div class="section-wrapper">
@@ -107,26 +114,8 @@
   />
 </div>
 
-<div class="section-wrapper">
-  <div class="section-label">
-    <span>03</span> Com'è cambiato nel tempo?
-  </div>
-  <ScrollySection
-    chartComponent={LineHistorical}
-    steps={steps3}
-    bind:activeStep={activeStep3}
-  />
-</div>
-
-<div class="section-wrapper">
-  <div class="section-label">
-    <span>04</span> Oggi: la mappa reale dei tornei
-  </div>
-  <ScrollySection
-    chartComponent={StripPlot}
-    steps={steps4}
-    bind:activeStep={activeStep4}
-  />
+<div class="bridge-text">
+  <p>hard, terra, erba — le etichette restano.</p>
 </div>
 
 <Outro />
@@ -163,14 +152,12 @@
   }
 
   .bridge-text {
-    max-width: 640px;
-    margin: 4rem auto;
-    padding: 0 2rem;
+        max-width: 640px;
+    margin: 0 auto;
+    padding: 3rem 2rem 0;
     font-size: 1.1rem;
-    line-height: var(--line-height-body);
-    color: var(--color-text-muted);
-    font-family: var(--font-serif);
-    font-style: italic;
+    line-height: 1.7;
+    color: var(--color-text);
   }
 
   /* Override spaziature solo per la sezione dot plot */

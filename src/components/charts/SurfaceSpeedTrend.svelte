@@ -17,13 +17,13 @@
       field: 'speed_avg',
       domain: [0.5, 1.45],
       fmt:   d3.format('.2f'),
-      desc:  'Ace rate aggiustato per la qualità dei giocatori, indicizzato alla media del tour (1.0 = media). Misura la velocità fisica della superficie.',
+      desc:  'Ace rate aggiustato per la qualità dei giocatori, indicizzato alla media del tour (1 = media annuale). Misura la velocità fisica della superficie.',
     },
     ace: {
       field: 'ace_rate_avg',
       domain: [0.02, 0.18],
       fmt:   d => d3.format('.1%')(d),
-      desc:  'Percentuale grezza di ace su tutti i punti giocati. Sale su tutte le superfici nel tempo: i giocatori servono meglio, non i campi cambiano.',
+      desc:  'Percentuale di ace su tutti i punti giocati. Sale su tutte le superfici nel tempo: i giocatori servono meglio, non i campi cambiano.',
     },
   };
 
@@ -165,7 +165,7 @@
       leg.append('rect').attr('x', lx).attr('y', 0)
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', COLORS[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
-        .attr('fill', '#D8DEE9').attr('font-size', '12px')
+        .attr('fill', '#666666').attr('font-size', '12px')
         .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
     });
   }

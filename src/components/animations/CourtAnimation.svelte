@@ -182,9 +182,9 @@
   {#if surface === 'compare'}
     <div class="compare-controls">
       <div class="slider-wrap">
-        <span class="slider-label">← A</span>
+        <span class="slider-label">→</span>
         <input type="range" min="0" max="1000" bind:value={sliderVal} aria-label="Posizione pallina"/>
-        <span class="slider-label">B →</span>
+        <span class="slider-label">←</span>
       </div>
       <div class="legend">
         <span><span class="dot" style="background:#4a7c3f"></span>Erba</span>

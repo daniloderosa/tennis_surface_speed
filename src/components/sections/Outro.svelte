@@ -41,7 +41,7 @@
 
   p {
     font-size: 1.05rem;
-    color: var(--color-text-muted);
+    color: var(--color-text);
     line-height: var(--line-height-body);
     margin-bottom: 1.25rem;
     font-family: var(--font-sans);

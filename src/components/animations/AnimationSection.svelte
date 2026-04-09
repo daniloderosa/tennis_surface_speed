@@ -14,7 +14,6 @@
   const EXIT_START = 0.60;
   const SCENE_OFF  = 120;
   const CLAY_DELAY = 25;
-  const TOTAL_VH   = CLAY_DELAY + 3 * SCENE_OFF + Math.ceil(ENTER * SCENE_LEN) + 125;
 
   const SVG_OFF    = 72;
   const CMP_OFF    = 90;
@@ -22,26 +21,57 @@
   const TEXT_RISE  = 62;
   const TEXT_START = 0.35;
   const TEXT_ENTER = 0.40;
-  const EXIT_DELTA = (1 - EXIT_START) * SCENE_LEN; // = svgTY exitDist → stessa velocità
+  const EXIT_DELTA = (1 - EXIT_START) * SCENE_LEN;
+
+  // ─── Secondo box (tutte e 3 le superfici) ────────────────────────────────
+  // DELTA: shift temporale → il secondo box usa textTY(p - DELTA)
+  // Il primo box esce dalla viewport a p≈0.865; textTY ha TEXT_START=0.35
+  // → DELTA = 0.865 - 0.35 = 0.515 fa sì che il secondo appaia esattamente allora
+  //
+  // SURF_EXTRA: vh extra aggiunti all'offset di ogni superficie successiva per evitare
+  // overlap visivo (ogni superficie ora esce più tardi del previsto).
+  // Derivato da: SCENE_LEN * (DELTA + 1 - EXIT_START - ENTER) ≈ 111
+  const DELTA      = 0.515;
+  const SURF_EXTRA = Math.ceil(SCENE_LEN * (DELTA + 1 - EXIT_START - ENTER)); // ≈ 111
+
+  // Ogni delle 3 superfici estese aggiunge SURF_EXTRA prima della successiva.
+  // Compare (i=3) ne riceve solo 2 (inizia in relazione alla partenza di grass, non alla fine).
+  const TOTAL_VH   = CLAY_DELAY + 3 * SCENE_OFF + Math.ceil(ENTER * SCENE_LEN) + 125 + 3 * SURF_EXTRA;
 
   const BALL_P = 0.06;
 
   const surfaces = ['clay', 'hard', 'grass', 'compare'];
 
-  const stepTexts = [
+  const stepTexts2 = [
     {
       color: '#c1622e',
-      text: 'La terra rossa è la superficie più lenta del circuito. I rimbalzi sono alti e lenti, i rally si allungano.',
+      text: 'Una palla che rimbalza alta e con tanta rotazione (topspin) porta i giocatori lontano dalla linea di fondo, allungando gli scambi.',
     },
     {
       color: '#3a6080',
-      text: 'Il cemento è la superficie più diffusa. Rimbalzo medio, velocità media, il campo di tutti.',
+      text: '[Secondo box cemento — testo placeholder.]',
     },
     {
       color: '#4a7c3f',
-      text: "L'erba è la superficie più veloce. Il rimbalzo è basso e rapido, i punti si decidono in pochi scambi.",
+      text: '[Secondo box erba — testo placeholder.]',
     },
   ];
+
+  const stepTexts = [
+    {
+      color: '#c1622e',
+      text: 'La terra rossa è la superficie più lenta del circuito: la terra rallenta molto la pallina, facendola alzare molto dopo il rimbalzo.',
+    },
+    {
+      color: '#3a6080',
+      text: 'Il cemento ha un rimbalzo regolare e a media altezza, che permette ai giocatori di giocare una palla più piatta e con meno topspin.',
+    },
+    {
+      color: '#4a7c3f',
+      text: "Sull'erba la palla ha un rimbalzo basso e rapido, con la palla che schizza appena rimbalza, tenendo una traiettoria bassa.",
+    },
+  ];
+
 
   // ─── Stato reattivo ────────────────────────────────────────────────────────
   let outerEl      = $state(null);
@@ -95,11 +125,34 @@
 
   function sceneP(i) {
     if (!outerEl) return -2;
-    const offPx   = SCENE_OFF * innerH / 100;
-    const lenPx   = SCENE_LEN * innerH / 100;
-    const delayPx = CLAY_DELAY * innerH / 100;
-    return (scrollY - containerTop - i * offPx - delayPx) / lenPx;
+    const offPx   = SCENE_OFF   * innerH / 100;
+    const lenPx   = SCENE_LEN   * innerH / 100;
+    const delayPx = CLAY_DELAY  * innerH / 100;
+    const extraPx = i * SURF_EXTRA * innerH / 100; // ogni superficie aggiunge SURF_EXTRA per le successive
+    return (scrollY - containerTop - i * offPx - delayPx - extraPx) / lenPx;
   }
+
+  // SVG esteso (terra/cemento/erba): resta fermo finché il secondo box non inizia ad uscire
+  function svgTY_ext(p) {
+    const exitStart2 = EXIT_START + DELTA;
+    const exitDist   = (1 - EXIT_START) * SCENE_LEN;
+    if (p <= 0)          return SVG_OFF;
+    if (p < ENTER)       return lerpL(SVG_OFF, 0, p / ENTER);
+    if (p < exitStart2)  return 0;
+    if (p < exitStart2 + (1 - EXIT_START))
+      return lerpL(0, -exitDist, (p - exitStart2) / (1 - EXIT_START));
+    return -exitDist;
+  }
+
+  // Primo box (terra/cemento/erba): entra come ora, poi continua a 1:1 con lo scroll
+  function textTY1_ext(p) {
+    if (p < TEXT_START) return TEXT_OFF;
+    if (p < TEXT_ENTER) return lerpL(TEXT_OFF, 0, (p - TEXT_START) / (TEXT_ENTER - TEXT_START));
+    return -(p - TEXT_ENTER) * SCENE_LEN;
+  }
+
+  // Secondo box (terra/cemento/erba): identico a textTY ma shiftato di DELTA
+  function textTY2_ext(p) { return textTY(p - DELTA); }
 
   function svgTY(p, isCompare = false) {
     const off      = isCompare ? CMP_OFF : SVG_OFF;
@@ -112,11 +165,6 @@
     return -exitDist;
   }
 
-  /*
-   * textTY: il testo compare direttamente in posizione sopra l'SVG (top≈16vh)
-   * non appena l'SVG ha finito di entrare (p = ENTER). Nessuna transizione di salita.
-   * Poi esce insieme all'SVG.
-   */
   function textTY(p) {
     if (p < TEXT_START)   return TEXT_OFF;
     if (p < TEXT_ENTER)   return lerpL(TEXT_OFF, 0, (p - TEXT_START) / (TEXT_ENTER - TEXT_START));
@@ -126,12 +174,20 @@
     return -TEXT_RISE - EXIT_DELTA;
   }
 
+
   // ─── Derived ───────────────────────────────────────────────────────────────
   let scenes = $derived(
     surfaces.map((_, i) => {
       const p = sceneP(i);
+      if (i < 3) {
+        return {
+          svgT:   `translateY(${svgTY_ext(p)}vh)`,
+          textT:  `translateX(-50%) translateY(${textTY1_ext(p)}vh)`,
+          text2T: `translateX(-50%) translateY(${textTY2_ext(p)}vh)`,
+        };
+      }
       return {
-        svgT:  `translateY(${svgTY(p, i === 3)}vh)`,
+        svgT:  `translateY(${svgTY(p, true)}vh)`,
         textT: `translateX(-50%) translateY(${textTY(p)}vh)`,
       };
     })
@@ -161,6 +217,17 @@
         </div>
       {/each}
 
+      <!-- Secondi box per terra, cemento, erba -->
+      {#each stepTexts2 as step, i}
+        <div
+          class="text-panel"
+          style="transform: {scenes[i].text2T}; border-left-color: {step.color}"
+        >
+          <p>{step.text}</p>
+        </div>
+      {/each}
+
+
       <div class="cta-hint" class:visible={compareSettled}>
         ↔ Trascina per confrontare le superfici
       </div>
@@ -169,12 +236,6 @@
   </div>
 </div>
 
-<div class="bridge-text">
-  <p>
-    Ma le superfici sono davvero così diverse? Negli ultimi trent'anni qualcosa
-    è cambiato nel modo in cui i giocatori le affrontano.
-  </p>
-</div>
 
 <style lang="scss">
   @use 'variables' as *;
