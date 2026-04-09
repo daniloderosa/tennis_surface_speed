@@ -3,7 +3,7 @@
   import { untrack } from 'svelte';
   import rawData from '$data/rally_length_by_year_surface.json';
 
-  const COLORS   = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#4a7c3f' };
+  const COLORS   = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const M = { top: 40, right: 30, bottom: 50, left: 55 };
@@ -22,9 +22,6 @@
     Math.ceil( d3.max(filtered, d => d.rally_avg) * 10) / 10 + 0.2,
   ];
 
-  // Scala raggio: area proporzionale a n_matches
-  const rScale = d3.scaleSqrt().domain([1, MAX_N]).range([2, 10]).clamp(true);
-
   let containerEl;
   let svgEl;
   let width = $state(700);
@@ -41,7 +38,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .attr('fill', '#8a9ab5').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -87,6 +84,11 @@
     const yS  = makeYScale(innerH);
     const lg  = makeLineGen(xS, yS);
 
+    // Scala raggio: ridotta del 70% su mobile
+    const isMobile = w < 768;
+    const rRange = isMobile ? [1, 5] : [2, 10];
+    const rScale = d3.scaleSqrt().domain([1, MAX_N]).range(rRange).clamp(true);
+
     const root = d3.select(svgEl);
     root.selectAll('*').remove();
     root.attr('width', w).attr('height', H);
@@ -118,9 +120,9 @@
       .attr('transform', 'rotate(-90)')
       .attr('x', -innerH / 2).attr('y', -42)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#8a9ab5').attr('font-size', '11px')
+      .attr('fill', '#D8DEE9').attr('font-size', '11px')
       .attr('font-family', 'Roboto Mono, monospace')
-      .text('scambi medi');
+      .text('durata media degli scambi');
 
     // Linee e dot per superficie
     SURFACES.forEach(surf => {

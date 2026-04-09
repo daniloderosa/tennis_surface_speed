@@ -4,6 +4,7 @@
   import ScrollySection   from '$components/sections/ScrollySection.svelte';
   import StripPlot        from '$components/charts/StripPlot.svelte';
   import RallyTrend from '$components/charts/RallyTrend.svelte';
+  import ScatterRallySpeed from '$components/charts/ScatterRallySpeed.svelte';
   import AnimationSection from '$components/animations/AnimationSection.svelte';
   import SurfaceSpeedDotPlot from '$components/charts/SurfaceSpeedDotPlot.svelte';
   import SurfaceSpeedTrend   from '$components/charts/SurfaceSpeedTrend.svelte';
@@ -105,6 +106,15 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
   <p>hard, terra, erba — le etichette restano.</p>
 </div>
 
+<div class="section-wrapper">
+  <div class="section-label">
+    <span>C</span> Velocità e durata degli scambi nel 2025
+  </div>
+  <div class="trend-wrapper scatter-wrapper">
+    <ScatterRallySpeed />
+  </div>
+</div>
+
 <Outro />
 
 <style>
@@ -157,5 +167,9 @@ Il risultato è un numero indicizzato: 1 è la media del tour in quell'anno. Un 
     max-width: var(--chart-max-width);
     margin: 0 auto;
     padding: 2rem 2rem 4rem;
+  }
+
+  .scatter-wrapper {
+    height: 460px;
   }
 </style>

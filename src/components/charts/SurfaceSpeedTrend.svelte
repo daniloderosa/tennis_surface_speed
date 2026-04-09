@@ -3,7 +3,7 @@
   import { untrack } from 'svelte';
   import rawData from '$data/surface_speed_by_year.json';
 
-  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#4a7c3f' };
+  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const M = { top: 40, right: 30, bottom: 50, left: 55 };
@@ -46,7 +46,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .attr('fill', '#8a9ab5').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -193,11 +193,11 @@
     const root = d3.select(svgEl);
     const t    = root.transition().duration(400);
 
-    root.select('.y-axis').transition(t)
+    root.select('.y-axis')
       .call(d3.axisLeft(yS).ticks(5).tickFormat(cfg.fmt))
       .call(styleAxis);
 
-    root.select('.grid').transition(t)
+    root.select('.grid')
       .call(d3.axisLeft(yS).ticks(5).tickSize(-innerW).tickFormat(''))
       .call(ax => {
         ax.select('.domain').remove();

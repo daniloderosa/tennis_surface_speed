@@ -17,6 +17,7 @@ RALLY_CSV    = ROOT / "static/data/charting-m-stats-Rally.csv"
 MATCHES_CSV  = ROOT / "static/data/charting-m-matches.csv"
 SPEED_JSON   = ROOT / "src/lib/data/surface_speed_current.json"
 OUT_JSON     = ROOT / "src/lib/data/rally_length_by_tournament.json"
+OUT_JSON_2025 = ROOT / "src/lib/data/rally_length_by_tournament_2025.json"
 OUT_YEARLY   = ROOT / "src/lib/data/rally_length_by_year_surface.json"
 
 # Midpoint per range di rally
@@ -205,6 +206,68 @@ if match_pct >= 70:
     print(f"Salvato: {OUT_JSON}")
 else:
     print("ATTENZIONE: join < 70% — verifica NAME_MAP e usa solo speed data per la sezione 2.")
+
+# -------------------------------------------------------------------
+# 7. Versione 2025-only per lo scatterplot
+# -------------------------------------------------------------------
+print("\n─── Sezione 1b: rally length per torneo (solo 2025) ───")
+
+match_data_2025 = defaultdict(lambda: defaultdict(dict))
+
+with open(RALLY_CSV, encoding="utf-8") as f:
+    reader = csv.DictReader(f)
+    for row in reader:
+        mid = row["match_id"]
+        year_str = mid[:4]
+        if not year_str.isdigit() or int(year_str) != 2025:
+            continue
+        r = row["row"]
+        if r not in MIDPOINTS:
+            continue
+        tourn_raw = extract_tournament(mid)
+        if not tourn_raw:
+            continue
+        pts = int(row["pts"]) if row["pts"].isdigit() else 0
+        match_data_2025[tourn_raw][mid][r] = match_data_2025[tourn_raw][mid].get(r, 0) + pts
+
+tournament_rally_2025 = {}
+for tourn_raw, matches in match_data_2025.items():
+    total_numerator = 0
+    total_pts = 0
+    for mid, ranges in matches.items():
+        match_pts = sum(ranges.values())
+        if match_pts == 0:
+            continue
+        match_num = sum(MIDPOINTS[r] * p for r, p in ranges.items())
+        total_numerator += match_num
+        total_pts += match_pts
+    if total_pts == 0:
+        continue
+    avg = round(total_numerator / total_pts, 2)
+    normalized = normalize_name(tourn_raw)
+    if normalized:
+        tournament_rally_2025[normalized] = {"rally_avg": avg, "n_matches": len(matches)}
+
+result_2025 = []
+matched_2025 = 0
+for d in speed_data:
+    name = d["tournament"]
+    if name in tournament_rally_2025:
+        result_2025.append({
+            "tournament": name,
+            "surface":    d["surface"],
+            "speed":      d["speed"],
+            "rally_avg":  tournament_rally_2025[name]["rally_avg"],
+            "n_matches":  tournament_rally_2025[name]["n_matches"],
+        })
+        matched_2025 += 1
+
+match_pct_2025 = matched_2025 / len(speed_data) * 100
+print(f"Join 2025: {matched_2025}/{len(speed_data)} tornei ({match_pct_2025:.0f}%)")
+result_2025.sort(key=lambda x: x["speed"], reverse=True)
+with open(OUT_JSON_2025, "w", encoding="utf-8") as f:
+    json.dump(result_2025, f, ensure_ascii=False, indent=2)
+print(f"Salvato: {OUT_JSON_2025}")
 
 # ===================================================================
 # SEZIONE 2 — Rally length per anno e superficie (tutti gli anni)

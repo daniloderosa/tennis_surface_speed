@@ -6,7 +6,7 @@
   let { activeStep = 0 } = $props();
 
   const data = rawData.filter(d => ['Hard', 'Clay', 'Grass'].includes(d.surface));
-  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#4a7c3f' };
+  const COLORS  = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const SURFACES = ['Clay', 'Hard', 'Grass']; // ordine Y: terra, cemento, erba
   const LABELS  = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
   const M = { top: 20, right: 20, bottom: 40, left: 70 };
@@ -58,7 +58,7 @@
     sel.select('.domain').attr('stroke', '#4C566A');
     sel.selectAll('.tick line').attr('stroke', '#4C566A');
     sel.selectAll('.tick text')
-      .attr('fill', '#8a9ab5').attr('font-size', '11px')
+      .style('fill', 'var(--color-text-muted)').attr('font-size', '11px')
       .attr('font-family', 'Roboto Mono, monospace');
   }
 
@@ -100,21 +100,24 @@
       .attr('class', 'x-label')
       .attr('x', innerW / 2).attr('y', innerH + 35)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#6c757d').attr('font-size', '11px')
+      .attr('fill', '#D8DEE9').attr('font-size', '11px')
       .attr('font-family', 'Roboto Mono, monospace')
       .text('Surface Speed Rating');
+
+    const isMobile = w < 768;
+    const r = isMobile ? 5 : 10;
 
     g.append('g').attr('class', 'dots')
       .selectAll('circle')
       .data(data, d => d.tournament)
       .enter().append('circle')
-      .attr('r', 20)
+      .attr('r', r)
       .attr('cx', d => xS(d.speed))
       .attr('cy', d => getY(d.surface, step, innerH))
       .attr('fill', d => COLORS[d.surface])
       .attr('stroke', 'white')
-      .attr('stroke-width', 1.5)
-      .attr('opacity', 0.88)
+      .attr('stroke-width', isMobile ? 0.5 : 1.5)
+      .attr('opacity', 0.75)
       .style('cursor', 'pointer')
       .on('mouseover', showTooltip)
       .on('mousemove', moveTooltip)
@@ -127,6 +130,20 @@
           visible: !isSame,
           x: event.clientX - rect.left,
           y: event.clientY - rect.top,
+          d,
+        };
+      })
+      .on('touchend', function(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        const touch = event.changedTouches[0];
+        const rect = containerEl.getBoundingClientRect();
+        const d = d3.select(this).datum();
+        const isSame = tooltip.visible && tooltip.d?.tournament === d.tournament;
+        tooltip = {
+          visible: !isSame,
+          x: touch.clientX - rect.left,
+          y: touch.clientY - rect.top,
           d,
         };
       });
