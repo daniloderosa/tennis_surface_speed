@@ -70,7 +70,7 @@
     "n_matches": 3
   },
   {
-    "tournament": "Tour Finals",
+    "tournament": "ATP Finals",
     "surface": "Hard",
     "speed": 1.32,
     "rally_avg": 4.31,
@@ -98,7 +98,7 @@
     "n_matches": 6
   },
   {
-    "tournament": "Cincinnati Masters",
+    "tournament": "Cincinnati",
     "surface": "Hard",
     "speed": 1.18,
     "rally_avg": 3.34,
@@ -112,7 +112,7 @@
     "n_matches": 9
   },
   {
-    "tournament": "Miami Masters",
+    "tournament": "Miami",
     "surface": "Hard",
     "speed": 1.17,
     "rally_avg": 4.13,
@@ -189,7 +189,7 @@
     "n_matches": 1
   },
   {
-    "tournament": "Shanghai Masters",
+    "tournament": "Shanghai",
     "surface": "Hard",
     "speed": 1.07,
     "rally_avg": 4.15,
@@ -238,7 +238,7 @@
     "n_matches": 3
   },
   {
-    "tournament": "Canada Masters",
+    "tournament": "Canada",
     "surface": "Hard",
     "speed": 0.99,
     "rally_avg": 3.96,
@@ -259,7 +259,7 @@
     "n_matches": 24
   },
   {
-    "tournament": "Paris Masters",
+    "tournament": "Paris",
     "surface": "Hard",
     "speed": 0.95,
     "rally_avg": 4.37,
@@ -315,7 +315,7 @@
     "n_matches": 4
   },
   {
-    "tournament": "Madrid Masters",
+    "tournament": "Madrid",
     "surface": "Clay",
     "speed": 0.79,
     "rally_avg": 3.99,
@@ -329,7 +329,7 @@
     "n_matches": 2
   },
   {
-    "tournament": "Indian Wells Masters 2025",
+    "tournament": "Indian Wells",
     "surface": "Hard",
     "speed": 0.72,
     "rally_avg": 4.36,
@@ -357,7 +357,7 @@
     "n_matches": 46
   },
   {
-    "tournament": "Rome Masters",
+    "tournament": "Rome",
     "surface": "Clay",
     "speed": 0.61,
     "rally_avg": 4.42,
@@ -371,7 +371,7 @@
     "n_matches": 1
   },
   {
-    "tournament": "Monte Carlo Masters",
+    "tournament": "Monte Carlo",
     "surface": "Clay",
     "speed": 0.56,
     "rally_avg": 4.51,

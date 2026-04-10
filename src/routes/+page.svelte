@@ -2,7 +2,6 @@
   import { t } from '$lib/i18n.svelte.js';
 
   import Hero              from '$components/sections/Hero.svelte';
-  import Outro             from '$components/sections/Outro.svelte';
   import Metodologia       from '$components/sections/Metodologia.svelte';
   import ScrollySection    from '$components/sections/ScrollySection.svelte';
   import RallyTrend        from '$components/charts/RallyTrend.svelte';
@@ -33,11 +32,9 @@
 <AnimationSection />
 
 <div class="bridge-text">
-  <p>
-    {#each t('bridge1').split('\n\n') as para}
-      {para}<br><br>
-    {/each}
-  </p>
+  {#each t('bridge1').split('\n\n').filter(p => p.trim()) as para}
+    <p>{para.trim()}</p>
+  {/each}
 </div>
 
 <div class="section-wrapper dot-section">
@@ -51,7 +48,9 @@
 </div>
 
 <div class="bridge-text">
-  <p>{t('bridge2')}</p>
+  {#each t('bridge2').split('\n\n').filter(p => p.trim()) as para}
+    <p>{para.trim()}</p>
+  {/each}
 </div>
 
 <div class="section-wrapper">
@@ -62,11 +61,9 @@
 </div>
 
 <div class="bridge-text">
-  <p>
-    {#each t('bridge3').split('\n\n') as para}
-      {para}<br><br>
-    {/each}
-  </p>
+  {#each t('bridge3').split('\n\n').filter(p => p.trim()) as para}
+    <p>{para.trim()}</p>
+  {/each}
 </div>
 
 <div class="section-wrapper">
@@ -77,7 +74,12 @@
 </div>
 
 <div class="bridge-text">
-  <p>{t('bridge4')}</p>
+  {#each t('bridge4').split('\n\n').filter(p => p.trim()) as para}
+    <p>{@html para.trim().replace(
+      'Secondo Sackmann (link)',
+      '<a href="https://www.tennisabstract.com/blog/2025/12/10/surface-speed-convergence-one-more-time/" target="_blank" rel="noopener">Secondo Sackmann</a>'
+    )}</p>
+  {/each}
 </div>
 
 <div class="section-wrapper">
@@ -86,8 +88,6 @@
     <ScatterRallySpeed />
   </div>
 </div>
-
-<Outro />
 
 <Metodologia />
 
@@ -120,6 +120,20 @@
     font-size: 1.1rem;
     line-height: 1.7;
     color: var(--color-text);
+  }
+
+  .bridge-text p {
+    margin-bottom: 1.4em;
+  }
+
+  .bridge-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .bridge-text a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* Override spaziature solo per la sezione dot plot */

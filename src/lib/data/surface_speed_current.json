@@ -50,7 +50,7 @@
     "speed": 1.33
   },
   {
-    "tournament": "Tour Finals",
+    "tournament": "ATP Finals",
     "surface": "Hard",
     "speed": 1.32
   },
@@ -70,7 +70,7 @@
     "speed": 1.21
   },
   {
-    "tournament": "Cincinnati Masters",
+    "tournament": "Cincinnati",
     "surface": "Hard",
     "speed": 1.18
   },
@@ -80,7 +80,7 @@
     "speed": 1.18
   },
   {
-    "tournament": "Miami Masters",
+    "tournament": "Miami",
     "surface": "Hard",
     "speed": 1.17
   },
@@ -130,7 +130,7 @@
     "speed": 1.09
   },
   {
-    "tournament": "Indian Wells Masters 2026",
+    "tournament": "Indian Wells 2026",
     "surface": "Hard",
     "speed": 1.09
   },
@@ -140,7 +140,7 @@
     "speed": 1.08
   },
   {
-    "tournament": "Shanghai Masters",
+    "tournament": "Shanghai",
     "surface": "Hard",
     "speed": 1.07
   },
@@ -175,7 +175,7 @@
     "speed": 1.01
   },
   {
-    "tournament": "Canada Masters",
+    "tournament": "Canada",
     "surface": "Hard",
     "speed": 0.99
   },
@@ -190,7 +190,7 @@
     "speed": 0.97
   },
   {
-    "tournament": "Paris Masters",
+    "tournament": "Paris",
     "surface": "Hard",
     "speed": 0.95
   },
@@ -235,7 +235,7 @@
     "speed": 0.8
   },
   {
-    "tournament": "Madrid Masters",
+    "tournament": "Madrid",
     "surface": "Clay",
     "speed": 0.79
   },
@@ -250,7 +250,7 @@
     "speed": 0.74
   },
   {
-    "tournament": "Indian Wells Masters 2025",
+    "tournament": "Indian Wells",
     "surface": "Hard",
     "speed": 0.72
   },
@@ -280,7 +280,7 @@
     "speed": 0.65
   },
   {
-    "tournament": "Rome Masters",
+    "tournament": "Rome",
     "surface": "Clay",
     "speed": 0.61
   },
@@ -290,7 +290,7 @@
     "speed": 0.56
   },
   {
-    "tournament": "Monte Carlo Masters",
+    "tournament": "Monte Carlo",
     "surface": "Clay",
     "speed": 0.56
   },

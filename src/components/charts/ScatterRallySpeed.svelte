@@ -1,7 +1,7 @@
 <script>
   import * as d3 from 'd3';
   import { t, getLang } from '$lib/i18n.svelte.js';
-  import data from '$data/rally_length_by_tournament_2025.json';
+  import rawData from '$data/rally_scatter_multiyear.json';
 
   const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
   const COLORS_DARK  = { Hard: '#5E81AC', Clay: '#c1622e', Grass: '#5eaa42' };
@@ -13,14 +13,27 @@
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const M = { top: 40, right: 30, bottom: 65, left: 65 };
 
-  // Bridge derived: garantisce rebuild al cambio lingua
+  // Bridge derived for lang reactivity
   const lang = $derived(getLang());
+
+  // Available years (descending)
+  const years = [...new Set(rawData.map(d => d.year))].sort((a, b) => b - a);
+
+  // Selected year — default 2025
+  let selectedYear = $state(2025);
+
+  // Filtered data reactive on year
+  const filteredData = $derived(rawData.filter(d => d.year === selectedYear));
+
+  // Fixed domain over ALL years for stable axes
+  const xDomainAll = d3.extent(rawData, d => d.speed);
+  const yDomainAll = d3.extent(rawData, d => d.rally_avg);
 
   let containerEl;
   let svgEl;
   let width  = $state(600);
   let height = $state(420);
-  let tooltip = $state(null); // { x, y, d }
+  let tooltip = $state(null);
 
   $effect(() => {
     if (!containerEl) return;
@@ -41,23 +54,24 @@
   }
 
   $effect(() => {
-    void lang; // legge il derived → dipendenza garantita su cambio lingua
+    void lang;
+    const fd = filteredData; // reactive on selectedYear + lang
     if (!svgEl || width === 0 || height === 0) return;
-    draw(width, height);
+    draw(width, height, fd);
   });
 
-  function draw(w, h) {
+  function draw(w, h, data) {
     const C = getColors();
+    const L = getLabels();
     const W = w - M.left - M.right;
     const H = h - M.top  - M.bottom;
 
-    const xExt = d3.extent(data, d => d.speed);
-    const yExt = d3.extent(data, d => d.rally_avg);
-
     const xScale = d3.scaleLinear()
-      .domain([xExt[0] - 0.05, xExt[1] + 0.05]).range([0, W]);
+      .domain([xDomainAll[0] - 0.05, xDomainAll[1] + 0.05])
+      .range([0, W]);
     const yScale = d3.scaleLinear()
-      .domain([yExt[0] - 0.1, yExt[1] + 0.1]).range([H, 0]);
+      .domain([yDomainAll[0] - 0.1, yDomainAll[1] + 0.1])
+      .range([H, 0]);
 
     const root = d3.select(svgEl);
     root.selectAll('*').remove();
@@ -74,9 +88,12 @@
       });
 
     // X axis
+    const isMobile = w < 768;
     g.append('g')
       .attr('transform', `translate(0,${H})`)
-      .call(d3.axisBottom(xScale).ticks(6).tickFormat(d3.format('.2f')))
+      .call(isMobile
+        ? d3.axisBottom(xScale).ticks(4).tickFormat(d3.format('.2f'))
+        : d3.axisBottom(xScale).ticks(6).tickFormat(d3.format('.2f')))
       .call(styleAxis);
 
     g.append('text')
@@ -99,8 +116,8 @@
       .attr('font-family', 'Roboto Mono, monospace')
       .text(t('axis_rally'));
 
-    // Punti
-    const DOT_R = 10;
+    // Dots
+    const DOT_R = isMobile ? 7 : 10;
     g.append('g').selectAll('circle')
       .data(data)
       .join('circle')
@@ -123,9 +140,18 @@
       .on('mouseleave', function() {
         d3.select(this).attr('r', DOT_R).attr('stroke', '#2E3440').attr('stroke-width', 1);
         tooltip = null;
+      })
+      .on('click', function(event, d) {
+        event.stopPropagation();
+        const svgRect = svgEl.getBoundingClientRect();
+        const containerRect = containerEl.getBoundingClientRect();
+        const cx = svgRect.left - containerRect.left + M.left + xScale(d.speed);
+        const cy = svgRect.top  - containerRect.top  + M.top  + yScale(d.rally_avg);
+        const isSame = tooltip && tooltip.d?.tournament === d.tournament;
+        tooltip = isSame ? null : { x: cx, y: cy, d };
       });
 
-    // Legenda
+    // Legend
     const leg = root.append('g').attr('transform', `translate(${M.left}, 8)`);
     SURFACES.forEach((surf, i) => {
       const lx = [0, 80, 175][i];
@@ -133,43 +159,132 @@
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', C[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
         .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
-        .attr('font-family', 'Roboto, sans-serif').text(getLabels()[surf]);
+        .attr('font-family', 'Roboto, sans-serif').text(L[surf]);
     });
   }
 </script>
 
-<div class="scatter-outer" bind:this={containerEl} aria-label="Scatterplot velocità superficie vs lunghezza media rally per torneo ATP 2025.">
-  <svg bind:this={svgEl}></svg>
+<div class="scatter-outer" onclick={() => { tooltip = null; }} role="presentation">
+  <!-- Year selector -->
+  <div class="controls">
+    <label for="scatter-year">{t('scatter_year')}</label>
+    <select id="scatter-year" bind:value={selectedYear}>
+      {#each years as y}
+        <option value={y}>{y}</option>
+      {/each}
+    </select>
+    <span class="count">— {filteredData.length} {t('scatter_tournaments')}</span>
+  </div>
 
-  {#if tooltip}
-    {@const flipLeft = tooltip.x > (width * 0.65)}
-    {@const flipUp   = tooltip.y > (height * 0.65)}
-    <div
-      class="tooltip"
-      class:flip={flipLeft}
-      class:flip-up={flipUp}
-      style="left: {tooltip.x}px; top: {tooltip.y}px"
-    >
-      <div class="tt-name">
-        <span class="tt-dot" style="background:{getColors()[tooltip.d.surface]}"></span>
-        {tooltip.d.tournament}
+  <!-- Chart -->
+  <div class="chart-area" bind:this={containerEl} aria-label="Scatterplot velocità superficie vs durata media degli scambi">
+    <svg bind:this={svgEl}></svg>
+
+    {#if tooltip}
+      {@const flipLeft = tooltip.x > (width * 0.65)}
+      {@const flipUp   = tooltip.y > (height * 0.65)}
+      <div
+        class="tooltip"
+        class:flip={flipLeft}
+        class:flip-up={flipUp}
+        style="left: {tooltip.x}px; top: {tooltip.y}px"
+      >
+        <div class="tt-name">
+          <span class="tt-dot" style="background:{getColors()[tooltip.d.surface]}"></span>
+          {tooltip.d.tournament}
+        </div>
+        <div class="tt-row">
+          <span class="tt-label">{getLabels()[tooltip.d.surface]}</span>
+        </div>
+        <div class="tt-row">
+          <span class="tt-label">Speed Rating</span>
+          <span class="tt-val">{d3.format('.2f')(tooltip.d.speed)}</span>
+        </div>
+        <div class="tt-row">
+          <span class="tt-label">{t('axis_rally')}</span>
+          <span class="tt-val">{d3.format('.2f')(tooltip.d.rally_avg)}</span>
+        </div>
+        <div class="tt-row">
+          <span class="tt-label">Match</span>
+          <span class="tt-val">{tooltip.d.n_matches}</span>
+        </div>
       </div>
-      <div class="tt-row">
-        <span class="tt-label">Speed Rating</span>
-        <span class="tt-val">{d3.format('.2f')(tooltip.d.speed)}</span>
-      </div>
-      <div class="tt-row">
-        <span class="tt-label">{t('axis_rally')}</span>
-        <span class="tt-val">{d3.format('.2f')(tooltip.d.rally_avg)}</span>
-      </div>
-    </div>
-  {/if}
+    {/if}
+  </div>
+
+  <p class="note">{t('scatter_note')}</p>
 </div>
 
 <style>
-  .scatter-outer { position: relative; width: 100%; height: 100%; }
+  .scatter-outer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Year selector ─────────────────────────────────────────── */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+  }
+
+  label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.78rem;
+  }
+
+  select {
+    appearance: none;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    padding: 0.3rem 2rem 0.3rem 0.75rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2388C0D0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  select:hover, select:focus {
+    border-color: var(--color-primary);
+    outline: none;
+  }
+
+  .count {
+    color: var(--color-text-faint);
+    font-size: 0.78rem;
+  }
+
+  /* ── Chart ─────────────────────────────────────────────────── */
+  .chart-area {
+    position: relative;
+    flex: 1;
+    min-height: 0;
+  }
+
   svg { display: block; overflow: visible; width: 100%; height: 100%; }
 
+  /* ── Note ──────────────────────────────────────────────────── */
+  .note {
+    margin-top: 0.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--color-text-faint);
+    line-height: 1.5;
+  }
+
+  /* ── Tooltip ───────────────────────────────────────────────── */
   .tooltip {
     position: absolute;
     transform: translateX(12px) translateY(-50%);
@@ -196,11 +311,7 @@
     font-weight: 500;
     margin-bottom: 0.4rem;
   }
-  .tt-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
+  .tt-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .tt-row {
     display: flex;
     align-items: center;

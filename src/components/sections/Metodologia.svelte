@@ -6,7 +6,17 @@
   <div class="inner">
     <h2 class="title">{t('metodo_title')}</h2>
     <div class="body">
-      <p>{t('metodo_body')}</p>
+      <p>
+        Fonti: <a href="https://www.tennisabstract.com" target="_blank" rel="noopener">Tennis Abstract</a>
+        e il progetto <a href="https://github.com/JeffSackmann/tennis_MatchChartingProject" target="_blank" rel="noopener">Match Charting Project</a>
+        di Jeff Sackmann sono stati il cuore di questo articolo. Il progetto MCP è gestito da volontari
+        che registrano per ciascuna partita i dati relativi a punti, servizi, scambi. Essendo un progetto
+        volontario, non tutte le partite sono mappate e questo si potrebbe rispecchiare nella mancanza di
+        alcuni dati (per esempio sull'erba negli anni Novanta).
+      </p>
+      <p>Testi: Danilo De Rosa</p>
+      <p>Codice: Danilo De Rosa, con il supporto di Claude Code.</p>
+      <p>Si ringrazia Salvatore Tramontano per l'aiuto e i consigli.</p>
     </div>
   </div>
 </section>
@@ -45,6 +55,16 @@
       line-height: 1.75;
       color: var(--color-text-muted);
       margin-bottom: 1rem;
+
+      &:last-child { margin-bottom: 0; }
+    }
+
+    a {
+      color: var(--color-primary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+
+      &:hover { color: var(--color-text); }
     }
   }
 </style>
