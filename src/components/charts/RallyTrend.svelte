@@ -1,6 +1,7 @@
 <script>
   import * as d3 from 'd3';
   import { untrack } from 'svelte';
+  import { t, getLang } from '$lib/i18n.svelte.js';
   import rawData from '$data/rally_length_by_year_surface.json';
 
   const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
@@ -10,7 +11,7 @@
     return dark ? COLORS_DARK : COLORS_LIGHT;
   }
   const SURFACES = ['Grass', 'Hard', 'Clay'];
-  const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
+  function getLabels() { return { Grass: t('label_grass'), Hard: t('label_hard'), Clay: t('label_clay') }; }
   const M = { top: 40, right: 30, bottom: 65, left: 65 };
   const H = 456;
 
@@ -77,7 +78,11 @@
       .defined(d => d.rally_avg != null);
   }
 
+  // Bridge derived: garantisce rebuild al cambio lingua
+  const lang = $derived(getLang());
+
   $effect(() => {
+    void lang; // legge il derived → dipendenza garantita su cambio lingua
     if (!svgEl || width === 0) return;
     buildChart(width);
   });
@@ -113,7 +118,9 @@
     // X axis
     g.append('g').attr('class', 'x-axis')
       .attr('transform', `translate(0,${innerH})`)
-      .call(d3.axisBottom(xS).ticks(8).tickFormat(d3.format('d')))
+      .call(isMobile
+        ? d3.axisBottom(xS).tickValues([1995, 2005, 2015, 2025]).tickFormat(d3.format('d'))
+        : d3.axisBottom(xS).ticks(8).tickFormat(d3.format('d')))
       .call(styleAxis);
 
     // Y axis
@@ -128,7 +135,7 @@
       .attr('text-anchor', 'middle')
       .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
-      .text('Durata media degli scambi');
+      .text(t('axis_rally'));
 
     // Linee e dot per superficie
     SURFACES.forEach(surf => {
@@ -193,7 +200,7 @@
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', C[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
         .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
-        .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
+        .attr('font-family', 'Roboto, sans-serif').text(getLabels()[surf]);
     });
   }
 
@@ -250,7 +257,7 @@
         {#each tooltip.rows as row}
           <div class="tt-row">
             <span class="tt-dot" style="background:{getColors()[row.surf]}"></span>
-            <span class="tt-label">{LABELS[row.surf]}</span>
+            <span class="tt-label">{getLabels()[row.surf]}</span>
             <span class="tt-val">{row.value}</span>
             {#if row.nMatches != null}
               <span class="tt-n">({row.nMatches} match)</span>

@@ -1,4 +1,6 @@
 <script>
+  import { t } from '$lib/i18n.svelte.js';
+
   let scrolled = $state(false);
 
   $effect(() => {
@@ -16,20 +18,17 @@
 
 <section class="hero">
   <div class="hero-inner">
-    <h1 class="title">Non tutte le superfici sono uguali</h1>
+    <h1 class="title">{t('hero_title')}</h1>
     <div class="rule" aria-hidden="true"></div>
-    <p class="subtitle">
-      Nel tennis professionistico, il nome della superficie
-      conta meno di quanto pensi.
-    </p>
-    <p class="pub-date">Marzo 2026</p>
+    <p class="subtitle">{t('hero_subtitle')}</p>
+    <p class="pub-date">{t('hero_date')}</p>
   </div>
 
   <div class="scroll-hint" class:hidden={scrolled} aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
-    <span>Scorri</span>
+    <span>{t('hero_scroll')}</span>
   </div>
 </section>
 

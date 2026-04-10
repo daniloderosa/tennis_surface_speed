@@ -1,6 +1,7 @@
 <script>
   import * as d3 from 'd3';
   import { untrack } from 'svelte';
+  import { t, getLang } from '$lib/i18n.svelte.js';
   import rawData from '$data/surface_speed_by_year.json';
 
   const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
@@ -10,7 +11,7 @@
     return dark ? COLORS_DARK : COLORS_LIGHT;
   }
   const SURFACES = ['Grass', 'Hard', 'Clay'];
-  const LABELS   = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
+  function getLabels() { return { Grass: t('label_grass'), Hard: t('label_hard'), Clay: t('label_clay') }; }
   const M = { top: 40, right: 30, bottom: 50, left: 55 };
   const H = 456;
 
@@ -22,15 +23,21 @@
       field: 'speed_avg',
       domain: [0.5, 1.45],
       fmt:   d3.format('.2f'),
-      desc:  'Ace rate aggiustato per la qualità dei giocatori, indicizzato alla media del tour (1 = media annuale). Misura la velocità fisica della superficie.',
     },
     ace: {
       field: 'ace_rate_avg',
       domain: [0.02, 0.18],
       fmt:   d => d3.format('.1%')(d),
-      desc:  'Percentuale di ace su tutti i punti giocati. Sale su tutte le superfici nel tempo: i giocatori servono meglio, non i campi cambiano.',
     },
   };
+
+  const modeDesc = $derived({
+    speed: t('mode_speed_desc'),
+    ace:   t('mode_ace_desc'),
+  });
+
+  // Bridge derived: garantisce che $effect si ri-esegua al cambio lingua
+  const lang = $derived(getLang());
 
   let containerEl;
   let svgEl;
@@ -84,8 +91,9 @@
     return d3.scaleLinear().domain([1991, 2025]).range([0, w - M.left - M.right]);
   }
 
-  // Rebuild da zero su cambio width
+  // Rebuild da zero su cambio width o lingua
   $effect(() => {
+    void lang; // legge il derived → dipendenza garantita su cambio lingua
     if (!svgEl || width === 0) return;
     const w = width;
     const m = untrack(() => mode);
@@ -127,9 +135,12 @@
       });
 
     // X axis
+    const isMobile = w < 768;
     g.append('g').attr('class', 'x-axis')
       .attr('transform', `translate(0,${innerH})`)
-      .call(d3.axisBottom(xS).ticks(8).tickFormat(d3.format('d')))
+      .call(isMobile
+        ? d3.axisBottom(xS).tickValues([1995, 2005, 2015, 2025]).tickFormat(d3.format('d'))
+        : d3.axisBottom(xS).ticks(8).tickFormat(d3.format('d')))
       .call(styleAxis);
 
     // Y axis
@@ -185,7 +196,7 @@
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', C[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
         .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
-        .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
+        .attr('font-family', 'Roboto, sans-serif').text(getLabels()[surf]);
     });
   }
 
@@ -266,7 +277,7 @@
       <button class:active={mode === 'speed'} onclick={() => mode = 'speed'}>Speed Rating</button>
       <button class:active={mode === 'ace'}   onclick={() => mode = 'ace'}>Ace Rate %</button>
     </div>
-    <p class="mode-desc">{MODES[mode].desc}</p>
+    <p class="mode-desc">{modeDesc[mode]}</p>
   </div>
 
   <div class="chart-area" bind:this={containerEl} aria-label="Trend velocità superfici 1991–2025">
@@ -283,7 +294,7 @@
         {#each tooltip.rows as row}
           <div class="tt-row">
             <span class="tt-dot" style="background:{getColors()[row.surf]}"></span>
-            <span class="tt-label">{LABELS[row.surf]}</span>
+            <span class="tt-label">{getLabels()[row.surf]}</span>
             <span class="tt-val">{row.value}</span>
           </div>
         {/each}

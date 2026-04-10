@@ -1,5 +1,6 @@
 <script>
   import * as d3 from 'd3';
+  import { t, getLang } from '$lib/i18n.svelte.js';
   import data from '$data/rally_length_by_tournament_2025.json';
 
   const COLORS_LIGHT = { Hard: '#3a6080', Clay: '#c1622e', Grass: '#5eaa42' };
@@ -8,9 +9,12 @@
     const dark = typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
     return dark ? COLORS_DARK : COLORS_LIGHT;
   }
-  const LABELS  = { Grass: 'Erba', Hard: 'Cemento', Clay: 'Terra' };
+  function getLabels() { return { Grass: t('label_grass'), Hard: t('label_hard'), Clay: t('label_clay') }; }
   const SURFACES = ['Grass', 'Hard', 'Clay'];
   const M = { top: 40, right: 30, bottom: 65, left: 65 };
+
+  // Bridge derived: garantisce rebuild al cambio lingua
+  const lang = $derived(getLang());
 
   let containerEl;
   let svgEl;
@@ -37,6 +41,7 @@
   }
 
   $effect(() => {
+    void lang; // legge il derived → dipendenza garantita su cambio lingua
     if (!svgEl || width === 0 || height === 0) return;
     draw(width, height);
   });
@@ -79,7 +84,7 @@
       .attr('text-anchor', 'middle')
       .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
-      .text('Surface Speed Rating');
+      .text(t('axis_speed'));
 
     // Y axis
     g.append('g')
@@ -92,22 +97,23 @@
       .attr('text-anchor', 'middle')
       .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
       .attr('font-family', 'Roboto Mono, monospace')
-      .text('Durata media degli scambi');
+      .text(t('axis_rally'));
 
     // Punti
+    const DOT_R = 10;
     g.append('g').selectAll('circle')
       .data(data)
       .join('circle')
       .attr('cx', d => xScale(d.speed))
       .attr('cy', d => yScale(d.rally_avg))
-      .attr('r', 5)
+      .attr('r', DOT_R)
       .attr('fill', d => C[d.surface])
       .attr('fill-opacity', 0.8)
       .attr('stroke', '#2E3440')
       .attr('stroke-width', 1)
       .style('cursor', 'pointer')
       .on('mouseover', function(event, d) {
-        d3.select(this).attr('r', 7).attr('stroke', '#D8DEE9').attr('stroke-width', 1.5);
+        d3.select(this).attr('r', DOT_R + 2).attr('stroke', '#D8DEE9').attr('stroke-width', 1.5);
         const svgRect = svgEl.getBoundingClientRect();
         const containerRect = containerEl.getBoundingClientRect();
         const cx = svgRect.left - containerRect.left + M.left + xScale(d.speed);
@@ -115,7 +121,7 @@
         tooltip = { x: cx, y: cy, d };
       })
       .on('mouseleave', function() {
-        d3.select(this).attr('r', 5).attr('stroke', '#2E3440').attr('stroke-width', 1);
+        d3.select(this).attr('r', DOT_R).attr('stroke', '#2E3440').attr('stroke-width', 1);
         tooltip = null;
       });
 
@@ -127,7 +133,7 @@
         .attr('width', 12).attr('height', 12).attr('rx', 2).attr('fill', C[surf]);
       leg.append('text').attr('x', lx + 16).attr('y', 10)
         .style('fill', 'var(--color-text-muted)').attr('font-size', '14px')
-        .attr('font-family', 'Roboto, sans-serif').text(LABELS[surf]);
+        .attr('font-family', 'Roboto, sans-serif').text(getLabels()[surf]);
     });
   }
 </script>
@@ -153,7 +159,7 @@
         <span class="tt-val">{d3.format('.2f')(tooltip.d.speed)}</span>
       </div>
       <div class="tt-row">
-        <span class="tt-label">Durata media degli scambi</span>
+        <span class="tt-label">{t('axis_rally')}</span>
         <span class="tt-val">{d3.format('.2f')(tooltip.d.rally_avg)}</span>
       </div>
     </div>

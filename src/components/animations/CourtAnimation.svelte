@@ -1,4 +1,5 @@
 <script>
+  import { t } from '$lib/i18n.svelte.js';
   let { surface = 'clay', playing = false } = $props();
   // surface: 'clay' | 'hard' | 'grass' | 'compare'
   // playing: ball animation active (ignored in compare mode)
@@ -194,9 +195,9 @@
         <span class="slider-label">←</span>
       </div>
       <div class="legend">
-        <span><span class="dot" style="background:#4a7c3f"></span>Erba</span>
-        <span><span class="dot" style="background:#3a6080"></span>Cemento</span>
-        <span><span class="dot" style="background:#c1622e"></span>Terra</span>
+        <span><span class="dot" style="background:#4a7c3f"></span>{t('label_grass')}</span>
+        <span><span class="dot" style="background:#3a6080"></span>{t('label_hard')}</span>
+        <span><span class="dot" style="background:#c1622e"></span>{t('label_clay')}</span>
       </div>
     </div>
   {/if}

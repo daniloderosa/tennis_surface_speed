@@ -1,24 +1,15 @@
 <script>
-  // nessuno stato — componente statico
+  import { t } from '$lib/i18n.svelte.js';
 </script>
 
 <section class="outro">
   <div class="outro-inner">
-    <h2>La superficie esiste. La semplicità no.</h2>
-    <p>
-      Hard, terra, erba — le etichette restano. Ma dietro ogni torneo
-      c'è un cocktail di altitudine, temperatura, palline e manto che
-      sfugge alle categorie. Gstaad è terra, ma gioca come hard.
-      Indian Wells 2025 è hard, ma rally come Roland Garros.
-    </p>
-    <p>
-      Nel frattempo, il gioco cambia: i rally si allungano su ogni
-      superficie. Non perché le superfici convergano, ma perché i
-      giocatori — più forti, più resistenti, più tattici — si adattano
-      a qualsiasi velocità.
-    </p>
+    <h2>{t('outro_title')}</h2>
+    <p>{t('outro_p1')}</p>
+    <p>{t('outro_p2')}</p>
     <p class="byline">
-      Dati: <a href="https://www.tennisabstract.com" target="_blank" rel="noopener">Tennis Abstract</a>
+      {t('outro_data')}:
+      <a href="https://www.tennisabstract.com" target="_blank" rel="noopener">Tennis Abstract</a>
       · <a href="https://github.com/JeffSackmann/tennis_atp" target="_blank" rel="noopener">tennis_atp</a>
       · <a href="https://github.com/JeffSackmann/tennis_MatchChartingProject" target="_blank" rel="noopener">Match Charting Project</a>
       — Jeff Sackmann

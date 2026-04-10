@@ -1,10 +1,10 @@
 <script>
   import '$lib/styles/app.scss';
-  import ThemeToggle from '$components/ui/ThemeToggle.svelte';
+  import Topbar    from '$components/ui/Topbar.svelte';
   import BackToTop from '$components/ui/BackToTop.svelte';
   let { children } = $props();
 </script>
 
-<ThemeToggle />
+<Topbar />
 <BackToTop />
 {@render children()}

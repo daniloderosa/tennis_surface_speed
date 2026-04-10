@@ -42,35 +42,19 @@
 
   const surfaces = ['clay', 'hard', 'grass', 'compare'];
 
-  const stepTexts2 = [
-    {
-      color: '#c1622e',
-      text: 'Una palla che rimbalza alta e con tanta rotazione (topspin) porta i giocatori lontano dalla linea di fondo, allungando gli scambi.',
-    },
-    {
-      color: '#3a6080',
-      text: '[Secondo box cemento — testo placeholder.]',
-    },
-    {
-      color: '#4a7c3f',
-      text: '[Secondo box erba — testo placeholder.]',
-    },
-  ];
+  import { t } from '$lib/i18n.svelte.js';
 
-  const stepTexts = [
-    {
-      color: '#c1622e',
-      text: 'La terra rossa è la superficie più lenta del circuito: la terra rallenta molto la pallina, facendola alzare molto dopo il rimbalzo.',
-    },
-    {
-      color: '#3a6080',
-      text: 'Il cemento ha un rimbalzo regolare e a media altezza, che permette ai giocatori di giocare una palla più piatta e con meno topspin.',
-    },
-    {
-      color: '#4a7c3f',
-      text: "Sull'erba la palla ha un rimbalzo basso e rapido, con la palla che schizza appena rimbalza, tenendo una traiettoria bassa.",
-    },
-  ];
+  const stepTexts2 = $derived([
+    { color: '#c1622e', text: t('anim_clay2') },
+    { color: '#3a6080', text: t('anim_hard2') },
+    { color: '#4a7c3f', text: t('anim_grass2') },
+  ]);
+
+  const stepTexts = $derived([
+    { color: '#c1622e', text: t('anim_clay1') },
+    { color: '#3a6080', text: t('anim_hard1') },
+    { color: '#4a7c3f', text: t('anim_grass1') },
+  ]);
 
 
   // ─── Stato reattivo ────────────────────────────────────────────────────────
@@ -229,7 +213,7 @@
 
 
       <div class="cta-hint" class:visible={compareSettled}>
-        ↔ Trascina per confrontare le superfici
+        {t('anim_cta')}
       </div>
 
     </div>
