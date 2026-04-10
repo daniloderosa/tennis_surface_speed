@@ -83,7 +83,7 @@
     max-width: 520px;
     width: 100%;
     background: var(--color-surface);
-    border-left: 3px solid var(--color-primary);
+    border-left: 3px solid var(--color-highlight);
     padding: 1.25rem 1.5rem;
     font-size: $text-step;
     line-height: $line-height-body;

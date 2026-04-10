@@ -267,11 +267,21 @@
       </div>
     {/if}
   </div>
+  <p class="chart-caption">{t('rally_caption')}</p>
 </div>
 
 <style>
   .rally-outer { width: 100%; }
   .chart-area  { position: relative; }
+
+  .chart-caption {
+    margin-top: 0.75rem;
+    font-size: var(--text-label);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    padding: 0 0.25rem;
+  }
   svg          { display: block; overflow: visible; }
 
   .tooltip {

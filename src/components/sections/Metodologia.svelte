@@ -60,7 +60,7 @@
     }
 
     a {
-      color: var(--color-primary);
+      color: var(--color-highlight);
       text-decoration: underline;
       text-underline-offset: 3px;
 

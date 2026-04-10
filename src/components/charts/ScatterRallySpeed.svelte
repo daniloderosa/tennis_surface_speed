@@ -245,19 +245,23 @@
     appearance: none;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    color: var(--color-primary);
+    color: var(--color-highlight);
     font-family: var(--font-mono);
     font-size: 0.82rem;
     padding: 0.3rem 2rem 0.3rem 0.75rem;
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2388C0D0' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238B6200' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 0.5rem center;
     transition: border-color 0.2s, background 0.2s;
   }
 
+  :global([data-theme="dark"]) select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23EBCB8B' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  }
+
   select:hover, select:focus {
-    border-color: var(--color-primary);
+    border-color: var(--color-highlight);
     outline: none;
   }
 

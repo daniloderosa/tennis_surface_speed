@@ -106,7 +106,7 @@
     padding: 0.9rem 2rem;
     font-family: var(--font-mono);
     font-size: 1rem;
-    color: var(--color-primary);
+    color: var(--color-highlight);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     border-bottom: 1px solid var(--color-border);
@@ -131,7 +131,7 @@
   }
 
   .bridge-text a {
-    color: var(--color-primary);
+    color: var(--color-highlight);
     text-decoration: underline;
     text-underline-offset: 3px;
   }

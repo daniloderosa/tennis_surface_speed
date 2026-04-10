@@ -112,7 +112,7 @@
   function isDark() {
     return typeof document !== 'undefined' && document.documentElement.getAttribute('data-theme') === 'dark';
   }
-  function trailStroke()  { return isDark() ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.10)'; }
+  function trailStroke()  { return isDark() ? 'rgba(255,255,255,0.60)' : 'rgba(0,0,0,0.10)'; }
   function shadowFill()   { return isDark() ? 'rgba(0,0,0,0.40)' : 'rgba(0,0,0,0.15)'; }
   function shadowFill2()  { return isDark() ? 'rgba(0,0,0,0.50)' : 'rgba(0,0,0,0.20)'; }
 

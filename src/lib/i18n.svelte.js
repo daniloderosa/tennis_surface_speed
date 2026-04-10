@@ -98,6 +98,10 @@ const translations = {
       "Ace rate aggiustato per la qualità dei giocatori, indicizzato alla media del tour (1 = media annuale). Misura la velocità fisica della superficie.",
     mode_ace_desc:
       "Percentuale di ace su tutti i punti giocati. Sale su tutte le superfici nel tempo: i giocatori servono meglio, non i campi cambiano.",
+
+    // RallyTrend caption
+    rally_caption:
+      "La dimensione dei pallini è proporzionale al numero di partite registrate nel Match Charting Project per quell'anno e quella superficie.",
   },
 
   en: {
@@ -184,5 +188,9 @@ const translations = {
       "Ace rate adjusted for player quality, indexed to the tour average (1 = annual average). Measures the physical speed of the surface.",
     mode_ace_desc:
       "Percentage of aces on all points played. Rising across all surfaces over time: players are serving better, not courts changing.",
+
+    // RallyTrend caption
+    rally_caption:
+      "Dot size is proportional to the number of matches recorded in the Match Charting Project for that year and surface.",
   },
 };

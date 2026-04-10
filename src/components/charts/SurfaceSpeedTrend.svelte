@@ -325,8 +325,8 @@
   }
   button.active {
     background: var(--color-surface-2);
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: var(--color-highlight);
+    color: var(--color-highlight);
   }
   button:hover:not(.active) {
     border-color: var(--color-text-faint);

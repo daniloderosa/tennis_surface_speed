@@ -144,20 +144,22 @@
 
     // Linea rally (step 2)
     if (activeStep >= 2) {
+      const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--color-highlight').trim() || '#EBCB8B';
+
       // Asse Y destro
       g.append('g')
         .attr('transform', `translate(${W},0)`)
         .call(d3.axisRight(yRallyScale).ticks(5).tickFormat(d3.format('.1f')))
         .call(ax => {
-          ax.select('.domain').attr('stroke', '#88C0D0');
-          ax.selectAll('.tick text').attr('fill', '#88C0D0').attr('font-size', '11px').attr('font-family', "'Roboto Mono', monospace");
-          ax.selectAll('.tick line').attr('stroke', '#88C0D0');
+          ax.select('.domain').attr('stroke', accentColor);
+          ax.selectAll('.tick text').attr('fill', accentColor).attr('font-size', '11px').attr('font-family', "'Roboto Mono', monospace");
+          ax.selectAll('.tick line').attr('stroke', accentColor);
         });
 
       g.append('text')
         .attr('transform', 'rotate(90)')
         .attr('x', H / 2).attr('y', -(W + 54))
-        .attr('text-anchor', 'middle').attr('fill', '#88C0D0')
+        .attr('text-anchor', 'middle').attr('fill', accentColor)
         .attr('font-size', '12px').attr('font-family', "'Roboto', sans-serif")
         .text('Rally medi (colpi)');
 
@@ -169,7 +171,7 @@
         .datum(RALLY_BY_YEAR)
         .attr('d', rallyLine)
         .attr('fill', 'none')
-        .attr('stroke', '#88C0D0')
+        .attr('stroke', accentColor)
         .attr('stroke-width', 2)
         .attr('stroke-dasharray', '6,3')
         .attr('opacity', 0.85);
@@ -178,7 +180,7 @@
         .attr('x', xScale(2025) + 6)
         .attr('y', yRallyScale(RALLY_BY_YEAR.at(-1).rally))
         .attr('dominant-baseline', 'middle')
-        .attr('fill', '#88C0D0')
+        .attr('fill', accentColor)
         .attr('font-size', '11px')
         .attr('font-family', "'Barlow Condensed', sans-serif")
         .text('RALLY');

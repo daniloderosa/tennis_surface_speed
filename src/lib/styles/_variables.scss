@@ -1,50 +1,54 @@
 // ── Colori sfondo e superfici ───────────────────────────
-$color-bg:           #ffffff;
-$color-surface:      #f5f5f5;
-$color-surface-2:    #eeeeee;
-$color-border:       #e0e0e0;
+$color-bg: #ffffff;
+$color-surface: #f5f5f5;
+$color-surface-2: #eeeeee;
+$color-border: #e0e0e0;
 
 // ── Testo ───────────────────────────────────────────────
-$color-text:         #1a1a1a;
-$color-text-muted:   #666666;
-$color-text-faint:   #888888;
+$color-text: #1a1a1a;
+$color-text-muted: #666666;
+$color-text-faint: #888888;
 
 // ── Superfici tennis ────────────────────────────────────
-$color-hard:         #5E81AC;   // blu
-$color-clay:         #BF616A;   // rosso/arancio
-$color-grass:        #6B9E5A;   // verde (leggermente scurito per leggibilità su bianco)
+$color-hard: #5e81ac; // blu
+$color-clay: #bf616a; // rosso/arancio
+$color-grass: #6b9e5a; // verde (leggermente scurito per leggibilità su bianco)
 
 // ── Accenti e highlight ─────────────────────────────────
-$color-highlight:    #0066cc;
-$color-primary:      #0033a1;   // CUNY blue
-$color-secondary:    #002880;
+$color-highlight: #ffb300; // ambra scuro — contrasto 5.3:1 su bianco (WCAG AA)
+$color-primary: #8b6200; // alias — mantenuto per compatibilità
+$color-secondary: #7a5400;
 
 // ── Scala sequenziale ───────────────────────────────────
-$color-seq-min:      #C8DAF0;
-$color-seq-max:      #044F74;
+$color-seq-min: #c8daf0;
+$color-seq-max: #044f74;
 
 // ── Font ────────────────────────────────────────────────
-$font-display: 'PT Serif', Georgia, serif;
-$font-sans:    'Droid Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-$font-serif:   'PT Serif', Georgia, serif;
-$font-mono:    'Roboto Mono', monospace;
+$font-display: "PT Serif", Georgia, serif;
+$font-sans:
+  "Droid Sans",
+  -apple-system,
+  BlinkMacSystemFont,
+  sans-serif;
+$font-serif: "PT Serif", Georgia, serif;
+$font-mono: "Roboto Mono", monospace;
 
 // ── Tipografia ──────────────────────────────────────────
-$text-hero:          clamp(2.8rem, 6vw, 5rem);
+$text-hero: clamp(2.8rem, 6vw, 5rem);
 $text-section-title: clamp(1.6rem, 3vw, 2.4rem);
-$text-step:          1rem;
-$text-label:         0.8rem;
-$text-axis:          0.75rem;
-$line-height-body:   1.65;
+$text-step: 1rem;
+$text-label: 0.8rem;
+$text-axis: 0.75rem;
+$line-height-body: 1.65;
 
 // ── Layout ──────────────────────────────────────────────
-$step-width:      360px;
+$step-width: 360px;
 $chart-max-width: 960px;
-$section-gap:     6rem;
-$step-height:     85vh;
+$section-gap: 6rem;
+$step-height: 85vh;
 
 // ── Z-index ─────────────────────────────────────────────
-$z-sticky:  10;
+$z-sticky: 10;
 $z-overlay: 20;
 $z-tooltip: 30;
 
@@ -53,10 +57,10 @@ $breakpoint-sm: 768px;
 $breakpoint-lg: 1200px;
 
 // ── Dark mode overrides ──────────────────────────────────
-$dark-color-bg:           #1e2229;
-$dark-color-surface:      #2a303b;
-$dark-color-surface-2:    #343c4a;
-$dark-color-border:       #4C566A;
-$dark-color-text:         #ECEFF4;
-$dark-color-text-muted:   #D8DEE9;
-$dark-color-text-faint:   #8a9ab5;
+$dark-color-bg: #1e2229;
+$dark-color-surface: #2a303b;
+$dark-color-surface-2: #343c4a;
+$dark-color-border: #4c566a;
+$dark-color-text: #eceff4;
+$dark-color-text-muted: #d8dee9;
+$dark-color-text-faint: #8a9ab5;

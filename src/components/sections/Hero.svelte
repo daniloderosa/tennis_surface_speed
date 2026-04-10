@@ -64,7 +64,7 @@
   .rule {
     width: 3rem;
     height: 3px;
-    background-color: var(--color-primary);
+    background-color: var(--color-highlight);
     margin-bottom: 1.25rem;
   }
 
