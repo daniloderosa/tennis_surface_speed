@@ -20,7 +20,7 @@
   const M_DSK = { top: 20, right: 20, bottom: 55, left: 70 };
   const M_MOB = { top: 20, right: 15, bottom: 55, left: 55 };
   const H0 = 264, H1 = 384;
-  const H0_MOB = 420, H1_MOB = 500;
+  const H0_MOB = 520, H1_MOB = 600;
 
   // Bridge derived: garantisce rebuild al cambio lingua
   const lang = $derived(getLang());

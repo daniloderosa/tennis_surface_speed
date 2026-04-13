@@ -64,7 +64,7 @@ const translations = {
     anim_grass2:
       "È la superficie su cui si gioca meno, e quella che alcuni giocatori saltano totalmente: non tutti sanno giocare su erba.",
 
-    anim_cta: "↔ Trascina per confrontare le superfici",
+    anim_cta: "↔ Trascina lo slider sotto per confrontare le superfici",
 
     // Methodology
     metodo_title: "Metodologia",
@@ -107,8 +107,7 @@ const translations = {
   en: {
     // Hero
     hero_title: "Has tennis become all the same?",
-    hero_subtitle:
-      "A visual analysis of surface homogenisation in tennis.",
+    hero_subtitle: "A visual analysis of surface homogenisation in tennis.",
     hero_date: "April 2026",
     hero_scroll: "Scroll",
 

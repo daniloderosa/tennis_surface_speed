@@ -157,7 +157,7 @@
       padding: 1rem 1rem 2rem;
     }
     .scatter-wrapper {
-      height: 520px;
+      height: 620px;
     }
     .bridge-text {
       padding: 2rem 1rem 0;
