@@ -158,15 +158,15 @@
         {@const trailGrass = Array.from({length: N}, (_, i) => getBallPos(segs_grass, (i / (N-1)) * tCmp))}
         {@const trailHard  = Array.from({length: N}, (_, i) => getBallPos(segs_hard,  (i / (N-1)) * tCmp))}
         {@const trailClay  = Array.from({length: N}, (_, i) => getBallPos(segs_clay,  (i / (N-1)) * tCmp))}
-        <polyline points={trailGrass.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
-        <polyline points={trailHard.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
-        <polyline points={trailClay.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailGrass.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--color-trail)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailHard.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--color-trail)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
+        <polyline points={trailClay.map( p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--color-trail)" stroke-width="2" stroke-dasharray="7 5" stroke-linecap="round"/>
       {/if}
     {:else if t_current > 0}
       {@const segsActive = surface === 'clay' ? segs_clay : surface === 'grass' ? segs_grass : segs_hard}
       {@const N = 50}
       {@const trail = Array.from({length: N}, (_, i) => getBallPos(segsActive, (i / (N-1)) * t_current))}
-      <polyline points={trail.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke={trailStroke()} stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
+      <polyline points={trail.map(p => `${p.x},${p.y}`).join(' ')} fill="none" stroke="var(--color-trail)" stroke-width="2.5" stroke-dasharray="7 5" stroke-linecap="round"/>
     {/if}
 
     {#if surface === 'compare'}
