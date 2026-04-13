@@ -193,6 +193,13 @@
     const root = d3.select(svgEl);
     root.selectAll('*').remove();
     root.attr('width', w).attr('height', h);
+
+    // Click sul fondo SVG → chiude tooltip
+    root.append('rect')
+      .attr('width', w).attr('height', h)
+      .attr('fill', 'transparent')
+      .on('click', () => { tooltip = { ...tooltip, visible: false }; });
+
     const g = root.append('g').attr('class', 'inner').attr('transform', `translate(${M.left},${M.top})`);
 
     // Y axis: speed rating ticks fissi
@@ -225,15 +232,6 @@
         const rect = containerEl.getBoundingClientRect();
         const isSame = tooltip.visible && tooltip.d?.tournament === d.tournament;
         tooltip = { visible: !isSame, x: event.clientX - rect.left, y: event.clientY - rect.top, d };
-      })
-      .on('touchend', function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        const touch = event.changedTouches[0];
-        const rect = containerEl.getBoundingClientRect();
-        const d = d3.select(this).datum();
-        const isSame = tooltip.visible && tooltip.d?.tournament === d.tournament;
-        tooltip = { visible: !isSame, x: touch.clientX - rect.left, y: touch.clientY - rect.top, d };
       });
 
     // Label superfici in basso (visibili solo allo step 1)

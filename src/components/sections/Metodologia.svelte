@@ -1,22 +1,24 @@
 <script>
   import { t } from '$lib/i18n.svelte.js';
+
+  function renderBody(raw) {
+    return raw
+      .replace('Tennis Abstract (link1)', '<a href="https://www.tennisabstract.com" target="_blank" rel="noopener">Tennis Abstract</a>')
+      .replace('Match Charting Project (link2)', '<a href="https://github.com/JeffSackmann/tennis_MatchChartingProject" target="_blank" rel="noopener">Match Charting Project</a>');
+  }
+
+  function paragraphs(raw) {
+    return raw.split('\n\n').filter(p => p.trim()).map(p => renderBody(p.trim()));
+  }
 </script>
 
 <section class="metodologia">
   <div class="inner">
     <h2 class="title">{t('metodo_title')}</h2>
     <div class="body">
-      <p>
-        Fonti: <a href="https://www.tennisabstract.com" target="_blank" rel="noopener">Tennis Abstract</a>
-        e il progetto <a href="https://github.com/JeffSackmann/tennis_MatchChartingProject" target="_blank" rel="noopener">Match Charting Project</a>
-        di Jeff Sackmann sono stati il cuore di questo articolo. Il progetto MCP è gestito da volontari
-        che registrano per ciascuna partita i dati relativi a punti, servizi, scambi. Essendo un progetto
-        volontario, non tutte le partite sono mappate e questo si potrebbe rispecchiare nella mancanza di
-        alcuni dati (per esempio sull'erba negli anni Novanta).
-      </p>
-      <p>Testi: Danilo De Rosa</p>
-      <p>Codice: Danilo De Rosa, con il supporto di Claude Code.</p>
-      <p>Si ringrazia Salvatore Tramontano per l'aiuto e i consigli.</p>
+      {#each paragraphs(t('metodo_body')) as para}
+        <p>{@html para}</p>
+      {/each}
     </div>
   </div>
 </section>

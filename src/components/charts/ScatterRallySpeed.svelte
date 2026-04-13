@@ -80,6 +80,12 @@
     root.selectAll('*').remove();
     root.attr('width', w).attr('height', h);
 
+    // Click sul fondo SVG → chiude tooltip
+    root.append('rect')
+      .attr('width', w).attr('height', h)
+      .attr('fill', 'transparent')
+      .on('click', () => { tooltip = null; });
+
     const g = root.append('g').attr('transform', `translate(${M.left},${M.top})`);
 
     // Grid
@@ -132,7 +138,7 @@
       .attr('stroke', '#2E3440')
       .attr('stroke-width', 1)
       .style('cursor', 'pointer')
-      .on('mouseover', function(event, d) {
+      .on('mouseover', isMobile ? null : function(event, d) {
         d3.select(this).attr('r', DOT_R + 2).attr('stroke', '#D8DEE9').attr('stroke-width', 1.5);
         const svgRect = svgEl.getBoundingClientRect();
         const containerRect = containerEl.getBoundingClientRect();
@@ -140,7 +146,7 @@
         const cy = svgRect.top  - containerRect.top  + M.top  + yScale(d.rally_avg);
         tooltip = { x: cx, y: cy, d };
       })
-      .on('mouseleave', function() {
+      .on('mouseleave', isMobile ? null : function() {
         d3.select(this).attr('r', DOT_R).attr('stroke', '#2E3440').attr('stroke-width', 1);
         tooltip = null;
       })

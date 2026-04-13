@@ -75,10 +75,10 @@
 
 <div class="bridge-text">
   {#each t('bridge4').split('\n\n').filter(p => p.trim()) as para}
-    <p>{@html para.trim().replace(
-      'Secondo Sackmann (link)',
-      '<a href="https://www.tennisabstract.com/blog/2025/12/10/surface-speed-convergence-one-more-time/" target="_blank" rel="noopener">Secondo Sackmann</a>'
-    )}</p>
+    <p>{@html para.trim()
+      .replace('Secondo Sackmann (link)', '<a href="https://www.tennisabstract.com/blog/2025/12/10/surface-speed-convergence-one-more-time/" target="_blank" rel="noopener">Secondo Sackmann</a>')
+      .replace('Sackmann (link)', '<a href="https://www.tennisabstract.com/blog/2025/12/10/surface-speed-convergence-one-more-time/" target="_blank" rel="noopener">Sackmann</a>')
+    }</p>
   {/each}
 </div>
 

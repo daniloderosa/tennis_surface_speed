@@ -120,11 +120,11 @@ const translations = {
     // Bridge texts
     bridge1: `The existence of such different surfaces led, over the decades, to the rise of surface specialists: some players excelled from the baseline and preferred clay, while others loved exploiting the pace of grass with serve-and-volley at every point.\n\nOver the past 10–15 years, however, the fan community has increasingly debated a growing 'homogenisation' of surfaces: players all rally from the baseline with heavy topspin, and serve-and-volley has disappeared — because, if surfaces are all similar, there's only one way to play. Is that really the case?\n\nJeff Sackmann, creator of TennisAbstract, devised a way to measure the speed of different tournaments: the Surface Speed Rating. This index solves the problem that, if two heavy servers meet, the ace count would be inflated regardless of surface.\n\nThe surface speed rating works like this: for each match, the model estimates how many aces the server would have produced on a theoretically neutral surface — the tour average for that year — against that specific opponent. This expected figure accounts for server quality, returner ability, and both players' historical tendencies. It then compares expected to actual aces produced. If Wimbledon generates more aces than expected, its rating rises above 1. If Roland Garros generates fewer, its rating falls below 1. The result is an indexed number: 1 is the tour average for that year. A rating of 1.25 means 25% more aces than expected; 0.75 means 25% fewer.`,
 
-    bridge2: `Let's zoom out: to understand whether surfaces have really converged over time, let's extend the analysis to the past thirty years.`,
+    bridge2: `With a few exceptions — Rio de Janeiro sits above expectations, while Indian Wells is an unusually slow hard court due to humidity — we see roughly what we might have predicted: clay is still relatively slow, hard courts are the "average" surface despite considerable internal variation, and grass remains the fastest.\n\nOne year alone, however, tells us little about whether surfaces are actually converging. To put that thesis to the test, let's extend the analysis to the past thirty years.`,
 
     bridge3: `Over the years, the three lines do not converge: grass and hard courts are consistently faster than clay. Ace rate, meanwhile, shows how serving has improved: in the early 1990s a player hit an ace roughly every 20 points; in recent years it happens every 13.\n\nBut clay hasn't sped up (it remains the same surface: a mix of brick dust and terracotta) — the players have changed: physically stronger, technically sharper, and above all wielding rackets that let them hit harder (and therefore ace more).\n\nSo has nothing changed over the past few decades, and tennis remained the same? Obviously not — anyone who is a fan, or opens YouTube to watch a 1990s match, will notice how deeply the game has changed: more topspin, more baseline rallies, powerful shots and faster movement. A good summary of all this might be average rally length, which has grown steadily for all these reasons.`,
 
-    bridge4: "hard, clay, grass — the labels remain.",
+    bridge4: "The rally length trend does appear to point toward convergence: on hard courts and grass, rallies are longer than they were in the 1990s, approaching the numbers seen on clay. What is driving this change?\n\nAccording to Sackmann (link), the answer is simple: polyester strings. Polyester, introduced into racket strings in the 1990s, provides more topspin and power: players strike the ball with heavy spin while still keeping it within the baseline thanks to the Magnus effect.\n\nThis allows hitters to generate a lot of power while maintaining decent control — with a result that is obvious to anyone comparing today's tennis with the past: more baseline rallies where the ball is struck hard, and longer exchanges overall. Add to this the steady improvement in athletic, technical, and physical preparation (visible across all sports in recent years) and you have modern tennis.",
 
     // Dot plot step cards
     step_dot_0_text:
@@ -143,22 +143,14 @@ const translations = {
 
     anim_clay2:
       "A ball that bounces high with heavy spin (topspin) pushes players far behind the baseline, lengthening rallies.",
-    anim_hard2: "[Hard court second box — placeholder text.]",
-    anim_grass2: "[Grass second box — placeholder text.]",
+    anim_hard2: "It is the most commonly played surface, and the most consistent: it allows players to stay close to the baseline and hit a flatter ball.",
+    anim_grass2: "It is the least commonly played surface, and one that some players skip entirely: not everyone knows how to play on grass.",
 
     anim_cta: "↔ Drag to compare surfaces",
 
-    // Outro
-    outro_title: "The surface exists. Simplicity doesn't.",
-    outro_p1:
-      "Hard, clay, grass — the labels remain. But behind every tournament lies a cocktail of altitude, temperature, balls and court surface that defies easy categories. Gstaad is clay, but plays like hard. Indian Wells 2025 is hard, but rallies like Roland Garros.",
-    outro_p2:
-      "Meanwhile, the game changes: rallies lengthen on every surface. Not because surfaces are converging, but because players — stronger, fitter, more tactical — adapt to any pace.",
-    outro_data: "Data",
-
     // Methodology
     metodo_title: "Methodology",
-    metodo_body: "[Methodology text — to be added]",
+    metodo_body: "Sources: Tennis Abstract (link1) and Jeff Sackmann's Match Charting Project (link2) were the backbone of this article. The MCP is maintained by volunteers who record point-by-point data — serves, rallies, outcomes — for individual matches. Being a volunteer project, not every match is charted, which may explain gaps in the data (for example on grass courts in the 1990s).\n\nText: Danilo De Rosa\n\nCode: Danilo De Rosa, with the support of Claude Code.\n\nThanks to Salvatore Tramontano for help and advice.",
 
     // Controls
     theme_light: "Light",
