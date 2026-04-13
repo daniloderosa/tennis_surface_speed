@@ -154,16 +154,23 @@
 
   @media (max-width: 768px) {
     .trend-wrapper {
-      padding: 1rem 0.25rem 2rem;
+      padding: 1rem 1rem 2rem;
     }
     .scatter-wrapper {
-      height: 380px;
+      height: 520px;
     }
     .bridge-text {
       padding: 2rem 1rem 0;
     }
     .section-label {
       padding: 0.9rem 1rem;
+    }
+    .dot-section :global(.sticky-chart) {
+      height: 75vh;
+    }
+    .dot-section :global(.steps-overlay) {
+      margin-top: -65vh;
+      padding-bottom: 95vh;
     }
   }
 </style>

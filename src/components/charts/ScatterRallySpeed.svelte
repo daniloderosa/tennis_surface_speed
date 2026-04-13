@@ -11,7 +11,9 @@
   }
   function getLabels() { return { Grass: t('label_grass'), Hard: t('label_hard'), Clay: t('label_clay') }; }
   const SURFACES = ['Grass', 'Hard', 'Clay'];
-  const M = { top: 40, right: 30, bottom: 65, left: 65 };
+  const M_DSK = { top: 40, right: 30, bottom: 65, left: 65 };
+  const M_MOB = { top: 40, right: 20, bottom: 65, left: 75 };
+  function getM(w) { return w < 768 ? M_MOB : M_DSK; }
 
   // Bridge derived for lang reactivity
   const lang = $derived(getLang());
@@ -63,6 +65,7 @@
   function draw(w, h, data) {
     const C = getColors();
     const L = getLabels();
+    const M = getM(w);
     const W = w - M.left - M.right;
     const H = h - M.top  - M.bottom;
 
